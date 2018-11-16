@@ -37,7 +37,6 @@ xmlrpc.php
 /modules
 /profiles
 /scripts
-/themes
 
 ### OSX template
 *.DS_Store
