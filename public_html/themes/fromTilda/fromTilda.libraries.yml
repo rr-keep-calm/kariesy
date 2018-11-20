@@ -1,7 +1,18 @@
 global-css:
   css:
    theme:
-    css/style.css: {}
+    css/main.css: {}
 global-js:
   js:
-   js/script.js: {}
+   https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js: { type: external }
+   js/slick.min.js: {}
+   js/select2.min.js: {}
+   js/jquery.magnific-popup.min.js: {}
+   js/jquery.barrating.min.js: {}
+   js/bootstrap-datepicker.min.js: {}
+   js/bootstrap-datepicker.ru.min.js: {}
+   js/jquery-filestyle.min.js: {}
+   js/jquery.maskedinput.min.js: {}
+   js/lib.js: {}
+   js/app.js: {}
+   https://maps.googleapis.com/maps/api/js?key=AIzaSyB3tlWbCcY4vawcqAwJgbWjP3DqboRywNY&callback=initMap: { type: external, attributes: { async: true, defer: true } }
