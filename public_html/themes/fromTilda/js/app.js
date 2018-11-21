@@ -350,7 +350,7 @@ function initMap() {
 					lng: marker.lng
 				},
 				icon: {
-					url: 'img/ico/map.svg',
+					url: '/' + drupalSettings.path.themeUrl + '/img/ico/map.svg',
 					size: new google.maps.Size(50, 53)
 				}
 			});

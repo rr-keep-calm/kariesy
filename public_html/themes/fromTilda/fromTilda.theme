@@ -1,0 +1,5 @@
+<?php
+function fromTilda_preprocess_html(&$variables)
+{
+    $variables['#attached']['drupalSettings']['path']['themeUrl'] = \Drupal::theme()->getActiveTheme()->getPath();
+}
