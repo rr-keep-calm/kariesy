@@ -1,0 +1,427 @@
+<header class="header">
+    <div class="wrapper header_wrapper">
+        <div class="header_item">
+            <a href="" class="header_logo">
+                <img width="219" height="69" src="{{ directory }}/img/logo.svg" alt="">
+            </a>
+        </div>
+
+        <div class="header_item">
+            <div class="header_time" id="header-time">
+                <p>
+                    <span>Будние дни:</span>
+                    <i>пн-пт:</i>
+                    с 9:00 до 21:00
+                </p>
+                <p>
+                    <span>Выходные:</span>
+                    <i>сб-вс:</i>
+                    с 10:00 до 18:00
+                </p>
+            </div>
+        </div>
+
+        <div class="header_item">
+            <div class="header_phone">
+                <a href="tel:777" class="header_tel" id="header-tel">+7 (495) 215-24-42</a>
+                <div class="header_phone-text">Единая справочная в Москве</div>
+            </div>
+        </div>
+
+        <div class="header_item">
+            <div class="header_buttons">
+                <a href="#form-recall" class="button-light header_recall-btn popup" id="header-recall-btn">Заказать
+                    звонок</a>
+                <a href="#form-order" class="button header_order-btn popup" id="header-order-btn">записаться на
+                    прием</a>
+            </div>
+        </div>
+
+        <div class="header_item __mobile">
+            <div class="header_mobile">
+                <a href="tel:+74952152442" class="header_mobile-tel"></a>
+                <button class="header_mobile-nav">
+                    <i></i><i></i><i></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="nav">
+    <div class="wrapper nav_wrapper">
+        <div class="nav_content">
+            <ul class="nav_ul" id="nav-1">
+                <li class="active"><a href=""><span>Лечение</span></a></li>
+                <li><a href=""><span>Имплантология</span></a></li>
+                <li><a href=""><span>Протезирование</span></a></li>
+                <li><a href=""><span>Хирургия</span></a></li>
+                <li><a href=""><span>Ортондонтия</span></a></li>
+                <li><a href=""><span>Гигиена</span></a></li>
+                <li><a href=""><span>Детская стоматология</span></a></li>
+            </ul>
+
+            <ul class="nav_ul __type-2" id="nav-2">
+                <li><a href=""><span>о клинике</span></a></li>
+                <li><a href=""><span>цены</span></a></li>
+                <li><a href=""><span>вопрос-ответ</span></a></li>
+                <li><a href=""><span>контакты</span></a></li>
+            </ul>
+
+            <form class="nav_search" action="" id="nav-search">
+                <div class="nav_search-inner">
+                    <input class="nav_input" type="text" placeholder="Поиск по сайту">
+                    <button class="nav_btn"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="menu">
+    <div class="menu_wrap">
+        <div class="menu_top">
+            <div class="wrapper">
+                <div class="menu_nav-1" data-menu-id="#nav-1"></div>
+                <div class="menu_nav-2" data-menu-id="#nav-2"></div>
+                <div class="menu_search" data-menu-id="#nav-search"></div>
+            </div>
+        </div>
+
+        <div class="menu_bottom">
+            <div class="wrapper">
+                <div class="menu_info">
+                    <div class="menu_phone">
+                        <div class="menu_tel" data-menu-id="#header-tel"></div>
+                        <div class="menu_recall-btn" data-menu-id="#header-recall-btn"></div>
+                    </div>
+
+                    <div class="menu_time" data-menu-id="#header-time"></div>
+                </div>
+
+                <div class="menu_order-btn" data-menu-id="#header-order-btn"></div>
+            </div>
+        </div>
+
+        <button class="menu_close"></button>
+    </div>
+</div>
+<div class="content">
+    <div class="top __1">
+        <div class="wrapper">
+            {{ page.breadcrumbs }}
+            <h1>{{ page.header }}</h1>
+        </div>
+    </div>
+    {{ page.content }}
+</div>
+<footer class="footer">
+    <div class="footer_top __1">
+        <div class="wrapper">
+            <div class="footer_top-content">
+                <div class="footer_top-left">
+                    <div class="footer_top-heading">Мы работаем для вас без выходных!</div>
+                    <p class="footer_top-descr">Записаться можно по телефону:</p>
+                </div>
+                <div class="footer_top-right">
+                    <a href="tel:777" class="footer_top-phone">+7 (495) 215-24-42</a>
+                    <a href="#form-recall" class="button footer_top-btn popup">заказать звонок</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer_middle">
+        <div class="wrapper">
+            <div class="footer_row __only-flex">
+                <div class="footer_col">
+                    <div class="footer_heading">Услуги</div>
+
+                    <div class="footer_row">
+                        <div class="footer_col">
+                            <ul class="footer_nav">
+                                <li><a href="">Лечение</a></li>
+                                <li><a href="">Имплантология</a></li>
+                                <li><a href="">Протезирование</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer_col">
+                            <ul class="footer_nav">
+                                <li><a href="">Хирургия</a></li>
+                                <li><a href="">Ортодонтия</a></li>
+                                <li><a href="">Гигиена</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer_col">
+                    <div class="footer_heading">Навигация</div>
+
+                    <div class="footer_row">
+                        <div class="footer_col">
+                            <ul class="footer_nav">
+                                <li><a href="">Цены</a></li>
+                                <li><a href="">Клиники</a></li>
+                                <li><a href="">Доктора</a></li>
+                                <li><a href="">Пациентам</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer_col">
+                            <ul class="footer_nav">
+                                <li><a href="">Отзывы</a></li>
+                                <li><a href="">Вакансии</a></li>
+                                <li><a href="">Карта сайта</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer_bottom">
+        <div class="wrapper">
+            <div class="footer_bottom-row">
+                <a href="" class="footer_logo">
+                    <img src="{{ directory }}/img/logo2.svg" width="219" height="69" alt="">
+                </a>
+
+                <div class="footer_copy">© 1998-2017 «Кариесу.нет» ООО «КХЗ»</div>
+
+                <div class="footer_socials">
+                    <div class="footer_socials-text">Мы в социальных сетях:</div>
+
+                    <div class="footer_socials-items">
+                        <a href=""><img src="{{ directory }}/img/vk.svg" alt=""></a>
+                        <a href=""><img src="{{ directory }}/img/facebook.svg" alt=""></a>
+                        <a href=""><img src="{{ directory }}/img/insta.svg" alt=""></a>
+                        <a href=""><img src="{{ directory }}/img/youtube.svg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="forms mfp-hide" id="form-recall">
+    <form action="" class="form">
+        <h4 class="form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами</h4>
+
+        <div class="form_item">
+            <label class="form_label">Ваше имя</label>
+
+            <div class="form_data">
+                <input type="text" class="form_input">
+            </div>
+        </div>
+
+        <div class="form_item">
+            <label class="form_label">Номер телефона</label>
+
+            <div class="form_data">
+                <input type="tel" class="form_input">
+            </div>
+        </div>
+
+        <div class="form_button">
+            <button class="button" type="submit">заказать звонок</button>
+        </div>
+    </form>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>
+
+<div class="forms mfp-hide" id="form-reviews">
+    <form action="" class="reviews_form forms_reviews">
+        <div class="reviews_form-title">Оставить отзыв</div>
+
+        <div class="reviews_form-item">
+            <label class="reviews_label">Доктор</label>
+
+            <div class="reviews_form-data">
+                <select required>
+                    <option value="Доктор 1">Доктор 1</option>
+                    <option value="Доктор 2">Доктор 2</option>
+                </select>
+            </div>
+
+            <div class="reviews_star">
+                <div class="reviews_star-text __type-2">Оцените доктора:</div>
+
+                <select class="no-select rating">
+                    <option></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="reviews_form-item">
+            <label class="reviews_label">Клиника</label>
+
+            <div class="reviews_form-data">
+                <select required>
+                    <option value="Клиника 1">Клиника 1</option>
+                    <option value="Клиника 2">Клиника 2</option>
+                </select>
+            </div>
+
+            <div class="reviews_star">
+                <div class="reviews_star-text __type-2">Оцените клинику:</div>
+
+                <select class="no-select rating">
+                    <option></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="reviews_form-item __offset-min">
+            <label class="reviews_label">Ваш отзыв</label>
+
+            <div class="reviews_form-data">
+                <textarea required class="reviews_area"></textarea>
+            </div>
+        </div>
+
+        <div class="reviews_form-item __offset-min-2">
+            <div class="reviews_row">
+                <div class="reviews_col">
+                    <input type="file" multiple class="jfilestyle" data-input="false" data-text="Приложить фото">
+                </div>
+                <div class="reviews_col">
+                    <button type="submit" class="button">Оставить отзыв</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews_form-text">Нажимая на кнопку “Оставить отзыв” я даю согласие на обработку персональных
+            данных
+        </div>
+    </form>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>
+
+<div class="forms __order mfp-hide" id="form-order">
+    <form class="form">
+        <h3 class="form_title">Запись на прием</h3>
+
+        <div class="form_item">
+            <label class="form_label">Услуга</label>
+
+            <div class="form_data">
+                <select>
+                    <option value="Ортопедия">Ортопедия</option>
+                    <option value="Ортопедия">Ортопедия</option>
+                    <option value="Ортопедия">Ортопедия</option>
+                    <option value="Ортопедия">Ортопедия</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form_item">
+            <label class="form_label">Врач</label>
+
+            <div class="form_data">
+                <select>
+                    <option>Рыбин Валерий Анатольевич</option>
+                    <option>Рыбин Валерий Анатольевич</option>
+                    <option>Рыбин Валерий Анатольевич</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form_item">
+            <label class="form_label">Дата и время приема</label>
+
+            <div class="form_data">
+                <div class="form_row">
+                    <div class="form_col">
+                        <div class="form_input-block">
+                            <input class="form_input date" type="text">
+                        </div>
+                    </div>
+                    <div class="form_col">
+                        <select>
+                            <option>10:30</option>
+                            <option>10:40</option>
+                            <option>10:50</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form_item">
+            <label class="form_label">Ваш контактный телефон</label>
+
+            <div class="form_data">
+                <input type="tel" class="form_input">
+            </div>
+        </div>
+        <div class="form_item">
+            <label class="form_label">Ваше имя</label>
+
+            <div class="form_data">
+                <input type="text" class="form_input">
+            </div>
+        </div>
+        <div class="form_item">
+            <label class="form_label">Комментарий (необязательно)</label>
+
+            <div class="form_data">
+                <textarea class="form_area"></textarea>
+            </div>
+        </div>
+
+        <div class="form_button">
+            <button type="submit" class="button">отправить</button>
+        </div>
+    </form>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>
+
+<div class="forms __auth mfp-hide" id="form-auth">
+    <form class="form">
+        <div class="form_auth-title">Авторизоваться с помощью социальных сетей</div>
+
+        <div class="form_socials">
+            <a href=""><img src="{{ directory }}/img/vk.svg" alt=""></a>
+            <a href=""><img src="{{ directory }}/img/facebook.svg" alt=""></a>
+            <a href=""><img src="{{ directory }}/img/insta.svg" alt=""></a>
+            <a href=""><img src="{{ directory }}/img/youtube.svg" alt=""></a>
+        </div>
+    </form>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>
+
+<div class="forms __ok mfp-hide" id="form-call-ok">
+    <div class="form">
+        <div class="form_image">
+            <img src="{{ directory }}/img/ico/ok.svg" width="59" alt="">
+        </div>
+        <p class="form_ok">Ваш вызов принят!</p>
+    </div>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>
+
+<div class="forms __normal mfp-hide" id="form-normal">
+    <div class="form">
+        <div class="form_normal">Ваша заявка принята!</div>
+        <p class="form_normal-text">В ближайшее время с Вами свяжутся наши специалисты для подтверждения запроса</p>
+    </div>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>

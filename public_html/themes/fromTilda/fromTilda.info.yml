@@ -12,13 +12,6 @@ stylesheets-remove:
   - core/modules/views/css/views.module.css
   - core/themes/stable/css/system/components/hidden.module.css
 regions:
+  breadcrumbs: 'Breadcrumbs'
   header: 'Header'
-  primary_menu: 'Primary menu'
-  secondary_menu: 'Secondary menu'
-  breadcrumb: 'Breadcrumb'
-  highlighted: 'Highlighted'
-  help: 'Help'
   content: 'Content'
-  sidebar_first: 'Sidebar first'
-  sidebar_second: 'Sidebar second'
-  footer: 'Footer'
