@@ -12,6 +12,12 @@ stylesheets-remove:
   - core/modules/views/css/views.module.css
   - core/themes/stable/css/system/components/hidden.module.css
 regions:
+  main_menu: 'Main menu'
+  second_menu: 'Second menu'
   breadcrumbs: 'Breadcrumbs'
   header: 'Header'
+  before_content: 'Before content'
   content: 'Content'
+  after_content: 'After Content'
+  footer_services_menu: 'Footer services menu'
+  footer_navigation_menu: 'Footer navigation menu'

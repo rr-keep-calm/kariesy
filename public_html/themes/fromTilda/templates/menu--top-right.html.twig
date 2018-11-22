@@ -1,0 +1,16 @@
+{% import _self as menus %}
+
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+    {% import _self as menus %}
+    {% if items %}
+      <ul class="nav_ul __type-2" id="nav-2">
+          {% for item in items %}
+            <li {{ item.in_active_trail ? 'class="active"' : '' }}>
+              <a href="{{ item.url }}"><span>{{ item.title }}</span></a>
+            </li>
+          {% endfor %}
+      </ul>
+    {% endif %}
+{% endmacro %}

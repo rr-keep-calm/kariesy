@@ -1,0 +1,23 @@
+{% import _self as menus %}
+
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+    {% import _self as menus %}
+    {% if items %}
+        <div class="footer_row">
+          {% set countItems = (items|length / 2)|round(0, 'ceil') %}
+          {% for col in items|batch(countItems, '') %}
+            <div class="footer_col">
+                <ul class="footer_nav">
+                    {% for item in col %}
+                        <li {{ item.in_active_trail ? 'class="active"' : '' }}>
+                            <a href="{{ item.url }}"><span>{{ item.title }}</span></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+          {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro %}

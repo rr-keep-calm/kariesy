@@ -51,23 +51,8 @@
 <nav class="nav">
     <div class="wrapper nav_wrapper">
         <div class="nav_content">
-            <ul class="nav_ul" id="nav-1">
-                <li class="active"><a href=""><span>Лечение</span></a></li>
-                <li><a href=""><span>Имплантология</span></a></li>
-                <li><a href=""><span>Протезирование</span></a></li>
-                <li><a href=""><span>Хирургия</span></a></li>
-                <li><a href=""><span>Ортондонтия</span></a></li>
-                <li><a href=""><span>Гигиена</span></a></li>
-                <li><a href=""><span>Детская стоматология</span></a></li>
-            </ul>
-
-            <ul class="nav_ul __type-2" id="nav-2">
-                <li><a href=""><span>о клинике</span></a></li>
-                <li><a href=""><span>цены</span></a></li>
-                <li><a href=""><span>вопрос-ответ</span></a></li>
-                <li><a href=""><span>контакты</span></a></li>
-            </ul>
-
+            {{ page.main_menu }}
+            {{ page.second_menu }}
             <form class="nav_search" action="" id="nav-search">
                 <div class="nav_search-inner">
                     <input class="nav_input" type="text" placeholder="Поиск по сайту">
@@ -113,7 +98,15 @@
             <h1>{{ page.header }}</h1>
         </div>
     </div>
-    {{ page.content }}
+    {% block content %}
+    <div class="content_main __min">
+        <div class="wrapper">
+            <div class="page">
+                {{ page.content }}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
 </div>
 <footer class="footer">
     <div class="footer_top __1">
@@ -136,46 +129,11 @@
             <div class="footer_row __only-flex">
                 <div class="footer_col">
                     <div class="footer_heading">Услуги</div>
-
-                    <div class="footer_row">
-                        <div class="footer_col">
-                            <ul class="footer_nav">
-                                <li><a href="">Лечение</a></li>
-                                <li><a href="">Имплантология</a></li>
-                                <li><a href="">Протезирование</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="footer_col">
-                            <ul class="footer_nav">
-                                <li><a href="">Хирургия</a></li>
-                                <li><a href="">Ортодонтия</a></li>
-                                <li><a href="">Гигиена</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    {{ page.footer_services_menu }}
                 </div>
                 <div class="footer_col">
                     <div class="footer_heading">Навигация</div>
-
-                    <div class="footer_row">
-                        <div class="footer_col">
-                            <ul class="footer_nav">
-                                <li><a href="">Цены</a></li>
-                                <li><a href="">Клиники</a></li>
-                                <li><a href="">Доктора</a></li>
-                                <li><a href="">Пациентам</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="footer_col">
-                            <ul class="footer_nav">
-                                <li><a href="">Отзывы</a></li>
-                                <li><a href="">Вакансии</a></li>
-                                <li><a href="">Карта сайта</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    {{ page.footer_navigation_menu }}
                 </div>
             </div>
         </div>
