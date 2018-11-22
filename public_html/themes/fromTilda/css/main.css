@@ -4366,7 +4366,7 @@ img.mfp-img {
 }
 
 .header_item:nth-child(3) {
-    margin-right: 82px;
+    margin-right: 80px;
 }
 
 .header_logo {
@@ -4791,6 +4791,7 @@ h6 {
     padding: 10px 10px;
     display: block;
     border-left: 1px solid #042846;
+    white-space: nowrap;
 }
 
 .nav_ul li a:hover,
