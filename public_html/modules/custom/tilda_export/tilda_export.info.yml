@@ -1,0 +1,5 @@
+name: Tilda REST API
+description: Tilda REST realization
+package: Tilda
+type: module
+core: 8.x
