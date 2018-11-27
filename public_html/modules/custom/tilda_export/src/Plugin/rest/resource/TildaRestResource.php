@@ -75,10 +75,11 @@ class TildaRestResource extends ResourceBase {
   /**
    * Responds to GET requests.
    *
-   * @return \Drupal\rest\ResourceResponse
+   * @return \Drupal\rest\ModifiedResourceResponse
    *   The HTTP response object.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+   * @throws \Exception
    *   Throws exception expected.
    */
   public function get() {
@@ -91,13 +92,13 @@ class TildaRestResource extends ResourceBase {
       !$query->has('published') ||
       !$query->has('publickey')
     ) {
-      return new ResourceResponse('Не указан идентификатор проекта!', 400);
+      return new ModifiedResourceResponse('Не указан идентификатор проекта!', 400);
     }
 
     // Првоеряем что это точно нужный проект (читай сайт)
     // TODO В дальнейшем брать идентификатор проекта из настроек модуля
     if ($query->get('projectid') != '931691') {
-      return new ResourceResponse('Этот проект не может обработать запрос, обратитесь к нужному проекту!', 400);
+      return new ModifiedResourceResponse('Этот проект не может обработать запрос, обратитесь к нужному проекту!', 400);
     }
 
     // Записывем информацию о странице которая в дальнейшем будет забираться из
@@ -111,9 +112,9 @@ class TildaRestResource extends ResourceBase {
     ]);
     $newID = $insertQuery->execute();
     if (!$newID) {
-      return new ResourceResponse('Не удалось оповестиь сайт о надобности экуспорта контента из Тильды!', 400);
+      return new ModifiedResourceResponse('Не удалось оповестить сайт о надобности экспорта контента из Тильды!', 400);
     }
-    return new ResourceResponse($response, 200);
+    return new ModifiedResourceResponse($response, 200);
   }
 
 }
