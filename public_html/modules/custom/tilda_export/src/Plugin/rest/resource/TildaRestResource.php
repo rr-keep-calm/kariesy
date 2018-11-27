@@ -75,24 +75,45 @@ class TildaRestResource extends ResourceBase {
   /**
    * Responds to GET requests.
    *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity object.
-   *
    * @return \Drupal\rest\ResourceResponse
    *   The HTTP response object.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    *   Throws exception expected.
    */
-  public function get(EntityInterface $entity) {
-
-    // You must to implement the logic of your REST Resource here.
-    // Use current user after pass authentication to validate access.
-    if (!$this->currentUser->hasPermission('access content')) {
-      throw new AccessDeniedHttpException();
+  public function get() {
+    $query = \Drupal::request()->query;
+    $response = ['ok'];
+    // TODO далее для внесения в базу нужно использовать безопасные запросы и аутентификацию. хотя бы базовую
+    // Првоеряем наличие всех параметров для внесения в базу
+    if (!$query->has('projectid') ||
+      !$query->has('pageid') ||
+      !$query->has('published') ||
+      !$query->has('publickey')
+    ) {
+      return new ResourceResponse('Не указан идентификатор проекта!', 400);
     }
 
-    return new ResourceResponse($entity, 200);
+    // Првоеряем что это точно нужный проект (читай сайт)
+    // TODO В дальнейшем брать идентификатор проекта из настроек модуля
+    if ($query->get('projectid') != '931691') {
+      return new ResourceResponse('Этот проект не может обработать запрос, обратитесь к нужному проекту!', 400);
+    }
+
+    // Записывем информацию о странице которая в дальнейшем будет забираться из
+    // Тильды при наступлении крона
+    $insertQuery = \Drupal::database()->insert('tilda_need_export');
+    $insertQuery->fields([
+      'projectid' => $query->get('projectid'),
+      'pageid' => $query->get('pageid'),
+      'published' => $query->get('published'),
+      'publickey' => $query->get('publickey')
+    ]);
+    $newID = $insertQuery->execute();
+    if (!$newID) {
+      return new ResourceResponse('Не удалось оповестиь сайт о надобности экуспорта контента из Тильды!', 400);
+    }
+    return new ResourceResponse($response, 200);
   }
 
 }
