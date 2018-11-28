@@ -1,0 +1,16 @@
+<?php
+
+/**
+ *  Implements hook_cron()
+ */
+function tilda_export_cron() {
+//  $now = date('H:i:s');
+//  file_put_contents(DRUPAL_ROOT . '/tildaLog', "{$now}\n", FILE_APPEND);
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function tilda_export_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'tilda_export/tilda';
+}
