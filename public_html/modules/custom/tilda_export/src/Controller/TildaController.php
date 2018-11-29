@@ -148,24 +148,28 @@ LIBRARYCONTENT;
       $node->save();
       $id = $node->id();
 
-      // Формируем пояснительный текст для удобного просмотра в админке
-      $body = 'Материал был экспортирован из сервиса "Тильда"<br/>';
-      $body .= 'Весь текст материала расположен в шаблоне для обеспечения';
-      $body .= ' отображения "как есть"<br/>';
-      $body .= 'Путь до шаблона - ';
-      $body .= "\"{$path}templates/tildaExport/page--node--{$id}.html.twig\"";
-      $node->set('body', [
-        'value' => $body,
-        'summary' => '',
-        'format' => 'full_html',
-      ]);
-      $node->save();
       // Подключаем к ноде синоним (адрес)
       \Drupal::service('path.alias_storage')
         ->save('/node/' . $id, $alias, 'ru');
     } else {
-      // TODO обновить тело ноды чтобы вписать пояснительный текст
+      $node = Node::load($id);
+      $node->setNewRevision(TRUE);
+      $node->revision_log = 'Импорт контента из Тильды';
+      $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
     }
+    // Формируем пояснительный текст для удобного просмотра в админке
+    $body = 'Материал был экспортирован из сервиса "Тильда"<br/>';
+    $body .= 'Весь текст материала расположен в шаблоне для обеспечения';
+    $body .= ' отображения "как есть"<br/>';
+    $body .= 'Путь до шаблона - ';
+    $body .= "\"{$path}templates/tildaExport/page--node--{$id}.html.twig\"";
+
+    $node->set('body', [
+      'value' => $body,
+      'summary' => '',
+      'format' => 'full_html',
+    ]);
+    $node->save();
 
     // Получаем HTML код новой страницы
     $html = $page['result']['html'];
