@@ -159,6 +159,7 @@ LIBRARYCONTENT;
         'summary' => '',
         'format' => 'full_html',
       ]);
+      $node->save();
       // Подключаем к ноде синоним (адрес)
       \Drupal::service('path.alias_storage')
         ->save('/node/' . $id, $alias, 'ru');
