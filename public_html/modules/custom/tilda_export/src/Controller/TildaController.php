@@ -63,6 +63,12 @@ class TildaController extends ControllerBase {
     // библиотеки модуля
     $jsLibraryString = '';
     foreach ($project['result']['js'] as $jsItem) {
+      // Исключаем добавление некоторых скриптов из Тильды,
+      // чтобы не конфликтовали с уже имеющимися. Например jQuery разных версий.
+      // TODO перенести список скриптов в настройки
+      if ((string)$jsItem['to'] === 'jquery-1.10.2.min.js') {
+        continue;
+      }
       $jsContent = file_get_contents($jsItem['from']);
       if ($jsContent) {
         file_put_contents("{$path}js/{$jsItem['to']}", $jsContent);
@@ -139,7 +145,8 @@ LIBRARYCONTENT;
         'type' => 'page',
         'title' => $page['result']['title'],
       ]);
-      $id = $node->save();
+      $node->save();
+      $id = $node->id();
 
       // Формируем пояснительный текст для удобного просмотра в админке
       $body = 'Материал был экспортирован из сервиса "Тильда"<br/>';
@@ -148,7 +155,7 @@ LIBRARYCONTENT;
       $body .= 'Путь до шаблона - ';
       $body .= "\"{$path}templates/tildaExport/page--node--{$id}.html.twig\"";
       $node->set('body', [
-        'value' => '',
+        'value' => $body,
         'summary' => '',
         'format' => 'full_html',
       ]);
