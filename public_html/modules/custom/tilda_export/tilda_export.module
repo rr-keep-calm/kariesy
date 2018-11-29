@@ -12,5 +12,9 @@ function tilda_export_cron() {
  * Implements hook_page_attachments().
  */
 function tilda_export_page_attachments(array &$attachments) {
-  $attachments['#attached']['library'][] = 'tilda_export/tilda';
+  /** @var \Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'tilda_export/tilda';
+  }
 }
