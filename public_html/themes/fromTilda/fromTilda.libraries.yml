@@ -4,7 +4,7 @@ global-css:
     css/main.css: {}
 global-js:
   js:
-   https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js: { type: external }
+   js/jquery-1.10.2.min.js: {}
    js/slick.min.js: {}
    js/select2.min.js: {}
    js/jquery.magnific-popup.min.js: {}
