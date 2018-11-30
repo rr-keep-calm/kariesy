@@ -177,7 +177,7 @@ LIBRARYCONTENT;
 
       // Ссылки на картинки подменяем правильными
       $html = str_replace($img['to'],
-        '{{ directory }}/img/' . $img['to'],
+        '/{{ directory }}/img/' . $img['to'],
         $html
       );
     }
@@ -185,6 +185,13 @@ LIBRARYCONTENT;
     // Убираем из контента конструкции которые могут быть восприняты twig-ом
     // как комментарии
     $html = str_replace('{#', '{ #',$html);
+
+    // Переделываем инициализацию адаптива с jQuery на чистый js
+    $html = preg_replace(
+      '/\$\((\s)*?document(\s)*?\).ready\(function\(\)(\s)*?{/',
+      'document.addEventListener("DOMContentLoaded", function(event) {',
+      $html
+    );
 
     // Записываем html-код страницы в файл шаблона темы
     $htmlTwig = <<<HTMLTWIG
