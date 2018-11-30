@@ -1,19 +1,14 @@
 <?php
+namespace Drupal\tilda_export;
 
-namespace Drupal\tilda_export\Controller;
-
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\node\Entity\Node;
 
-class TildaController extends ControllerBase {
+class TildaExportProcess {
 
   protected $apiUrl = 'http://api.tildacdn.info/v1/';
 
-  /**
-   * {@inheritdoc}
-   */
-  public function tilda() {
+  public function exportPageFromTilda() {
     // Получаем одну страницу для экспорта из Тильды
     $row = \Drupal::database()
       ->select('tilda_need_export', 't')
@@ -23,7 +18,9 @@ class TildaController extends ControllerBase {
       ->execute()
       ->fetch();
 
-    // TODO Запускаем процедуру экспорта если есть что экспортировать
+    if (!$row) {
+      return;
+    }
 
     // Получаем информацию по проекту в целом getprojectexport.
     // Здесь нам нужно получить все js,css и картинки для проекта в целом.
@@ -197,17 +194,14 @@ HTMLTWIG;
     $templateFilePath .= '.html.twig';
     file_put_contents($templateFilePath, $htmlTwig);
 
-    // TODO Удаляем из базы запись о надобности экспорта страницы после удачного
+    // Удаляем из базы запись о надобности экспорта страницы после удачного
     // импорта на сайт
+    \Drupal::database()
+      ->delete('tilda_need_export')
+      ->condition('ID', $row->ID)
+      ->execute();
 
-    // TODO Чистим весь кэш
+    // Чистим кэш для правильного отображения новых страниц
     drupal_flush_all_caches();
-
-    // TODO  Шлак для вывода страницы удалить, так как перенесётся всё в хук
-    $output = [];
-    $output['#title'] = 'HelloWorld page title';
-    $output['#markup'] = 'Hello World!';
-    return $output;
   }
-
 }

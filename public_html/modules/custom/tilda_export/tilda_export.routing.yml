@@ -1,6 +1,0 @@
-tilda_export.tildapage:
-  path: '/tilda'
-  defaults:
-    _controller: '\Drupal\tilda_export\Controller\TildaController::tilda'
-  requirements:
-    _permission: 'access content'
