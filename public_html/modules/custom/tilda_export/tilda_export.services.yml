@@ -1,0 +1,3 @@
+services:
+  tilda_export_process:
+    class: Drupal\tilda_export\TildaExportProcess
