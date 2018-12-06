@@ -1,0 +1,107 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a taxonomy term.
+ *
+ * Available variables:
+ * - url: URL of the current term.
+ * - name: Name of the current term.
+ * - content: Items for the content of the term (fields and description).
+ *   Use 'content' to print them all, or print a subset such as
+ *   'content.description'. Use the following code to exclude the
+ *   printing of a given child element:
+ *   @code
+ *   {{ content|without('description') }}
+ *   @endcode
+ * - attributes: HTML attributes for the wrapper.
+ * - page: Flag for the full page state.
+ * - term: The taxonomy term entity, including:
+ *   - id: The ID of the taxonomy term.
+ *   - bundle: Machine name of the current vocabulary.
+ * - view_mode: View mode, e.g. 'full', 'teaser', etc.
+ *
+ * @see template_preprocess_taxonomy_term()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="service-detail_top" style="background-image: url({{ file_url(content.field_oblozhka['#items'].entity.uri.value) }})">
+    <div class="wrapper">
+        <img class="service-detail_top-image" src="{{ file_url(content.field_oblozhka['#items'].entity.uri.value) }}" alt="">
+        <div class="service-detail_about">
+            {{ content.description }}
+        </div>
+        {{ disease_types }}
+    </div>
+</div>
+{% if content.field_zagolovok_pervogo_polya or content.field_kontent_levoy_kolonke_perv or content.field_kontent_pravoy_kolonke_per %}
+    <div class="service-detail_block __1">
+        {% if content.field_zagolovok_pervogo_polya %}
+            <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya }}</h2>
+        {% endif %}
+
+        <div class="wrapper">
+            <div class="service-detail_row">
+                <div class="service-detail_col-1">
+                    {% if content.field_zagolovok_pervogo_polya %}
+                        <h2>{{ content.field_zagolovok_pervogo_polya }}</h2>
+                    {% endif %}
+
+                    {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
+                        {{ content.field_kontent_levoy_kolonke_perv.0['#text']|raw }}
+                    {% endif %}
+                </div>
+                <div class="service-detail_col-2">
+                    {% if content.field_kontent_pravoy_kolonke_per.0['#text'] %}
+                        {{ content.field_kontent_pravoy_kolonke_per.0['#text']|raw }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if content.field_zagolovok_vtorogo_polya or content.field_kontent_levoy_kolonki_vtor or content.field_kontent_pravoy_kolonki_vto %}
+    <div class="service-detail_block __2">
+        <div class="wrapper">
+            {% if content.field_zagolovok_vtorogo_polya %}
+                <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya }}</h2>
+            {% endif %}
+            <div class="service-detail_row">
+                <div class="service-detail_col-3">
+                    {% if content.field_kontent_levoy_kolonki_vtor.0['#text'] %}
+                        {{ content.field_kontent_levoy_kolonki_vtor.0['#text']|raw }}
+                    {% endif %}
+                </div>
+                <div class="service-detail_col-4">
+                    {% if content.field_zagolovok_vtorogo_polya %}
+                        <h2>{{ content.field_zagolovok_vtorogo_polya }}</h2>
+                    {% endif %}
+                    {% if content.field_kontent_pravoy_kolonki_vto.0['#text'] %}
+                        {{ content.field_kontent_pravoy_kolonki_vto.0['#text']|raw }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if content.field_zagolovok_tretego_polya or content.field_kontent_levoy_kolonki_tret or content.field_kontent_pravoy_kolonki_tre %}
+    <div class="service-detail_step">
+        <div class="wrapper">
+            <div class="service-detail_row">
+                <div class="service-detail_col-5">
+                    {% if content.field_zagolovok_tretego_polya %}
+                        <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya }}</h2>
+                    {% endif %}
+                    {% if content.field_kontent_levoy_kolonki_tret.0['#text'] %}
+                        {{ content.field_kontent_levoy_kolonki_tret.0['#text']|raw }}
+                    {% endif %}
+                </div>
+                <div class="service-detail_col-6">
+                    {% if content.field_kontent_pravoy_kolonki_tre.0['#text'] %}
+                        {{ content.field_kontent_pravoy_kolonki_tre.0['#text']|raw }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
