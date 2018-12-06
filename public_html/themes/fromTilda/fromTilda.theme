@@ -27,13 +27,26 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
 function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
   if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
-    $suggestions[] = 'page__taxonomy__' . $term->getVocabularyId();
+    $vacabulary_id = $term->getVocabularyId();
+    $suggestions[] = 'page__taxonomy__' . $vacabulary_id;
   }
 }
 
-function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, $vars, $hook) {
+function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, $hook) {
   if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
-    $suggestions[] = 'taxonomy_term__' . $term->getVocabularyId();
+    $vacabulary_id = $term->getVocabularyId();
+    $suggestions[] = 'taxonomy_term__' . $vacabulary_id;
+    // Попытка получить список типов заболевания для страницы услуги
+    if ($vacabulary_id == 'service') {
+      // Get the view machine id.
+      $view = \Drupal\views\Views::getView('tip_zabolevaniya');
+      $view->setDisplay('block_1');
+      $view->setArguments(array($term->id()));
+      $render = $view->render();
+      if (count($render['#rows']) > 0) {
+        $vars['disease_types'] = \Drupal::service('renderer')->render($render);
+      }
+    }
   }
 }

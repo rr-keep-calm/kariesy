@@ -31,9 +31,9 @@
         <div class="service-detail_about">
             {{ content.description }}
         </div>
+        {{ disease_types }}
     </div>
 </div>
-{#{{ dump(content.field_kontent_levoy_kolonke_perv) }}#}
 {% if content.field_zagolovok_pervogo_polya or content.field_kontent_levoy_kolonke_perv or content.field_kontent_pravoy_kolonke_per %}
     <div class="service-detail_block __1">
         {% if content.field_zagolovok_pervogo_polya %}
