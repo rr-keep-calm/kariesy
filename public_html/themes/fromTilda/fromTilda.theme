@@ -53,7 +53,6 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
     $term = Term::load($tid);
     $vacabulary_id = $term->getVocabularyId();
     $suggestions[] = 'taxonomy_term__' . $vacabulary_id;
-    // Попытка получить список типов заболевания для страницы услуги
     if ($vacabulary_id == 'service') {
       // Получаем блок с типами заболеваний
       $view = \Drupal\views\Views::getView('tip_zabolevaniya');
