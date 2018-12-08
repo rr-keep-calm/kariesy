@@ -31,9 +31,23 @@
         <div class="service-detail_about">
             {{ content.description }}
         </div>
-        {{ disease_types }}
+        {{ disease_types is defined ? disease_types : '' }}
     </div>
 </div>
+{% if service_price is defined %}
+<div class="service-detail_price">
+    <div class="wrapper">
+        <div class="service-detail_heading">
+            <h2>{{ content.field_zagolovok_bloka_cen }}</h2>
+            <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
+        </div>
+        {{ service_price }}
+        <div class="service-detail_only-mobile">
+            <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% if content.field_zagolovok_pervogo_polya or content.field_kontent_levoy_kolonke_perv or content.field_kontent_pravoy_kolonke_per %}
     <div class="service-detail_block __1">
         {% if content.field_zagolovok_pervogo_polya %}

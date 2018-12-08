@@ -55,13 +55,22 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
     $suggestions[] = 'taxonomy_term__' . $vacabulary_id;
     // Попытка получить список типов заболевания для страницы услуги
     if ($vacabulary_id == 'service') {
-      // Get the view machine id.
+      // Получаем блок с типами заболеваний
       $view = \Drupal\views\Views::getView('tip_zabolevaniya');
       $view->setDisplay('block_1');
       $view->setArguments(array($term->id()));
       $render = $view->render();
       if (count($render['#rows']) > 0) {
         $vars['disease_types'] = \Drupal::service('renderer')->render($render);
+      }
+
+      // Получаем блок с ценами на услуги заболеваний
+      $view = \Drupal\views\Views::getView('blok_cen_na_stranice_uslugi');
+      $view->setDisplay('block_1');
+      $view->setArguments(array($term->id()));
+      $render = $view->render();
+      if (count($render['#rows']) > 0) {
+        $vars['service_price'] = \Drupal::service('renderer')->render($render);
       }
     }
   }
