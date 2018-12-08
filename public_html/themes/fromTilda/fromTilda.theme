@@ -11,17 +11,33 @@ function fromTilda_preprocess_html(&$variables)
  * Preprocess function for breadcrumb.html.twig.
  */
 function fromTilda_preprocess_breadcrumb(&$variables) {
-    if ($variables['breadcrumb']) {
-        $request = \Drupal::request();
-        $route_match = \Drupal::routeMatch();
-        $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-
-        if ($page_title) {
-            $variables['breadcrumb'][] = [
-                'text' => $page_title
-            ];
-        }
+  $is_service_term = FALSE;
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+    $term = Term::load($tid);
+    $vacabulary_id = $term->getVocabularyId();
+    // Попытка получить список типов заболевания для страницы услуги
+    if ($vacabulary_id == 'service') {
+      $is_service_term = TRUE;
     }
+  }
+  if ($variables['breadcrumb']) {
+    if ($is_service_term) {
+      $variables['breadcrumb'][] = [
+        'text' => 'Услуги',
+        'url' => '/services/'
+      ];
+    }
+    $request = \Drupal::request();
+    $route_match = \Drupal::routeMatch();
+    $page_title = \Drupal::service('title_resolver')
+      ->getTitle($request, $route_match->getRouteObject());
+
+    if ($page_title) {
+      $variables['breadcrumb'][] = [
+        'text' => $page_title,
+      ];
+    }
+  }
 }
 
 function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
