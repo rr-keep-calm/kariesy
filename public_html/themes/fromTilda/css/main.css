@@ -159,6 +159,16 @@ html {
     box-sizing: content-box;
 }
 
+.from-tilda h2,
+.from-tilda h3 {
+    margin-bottom: inherit;
+}
+
+.from-tilda ol,
+.from-tilda ul {
+    list-style: inherit;
+}
+
 ol,
 ul {
     list-style: none;
