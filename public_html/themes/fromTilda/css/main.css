@@ -152,6 +152,13 @@ html {
     box-sizing: border-box;
 }
 
+.from-tilda *,
+.from-tilda *:before,
+.from-tilda *:before {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
 ol,
 ul {
     list-style: none;
