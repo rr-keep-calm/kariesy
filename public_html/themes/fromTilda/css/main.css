@@ -152,6 +152,23 @@ html {
     box-sizing: border-box;
 }
 
+.from-tilda *,
+.from-tilda *:before,
+.from-tilda *:before {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.from-tilda h2,
+.from-tilda h3 {
+    margin-bottom: inherit;
+}
+
+.from-tilda ol,
+.from-tilda ul {
+    list-style: inherit;
+}
+
 ol,
 ul {
     list-style: none;
@@ -6495,6 +6512,10 @@ h6 {
     padding-left: 20px;
     padding-right: 20px;
 }
+
+#allrecords ul li:before {width: 5px;height: 5px;border-radius: 50%;content: '';background: #2299d2;position: absolute;left: 0;top: 13px;margin-top: -2.5px;}
+#allrecords ol li:before {content: counter(item) ". ";counter-increment: item;font: 14px 'RobotoRegular';color: #2299d2;}
+#allrecords a {font-size: 16px;text-decoration: underline;}
 
 @media (max-width: 1430px) {
     .main_arrows {

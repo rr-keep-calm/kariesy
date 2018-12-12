@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Component\Transliteration\PhpTransliteration;
 
 function fromTilda_preprocess_html(&$variables)
 {
@@ -22,9 +23,17 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
   }
   if ($variables['breadcrumb']) {
     if ($is_service_term) {
+      // Получить Тип услуги к которой привязана данная услуга
+      $service_type_name = 'Услуги';
+      $service_type = $term->get('field_service_type')->getValue();
+      if (isset($service_type[0]) && isset($service_type[0]['target_id'])) {
+        $service_type = Term::load($service_type[0]['target_id']);
+        $service_type_name = $service_type->name->value;
+      }
+      $translitiration = new PhpTransliteration();
       $variables['breadcrumb'][] = [
-        'text' => 'Услуги',
-        'url' => '/services/'
+        'text' => $service_type_name,
+        'url' => '/price#' . $translitiration->transliterate($service_type_name, 'en', '_')
       ];
     }
     $request = \Drupal::request();

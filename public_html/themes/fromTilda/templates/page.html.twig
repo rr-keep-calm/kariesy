@@ -93,7 +93,7 @@
 </div>
 
 {% block globalContent %}
-    <div class="content">
+    <div class="content{% block additionalContentClass %}{% endblock %}">
         <div class="top __1">
             <div class="wrapper">
                 {{ page.breadcrumbs }}

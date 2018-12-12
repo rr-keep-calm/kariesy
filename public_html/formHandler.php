@@ -24,7 +24,7 @@ class formHandler {
         $this->response = 'Пожалуйста заполните все поля';
       }
       else {
-        $to = 'rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@mail.com';
+        $to = 'rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
         $subject = 'Запись на приём';
 
         // Формируем тело письма

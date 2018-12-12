@@ -197,6 +197,8 @@ LIBRARYCONTENT;
     $htmlTwig = <<<HTMLTWIG
 {% extends  "page.html.twig" %}
 
+{% block additionalContentClass %} from-tilda{% endblock %}
+
 {% block content %}
     {$html}
 {% endblock %}
