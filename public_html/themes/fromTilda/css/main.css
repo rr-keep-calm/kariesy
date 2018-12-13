@@ -6104,6 +6104,12 @@ h6 {
     display: flex;
 }
 
+.service-detail_row .full-width-item {
+    border-top: 1px solid #dfe1e3;
+    padding-top: 15px;
+    margin-bottom: 50px;
+}
+
 .service-detail_col-1 {
     width: 57.6%;
     padding-right: 45px;
