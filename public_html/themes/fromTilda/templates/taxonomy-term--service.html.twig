@@ -139,3 +139,12 @@
         </div>
     </div>
 {% endif %}
+{% if content.field_full_width|render %}
+    <div class="service-detail_block">
+        <div class="wrapper">
+            <div class="service-detail_row">
+                {{ content.field_full_width }}
+            </div>
+        </div>
+    </div>
+{% endif %}
