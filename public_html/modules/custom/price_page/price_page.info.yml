@@ -1,0 +1,6 @@
+name: Общая страница цен
+description: 'All price page module'
+type: module
+core: 8.x
+version: 0.1
+package: Pages
