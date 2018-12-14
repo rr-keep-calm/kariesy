@@ -47,6 +47,7 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
       ];
     }
   }
+  $variables['#cache']['contexts'][] = 'url';
 }
 
 function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
