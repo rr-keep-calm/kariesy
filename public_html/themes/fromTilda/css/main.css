@@ -329,7 +329,7 @@ img {
 }
 
 a {
-    font: 14px 'OpenSansLight';
+    font: 'OpenSansLight';
     color: #2299d2;
 }
 
@@ -6521,7 +6521,8 @@ h6 {
 
 #allrecords ul li:before {width: 5px;height: 5px;border-radius: 50%;content: '';background: #2299d2;position: absolute;left: 0;top: 13px;margin-top: -2.5px;}
 #allrecords ol li:before {content: counter(item) ". ";counter-increment: item;font: 14px 'RobotoRegular';color: #2299d2;}
-#allrecords a {font-size: 16px;text-decoration: underline;}
+#allrecords a {text-decoration: underline;}
+#allrecords .t404 a {text-decoration:none;}
 
 @media (max-width: 1430px) {
     .main_arrows {
