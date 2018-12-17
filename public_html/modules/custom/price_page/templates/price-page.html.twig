@@ -4,12 +4,12 @@
     <div class="wrapper">
         <ul class="price_types">
             {% for dataItem in data %}
-                <li><a href="#tabs-{{ loop.index }}">{{ dataItem.name }}</a></li>
+                <li><a href="#{{ dataItem.anchor }}">{{ dataItem.name }}</a></li>
             {% endfor %}
         </ul>
     </div>
     {% for dataItem in data %}
-        <div class="price_content" id="tabs-{{ loop.index }}">
+        <div class="price_content" id="{{ dataItem.anchor }}">
             <div class="wrapper">
                 <div class="price_blocks">
                     {% for type in dataItem.types %}

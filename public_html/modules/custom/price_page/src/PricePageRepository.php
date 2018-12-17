@@ -3,6 +3,7 @@
 namespace Drupal\price_page;
 
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Component\Transliteration\PhpTransliteration;
 
 /**
  * Класс предназначен для получения и компановки информации для страницы "Цены"
@@ -35,7 +36,9 @@ class PricePageRepository {
       $service_type2_term = Term::load($service_type2_tid);
       $service_type2_term_name = $service_type2_term->getName();
 
+      $translitiration = new PhpTransliteration();
       $result[$service_type_tid]['name'] = $service_type_term_name;
+      $result[$service_type_tid]['anchor'] = $translitiration->transliterate($service_type_term_name, 'en', '_');
       $result[$service_type_tid]['types'][$service_type2_tid]['name'] = $service_type2_term_name;
 
       $node_variables = [
