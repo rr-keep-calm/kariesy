@@ -56,6 +56,9 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
     $vacabulary_id = $term->getVocabularyId();
     $suggestions[] = 'page__taxonomy__' . $vacabulary_id;
   }
+  if (\Drupal::routeMatch()->getRouteName() == 'price_page.price_page') {
+    $suggestions[] = 'page__price_page';
+  }
 }
 
 function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, $hook) {
