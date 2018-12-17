@@ -16,6 +16,7 @@ class PricePageRepository {
     $result = [];
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'service_price')
+      ->sort('field_cena')
       ->execute();
     $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
     foreach ($nodes as $node) {
