@@ -1,0 +1,52 @@
+{{ attach_library('fromTilda/jquery-ui') }}
+
+<div class="price">
+    <div class="wrapper">
+        <ul class="price_types">
+            {% for dataItem in data %}
+                <li><a href="#tabs-{{ loop.index }}">{{ dataItem.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% for dataItem in data %}
+        <div class="price_content" id="tabs-{{ loop.index }}">
+            <div class="wrapper">
+                <div class="price_blocks">
+                    {% for type in dataItem.types %}
+                    <div class="price_block">
+                        <header class="price_header">{{ type.name }}</header>
+
+                        <div class="price_items">
+                            {% for price in type.prices %}
+                            <div class="price_item">
+                                <div class="price_text">
+                                    <div class="price_what">{{ price.name }}</div>
+                                    <div class="price_data">{{ price.description|raw }}</div>
+                                </div>
+
+                                <div class="price_cnt">
+                                    <span class="price_num">{{ price.price }}</span>
+                                    <span class="price_sign">руб</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="get-cart">
+        <div class="wrapper">
+            <div class="get-cart_text">Запишись на бесплатную консультацию с составлением плана <br>лечения и получи
+                накопительную дисконтную карту
+            </div>
+
+            <div class="get-cart_button">
+                <a href="" class="button get-cart_btn">записаться на прием</a>
+            </div>
+        </div>
+    </div>
+</div>

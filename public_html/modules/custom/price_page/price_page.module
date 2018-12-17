@@ -2,7 +2,7 @@
 function price_page_theme($existing, $type, $theme, $path) {
   return [
     'price_page' => [
-      'variables' => ['test_var' => NULL],
+      'variables' => ['data' => NULL],
     ],
   ];
 }
