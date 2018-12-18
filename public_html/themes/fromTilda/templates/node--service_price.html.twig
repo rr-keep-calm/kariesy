@@ -80,7 +80,9 @@
         </div>
 
         <div class="price_cnt __min">
-            <span class="price_num">{{ content.field_cena }}</span>
+            <span class="price_num">
+                {{ content.field_price_from.0['#markup'] == 'Вкл' ? 'от ' : '' }}{{ content.field_cena.0['#markup'] }}
+            </span>
             <span class="price_sign">руб</span>
         </div>
 
