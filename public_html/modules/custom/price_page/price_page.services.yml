@@ -1,0 +1,5 @@
+services:
+  mymodule.breadcrumb:
+    class: Drupal\price_page\PricePageBreadcrumbBuilder
+    tags:
+      - { name: breadcrumb_builder, priority: 100 }

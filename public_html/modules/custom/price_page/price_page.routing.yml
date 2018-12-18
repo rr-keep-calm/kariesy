@@ -1,0 +1,6 @@
+price_page.price_page:
+  path: '/price'
+  defaults:
+    _controller: '\Drupal\price_page\Controller\PricePageController::pricePage'
+  requirements:
+    _permission: 'access content'

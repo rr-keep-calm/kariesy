@@ -5147,6 +5147,10 @@ h6 {
     transform: rotate(180deg);
 }
 
+.price.ui-widget-content {
+    border: none !important;
+}
+
 .price_types {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -5156,24 +5160,31 @@ h6 {
     -webkit-box-align: baseline;
     -ms-flex-align: baseline;
     align-items: baseline;
-    padding: 13px 0;
+    padding: 13px 0 !important;
 }
 
 .price_types a {
     font: 16px 'GothamPro';
-    color: #003865;
+    color: #003865 !important;
     margin-right: 37px;
-    padding: 5px 0;
+    padding: 5px 0 !important;
+    text-decoration: underline !important;
+    float: none !important;
 }
 
 .price_types a:hover {
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
-.price_types a.active {
-    color: #2299d2;
+.price_types li.ui-tabs-active a {
+    color: #2299d2 !important;
     font: 18px 'GothamProMedium';
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+ul.price_types, .price_types li {
+    border: none !important;
+    background: none !important;
 }
 
 .price_select {
@@ -5181,8 +5192,8 @@ h6 {
 }
 
 .price_content {
-    background: #fbfbfb;
-    padding: 45px 0 70px;
+    background: #fbfbfb !important;
+    padding: 45px 0 70px !important;
 }
 
 .price_block {
