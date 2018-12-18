@@ -1,0 +1,8 @@
+<?php
+function price_page_theme($existing, $type, $theme, $path) {
+  return [
+    'price_page' => [
+      'variables' => ['data' => NULL],
+    ],
+  ];
+}
