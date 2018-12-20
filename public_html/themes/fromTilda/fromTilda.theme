@@ -51,13 +51,20 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
 }
 
 function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
+  // Определяем шаблоны для страниц терминов таксономии на основании названия
+  // термина
   if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
     $vacabulary_id = $term->getVocabularyId();
     $suggestions[] = 'page__taxonomy__' . $vacabulary_id;
   }
+  // Определяем шаблон для страницы цен
   if (\Drupal::routeMatch()->getRouteName() == 'price_page.price_page') {
     $suggestions[] = 'page__price_page';
+  }
+  // Определяем отдельный шаблон для страницы списка услуг
+  if (\Drupal::routeMatch()->getRouteName() == 'view.services_page.page_1') {
+    $suggestions[] = 'page__views__services_page';
   }
 }
 

@@ -20,20 +20,15 @@ class PricePageRepository {
       ->execute();
     $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
     foreach ($nodes as $node) {
-      $service_tid = $node->field_usluga->target_id;
-      $service_fields = Term::load($service_tid)->getFields();
-
-      $service_type_tid = $service_fields['field_service_type']->target_id;
-      if (!$service_type_tid) {
+      $service_type_tid = $node->field_service_type->target_id;
+      $service_type2_tid = $node->field_service_type2->target_id;
+      if (!$service_type_tid || !$service_type2_tid) {
         continue;
       }
+
       $service_type_term = Term::load($service_type_tid);
       $service_type_term_name = $service_type_term->getName();
 
-      $service_type2_tid = $service_fields['field_service_type2']->target_id;
-      if (!$service_type2_tid) {
-        continue;
-      }
       $service_type2_term = Term::load($service_type2_tid);
       $service_type2_term_name = $service_type2_term->getName();
 

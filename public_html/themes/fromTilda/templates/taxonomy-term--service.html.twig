@@ -25,126 +25,131 @@
  * @ingroup themeable
  */
 #}
-{% if content.field_oblozhka['#items'].entity.uri.value is not empty or content.description|render is not empty  %}
-<div class="service-detail_top" style="background-image: url({{ file_url(content.field_oblozhka['#items'].entity.uri.value) }})">
-    <div class="wrapper">
-        <img class="service-detail_top-image" src="{{ file_url(content.field_oblozhka['#items'].entity.uri.value) }}" alt="">
-        {% if content.description|render %}
-        <div class="service-detail_about">
-            {{ content.description }}
-        </div>
-        {% endif %}
-        {{ disease_types is defined ? disease_types : '' }}
-    </div>
-</div>
-{% endif %}
-{% if service_price is defined %}
-    <div class="service-detail_price">
-        <div class="wrapper">
-            <div class="service-detail_heading">
-                <h2>{{ content.field_zagolovok_bloka_cen }}</h2>
-                <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
-            </div>
-            {{ service_price }}
-            <div class="service-detail_only-mobile">
-                <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
+{% if view_mode == 'services_list' %}
+{# список услуг на странице "services"#}
+    {{ content.field_card_in_list }}
+{% else %}
+    {% if content.field_oblozhka['#items'].entity.uri.value is not empty or content.description|render is not empty  %}
+        <div class="service-detail_top" style="background-image: url({{ file_url(content.field_oblozhka['#items'].entity.uri.value) }})">
+            <div class="wrapper">
+                <img class="service-detail_top-image" src="{{ file_url(content.field_oblozhka['#items'].entity.uri.value) }}" alt="">
+                {% if content.description|render %}
+                    <div class="service-detail_about">
+                        {{ content.description }}
+                    </div>
+                {% endif %}
+                {{ disease_types is defined ? disease_types : '' }}
             </div>
         </div>
-    </div>
-    {# Форма записи на приём #}
-    {{ attach_library('fromTilda/jquery-ui') }}
-    <div id="dialog-form-appointment" style="display: none;" title="Запись на приём">
-        <form action="/formHandler.php">
-            <fieldset>
-                <input type="hidden" name="what_exactly" class="what_exactly" />
-                <input type="text" name="name" id="name" value="" placeholder="Имя"
-                       class="text ui-widget-content ui-corner-all">
-                <input type="text" name="phone" id="phone" placeholder="Телефон"
-                       class="text ui-widget-content ui-corner-all">
-                <div class="price_button">
-                    <input class="button" type="submit" value="Записаться">
+    {% endif %}
+    {% if service_price is defined %}
+        <div class="service-detail_price">
+            <div class="wrapper">
+                <div class="service-detail_heading">
+                    <h2>{{ content.field_zagolovok_bloka_cen }}</h2>
+                    <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
                 </div>
-            </fieldset>
-        </form>
-    </div>
-{% endif %}
-{% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
-    <div class="service-detail_block __1">
-        {% if content.field_zagolovok_pervogo_polya %}
-            <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya }}</h2>
-        {% endif %}
-
-        <div class="wrapper">
-            <div class="service-detail_row">
-                <div class="service-detail_col-1">
-                    {% if content.field_zagolovok_pervogo_polya|render %}
-                        <h2>{{ content.field_zagolovok_pervogo_polya }}</h2>
-                    {% endif %}
-
-                    {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
-                        {{ content.field_kontent_levoy_kolonke_perv.0['#text']|raw }}
-                    {% endif %}
-                </div>
-                <div class="service-detail_col-2">
-                    {% if content.field_kontent_pravoy_kolonke_per.0['#text'] %}
-                        {{ content.field_kontent_pravoy_kolonke_per.0['#text']|raw }}
-                    {% endif %}
+                {{ service_price }}
+                <div class="service-detail_only-mobile">
+                    <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
                 </div>
             </div>
         </div>
-    </div>
-{% endif %}
-{% if content.field_zagolovok_vtorogo_polya|render or content.field_kontent_levoy_kolonki_vtor|render or content.field_kontent_pravoy_kolonki_vto|render %}
-    <div class="service-detail_block __2">
-        <div class="wrapper">
-            {% if content.field_zagolovok_vtorogo_polya|render %}
-                <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya }}</h2>
+        {# Форма записи на приём #}
+        {{ attach_library('fromTilda/jquery-ui') }}
+        <div id="dialog-form-appointment" style="display: none;" title="Запись на приём">
+            <form action="/formHandler.php">
+                <fieldset>
+                    <input type="hidden" name="what_exactly" class="what_exactly" />
+                    <input type="text" name="name" id="name" value="" placeholder="Имя"
+                           class="text ui-widget-content ui-corner-all">
+                    <input type="text" name="phone" id="phone" placeholder="Телефон"
+                           class="text ui-widget-content ui-corner-all">
+                    <div class="price_button">
+                        <input class="button" type="submit" value="Записаться">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    {% endif %}
+    {% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
+        <div class="service-detail_block __1">
+            {% if content.field_zagolovok_pervogo_polya %}
+                <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya }}</h2>
             {% endif %}
-            <div class="service-detail_row">
-                <div class="service-detail_col-3">
-                    {% if content.field_kontent_levoy_kolonki_vtor.0['#text'] %}
-                        {{ content.field_kontent_levoy_kolonki_vtor.0['#text']|raw }}
-                    {% endif %}
-                </div>
-                <div class="service-detail_col-4">
-                    {% if content.field_zagolovok_vtorogo_polya|render %}
-                        <h2>{{ content.field_zagolovok_vtorogo_polya }}</h2>
-                    {% endif %}
-                    {% if content.field_kontent_pravoy_kolonki_vto.0['#text'] %}
-                        {{ content.field_kontent_pravoy_kolonki_vto.0['#text']|raw }}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-{% endif %}
-{% if content.field_zagolovok_tretego_polya|render or content.field_kontent_levoy_kolonki_tret|render or content.field_kontent_pravoy_kolonki_tre|render %}
-    <div class="service-detail_step">
-        <div class="wrapper">
-            <div class="service-detail_row">
-                <div class="service-detail_col-5">
-                    {% if content.field_zagolovok_tretego_polya|render %}
-                        <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya|render }}</h2>
-                    {% endif %}
-                    {% if content.field_kontent_levoy_kolonki_tret.0['#text'] %}
-                        {{ content.field_kontent_levoy_kolonki_tret.0['#text']|raw }}
-                    {% endif %}
-                </div>
-                <div class="service-detail_col-6">
-                    {% if content.field_kontent_pravoy_kolonki_tre.0['#text'] %}
-                        {{ content.field_kontent_pravoy_kolonki_tre.0['#text']|raw }}
-                    {% endif %}
+
+            <div class="wrapper">
+                <div class="service-detail_row">
+                    <div class="service-detail_col-1">
+                        {% if content.field_zagolovok_pervogo_polya|render %}
+                            <h2>{{ content.field_zagolovok_pervogo_polya }}</h2>
+                        {% endif %}
+
+                        {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
+                            {{ content.field_kontent_levoy_kolonke_perv.0['#text']|raw }}
+                        {% endif %}
+                    </div>
+                    <div class="service-detail_col-2">
+                        {% if content.field_kontent_pravoy_kolonke_per.0['#text'] %}
+                            {{ content.field_kontent_pravoy_kolonke_per.0['#text']|raw }}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endif %}
-{% if content.field_full_width|render %}
-    <div class="service-detail_block">
-        <div class="wrapper">
-            <div class="service-detail_row">
-                {{ content.field_full_width }}
+    {% endif %}
+    {% if content.field_zagolovok_vtorogo_polya|render or content.field_kontent_levoy_kolonki_vtor|render or content.field_kontent_pravoy_kolonki_vto|render %}
+        <div class="service-detail_block __2">
+            <div class="wrapper">
+                {% if content.field_zagolovok_vtorogo_polya|render %}
+                    <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya }}</h2>
+                {% endif %}
+                <div class="service-detail_row">
+                    <div class="service-detail_col-3">
+                        {% if content.field_kontent_levoy_kolonki_vtor.0['#text'] %}
+                            {{ content.field_kontent_levoy_kolonki_vtor.0['#text']|raw }}
+                        {% endif %}
+                    </div>
+                    <div class="service-detail_col-4">
+                        {% if content.field_zagolovok_vtorogo_polya|render %}
+                            <h2>{{ content.field_zagolovok_vtorogo_polya }}</h2>
+                        {% endif %}
+                        {% if content.field_kontent_pravoy_kolonki_vto.0['#text'] %}
+                            {{ content.field_kontent_pravoy_kolonki_vto.0['#text']|raw }}
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+    {% if content.field_zagolovok_tretego_polya|render or content.field_kontent_levoy_kolonki_tret|render or content.field_kontent_pravoy_kolonki_tre|render %}
+        <div class="service-detail_step">
+            <div class="wrapper">
+                <div class="service-detail_row">
+                    <div class="service-detail_col-5">
+                        {% if content.field_zagolovok_tretego_polya|render %}
+                            <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya|render }}</h2>
+                        {% endif %}
+                        {% if content.field_kontent_levoy_kolonki_tret.0['#text'] %}
+                            {{ content.field_kontent_levoy_kolonki_tret.0['#text']|raw }}
+                        {% endif %}
+                    </div>
+                    <div class="service-detail_col-6">
+                        {% if content.field_kontent_pravoy_kolonki_tre.0['#text'] %}
+                            {{ content.field_kontent_pravoy_kolonki_tre.0['#text']|raw }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if content.field_full_width|render %}
+        <div class="service-detail_block">
+            <div class="wrapper">
+                <div class="service-detail_row">
+                    {{ content.field_full_width }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endif %}
