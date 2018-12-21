@@ -28,14 +28,18 @@ class PricePageRepository {
 
       $service_type_term = Term::load($service_type_tid);
       $service_type_term_name = $service_type_term->getName();
+      $service_type_term_weight = $service_type_term->getWeight();
 
       $service_type2_term = Term::load($service_type2_tid);
       $service_type2_term_name = $service_type2_term->getName();
+      $service_type2_term_weight = $service_type2_term->getWeight();
 
       $translitiration = new PhpTransliteration();
       $result[$service_type_tid]['name'] = $service_type_term_name;
+      $result[$service_type_tid]['weight'] = $service_type_term_weight;
       $result[$service_type_tid]['anchor'] = $translitiration->transliterate($service_type_term_name, 'en', '_');
       $result[$service_type_tid]['types'][$service_type2_tid]['name'] = $service_type2_term_name;
+      $result[$service_type_tid]['types'][$service_type2_tid]['weight'] = $service_type2_term_weight;
 
       $node_variables = [
         'name' => $node->getTitle(),
@@ -47,6 +51,23 @@ class PricePageRepository {
       }
       $result[$service_type_tid]['types'][$service_type2_tid]['prices'][] = $node_variables;
     }
+
+    // Сортируем табы согласно весу в словаре
+    if (count($result) > 1) {
+      usort($result, function ($a, $b) {
+        return (int) $a['weight'] <=> (int) $b['weight'];
+      });
+    }
+
+    // Сортируем категории в табах согласно весу в словаре
+    foreach ($result as &$tabContent) {
+      if (count($tabContent['types']) > 1) {
+        usort($tabContent['types'], function ($a, $b) {
+          return (int) $a['weight'] <=> (int) $b['weight'];
+        });
+      }
+    }
+
     return $result;
   }
 }
