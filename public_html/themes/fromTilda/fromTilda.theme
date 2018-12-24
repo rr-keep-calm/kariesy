@@ -23,18 +23,11 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
   }
   if ($variables['breadcrumb']) {
     if ($is_service_term) {
-      // Получить Тип услуги к которой привязана данная услуга
-      $service_type_name = 'Услуги';
-      $service_type = $term->get('field_service_type')->getValue();
-      if (isset($service_type[0]) && isset($service_type[0]['target_id'])) {
-        $service_type = Term::load($service_type[0]['target_id']);
-        $service_type_name = $service_type->name->value;
-      }
-      $translitiration = new PhpTransliteration();
-      $variables['breadcrumb'][] = [
-        'text' => $service_type_name,
-        'url' => '/price#' . $translitiration->transliterate($service_type_name, 'en', '_')
-      ];
+      $variables['breadcrumb'] = array_merge(
+        array_slice($variables['breadcrumb'], 0, 1),
+        [['text' => 'Услуги', 'url' => '/price']],
+        array_slice($variables['breadcrumb'], 1)
+      );
     }
     $request = \Drupal::request();
     $route_match = \Drupal::routeMatch();
