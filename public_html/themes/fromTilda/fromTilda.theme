@@ -104,6 +104,15 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
       $render = $view->render();
       if (count($render['#rows']) > 0) {
         $vars['service_price'] = \Drupal::service('renderer')->render($render);
+
+        // Формируем якорь для ссылки на страницу прайса
+        $service_type = $term->get('field_service_type')->getValue();
+        if (isset($service_type[0]) && isset($service_type[0]['target_id'])) {
+          $service_type = Term::load($service_type[0]['target_id']);
+          $service_type_name = $service_type->name->value;
+          $translitiration = new PhpTransliteration();
+          $vars['service_price_anchor'] = $translitiration->transliterate($service_type_name, 'en', '_');
+        }
       }
     }
   }
