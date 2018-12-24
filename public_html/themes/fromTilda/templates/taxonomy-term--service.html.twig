@@ -47,11 +47,11 @@
             <div class="wrapper">
                 <div class="service-detail_heading">
                     <h2>{{ content.field_zagolovok_bloka_cen }}</h2>
-                    <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
+                    <a href="/prices/{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}" class="service-detail_more">Прайс-лист на все услуги</a>
                 </div>
                 {{ service_price }}
                 <div class="service-detail_only-mobile">
-                    <a href="/prices/" class="service-detail_more">Прайс-лист на все услуги</a>
+                    <a href="/prices/{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}" class="service-detail_more">Прайс-лист на все услуги</a>
                 </div>
             </div>
         </div>
