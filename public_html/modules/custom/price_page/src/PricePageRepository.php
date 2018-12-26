@@ -37,7 +37,8 @@ class PricePageRepository {
       $translitiration = new PhpTransliteration();
       $result[$service_type_tid]['name'] = $service_type_term_name;
       $result[$service_type_tid]['weight'] = $service_type_term_weight;
-      $result[$service_type_tid]['anchor'] = $translitiration->transliterate($service_type_term_name, 'en', '_');
+      $anchor = str_replace(' ', '_', $translitiration->transliterate($service_type_term_name, 'en', '_'));
+      $result[$service_type_tid]['anchor'] = $anchor;
       $result[$service_type_tid]['types'][$service_type2_tid]['name'] = $service_type2_term_name;
       $result[$service_type_tid]['types'][$service_type2_tid]['weight'] = $service_type2_term_weight;
 
