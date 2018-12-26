@@ -111,7 +111,8 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
           $service_type = Term::load($service_type[0]['target_id']);
           $service_type_name = $service_type->name->value;
           $translitiration = new PhpTransliteration();
-          $vars['service_price_anchor'] = $translitiration->transliterate($service_type_name, 'en', '_');
+          $anchor = str_replace(' ', '_', $translitiration->transliterate($service_type_name, 'en', '_'));
+          $vars['service_price_anchor'] = $anchor;
         }
       }
     }
