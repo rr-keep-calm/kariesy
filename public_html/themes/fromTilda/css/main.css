@@ -4977,20 +4977,20 @@ h6 {
     margin-top: -2.5px;
 }
 
-.page ol {
+.page ol, .service-detail_block ol{
     counter-reset: item;
 }
 
-.page ol li {
+.page ol li, .service-detail_block ol li {
     font: 14px/20px 'OpenSansLight';
     margin-bottom: 10px;
 }
 
-.page ol li:last-child {
+.page ol li:last-child, .service-detail_block ol li:last-child {
     margin-bottom: 0;
 }
 
-.page ol li:before {
+.page ol li:before, .service-detail_block ol li:before {
     content: counter(item) ". ";
     counter-increment: item;
     font: 14px 'RobotoRegular';
@@ -6066,27 +6066,21 @@ ul.price_types, .price_types li {
     margin-bottom: 0;
 }
 
-.service-detail_block ul, .service-detail_block ol {
+.service-detail_block ul {
     margin-bottom: 28px;
 }
 
-.service-detail_block ul:last-child, .service-detail_block ol:last-child {
+.service-detail_block ul:last-child {
     margin-bottom: 0;
 }
 
-.service-detail_block ul li, .service-detail_block ol li {
+.service-detail_block ul li {
     font: 14px/25px 'OpenSansLight';
     color: #524f50;
     margin-bottom: 11px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-}
-.service-detail_block ol > li {
-    list-style-type: decimal;
-    display: list-item;
-    margin-left: 15px;
-    padding-left: 10px;
 }
 
 .service-detail_block ul li:before {
@@ -8370,7 +8364,7 @@ ul.price_types, .price_types li {
         letter-spacing: -0.3px;
     }
 
-    .service-detail_block ul li, .service-detail_block ol li {
+    .service-detail_block ul li {
         margin-bottom: 5px;
     }
 
