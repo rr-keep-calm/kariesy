@@ -6066,21 +6066,27 @@ ul.price_types, .price_types li {
     margin-bottom: 0;
 }
 
-.service-detail_block ul {
+.service-detail_block ul, .service-detail_block ol {
     margin-bottom: 28px;
 }
 
-.service-detail_block ul:last-child {
+.service-detail_block ul:last-child, .service-detail_block ol:last-child {
     margin-bottom: 0;
 }
 
-.service-detail_block ul li {
+.service-detail_block ul li, .service-detail_block ol li {
     font: 14px/25px 'OpenSansLight';
     color: #524f50;
     margin-bottom: 11px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+}
+.service-detail_block ol > li {
+    list-style-type: decimal;
+    display: list-item;
+    margin-left: 15px;
+    padding-left: 10px;
 }
 
 .service-detail_block ul li:before {
@@ -8361,7 +8367,7 @@ ul.price_types, .price_types li {
         letter-spacing: -0.3px;
     }
 
-    .service-detail_block ul li {
+    .service-detail_block ul li, .service-detail_block ol li {
         margin-bottom: 5px;
     }
 
