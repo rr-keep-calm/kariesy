@@ -6121,8 +6121,11 @@ ul.price_types, .price_types li {
     display: flex;
 }
 
-.service-detail_row .full-width-item {
+.full-width-item-wrapper {
     border-top: 1px solid #dfe1e3;
+}
+
+.service-detail_row .full-width-item {
     padding-top: 15px;
     margin-bottom: 50px;
 }
