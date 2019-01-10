@@ -28,3 +28,4 @@
 /config/
 /.drush/
 /.subversion/
+/public_html/themes/fromTilda/templates/tildaExport/
