@@ -22,7 +22,20 @@
  */
 #}
 {%- for item in items -%}
-  <h1 class="doctor_name">{{ item.content }}</h1>
+  <h1 class="doctor_name">
+    {% set titleParts = item.content['#context'].value|split(' ') %}
+    {% if titleParts|length > 1 %}
+      {% for word in titleParts %}
+        {% if loop.index == 2 %}
+          <span>
+        {% endif %}
+          {{ word }}
+      {% endfor %}
+      </span>
+    {% else %}
+      {{ item.content }}
+    {% endif %}
+  </h1>
   {% set description = '' %}
   {% for specialization in element['#object'].field_specialization %}
     {% set description = description ~ specialization.value ~ ', ' %}
