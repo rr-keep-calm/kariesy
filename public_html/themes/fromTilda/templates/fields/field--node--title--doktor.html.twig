@@ -22,26 +22,16 @@
  */
 #}
 {%- for item in items -%}
-  <h1 class="doctor_name">
     {% set titleParts = item.content['#context'].value|split(' ') %}
     {% if titleParts|length > 1 %}
-      {% for word in titleParts %}
+      {%- for word in titleParts -%}
         {% if loop.index == 2 %}
           <span>
         {% endif %}
           {{ word }}
-      {% endfor %}
+      {%- endfor -%}
       </span>
     {% else %}
-      {{ item.content }}
+      {{- item.content -}}
     {% endif %}
-  </h1>
-  {% set description = '' %}
-  {% for specialization in element['#object'].field_specialization %}
-    {% set description = description ~ specialization.value ~ ', ' %}
-  {% endfor %}
-  {% set description = description ~ 'клинический стаж с ' ~ element['#object'].field_experience_since_what_year.value ~ 'года' %}
-  <div class="doctor_description">
-    {{ description|capitalize }}
-  </div>
 {%- endfor -%}
