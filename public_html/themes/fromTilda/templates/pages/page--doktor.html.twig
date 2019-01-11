@@ -10,6 +10,14 @@
                     {{ doctorDescription }}
                 </div>
                 <img class="doctor_image" src="{{ doctorPhotoUrl|raw }}" alt="">
+                <div class="doctor_buttons">
+                    <div class="doctor_btn">
+                        <a href="#form-order" class="button popup">записаться на прием</a>
+                    </div>
+                    <div class="doctor_btn">
+                        <a href="" class="button-light">задать вопрос</a>
+                    </div>
+                </div>
             </div>
         </div>
         {% block content %}
