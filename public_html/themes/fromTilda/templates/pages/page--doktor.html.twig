@@ -1,5 +1,8 @@
 {% extends  "page.html.twig" %}
 
 {% block h1 %}
-    {{ page.header }}
+    <h1 class="doctor_name">{{ page.header }}</h1>
+    <div class="doctor_description">
+        {{ doctorDescription }}
+    </div>
 {% endblock %}

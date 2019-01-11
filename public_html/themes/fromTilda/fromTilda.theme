@@ -122,3 +122,26 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
     }
   }
 }
+
+/**
+ * Preprocess function for page*.html.twig.
+ */
+function fromTilda_preprocess_page(&$variables) {
+  if (($node = \Drupal::routeMatch()->getParameter('node')) &&
+    $node->getType() == 'doktor'
+  ) {
+    $description = '';
+    $specializations = $node->get('field_specialization')->getValue();
+    $specializations = array_map(function ($v) {
+      return $v['value'];
+    }, $specializations);
+    $description .= implode(', ', $specializations);
+    $description .= ', клинический стаж с ';
+    $description .= $node->get('field_experience_since_what_year')->getValue()[0]['value'];
+    $description .= ' года';
+    $description = trim($description);
+    $descriptionParts = explode(' ', $description);
+    $descriptionParts[0] = mb_convert_case($descriptionParts[0], MB_CASE_TITLE, 'UTF-8');
+    $variables['doctorDescription']['#markup'] = implode(' ', $descriptionParts);
+  }
+}
