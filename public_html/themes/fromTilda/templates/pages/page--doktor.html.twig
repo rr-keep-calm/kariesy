@@ -1,8 +1,33 @@
 {% extends  "page.html.twig" %}
 
-{% block h1 %}
-    <h1 class="doctor_name">{{ page.header }}</h1>
-    <div class="doctor_description">
-        {{ doctorDescription }}
+{% block globalContent %}
+    <div class="content{% block additionalContentClass %}{% endblock %}">
+        <div class="wrapper">
+            <div class="doctor_cart">
+                {{ page.breadcrumbs }}
+                <h1 class="doctor_name">{{ page.header }}</h1>
+                <div class="doctor_description">
+                    {{ doctorDescription }}
+                </div>
+                <img class="doctor_image" src="{{ doctorPhotoUrl|raw }}" alt="">
+                <div class="doctor_buttons">
+                    <div class="doctor_btn">
+                        <a href="#form-order" class="button popup">записаться на прием</a>
+                    </div>
+                    <div class="doctor_btn">
+                        <a href="" class="button-light">задать вопрос</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block content %}
+            <div class="content_main __min">
+                <div class="wrapper">
+                    <div class="page">
+                        {{ page.content }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
     </div>
 {% endblock %}
