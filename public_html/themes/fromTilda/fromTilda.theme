@@ -143,5 +143,8 @@ function fromTilda_preprocess_page(&$variables) {
     $descriptionParts = explode(' ', $description);
     $descriptionParts[0] = mb_convert_case($descriptionParts[0], MB_CASE_TITLE, 'UTF-8');
     $variables['doctorDescription']['#markup'] = implode(' ', $descriptionParts);
+    $uri = $node->field_foto->entity->getFileUri();
+    $url = file_create_url($uri);
+    $variables['doctorPhotoUrl']['#markup'] = $url;
   }
 }
