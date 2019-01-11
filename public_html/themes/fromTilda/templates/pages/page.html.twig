@@ -97,7 +97,9 @@
         <div class="top __1">
             <div class="wrapper">
                 {{ page.breadcrumbs }}
-                <h1>{{ page.header }}</h1>
+                {% block h1 %}
+                    <h1>{{ page.header }}</h1>
+                {% endblock %}
             </div>
         </div>
         {% block content %}

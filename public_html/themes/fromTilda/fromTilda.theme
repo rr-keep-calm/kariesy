@@ -59,6 +59,10 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
   if (\Drupal::routeMatch()->getRouteName() == 'view.services_page.page_1') {
     $suggestions[] = 'page__views__services_page';
   }
+  // Определяем отдельные шаблон для страниц типов материалов
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $suggestions[] = 'page__' . $node->bundle();
+  }
 }
 
 function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, $hook) {
