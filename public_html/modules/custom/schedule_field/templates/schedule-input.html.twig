@@ -22,8 +22,8 @@
         {% else %}
             {% set showClinicSelectWrapper = 'style="display: none;"' %}
         {% endif %}
-        <input class="first-start-time" type="text" name="first-start-time" data-autoclose="true" readonly {{ firstStart|raw }}> -
-        <input class="first-end-time" type="text" name="first-end-time" data-autoclose="true" readonly {{ firstEnd|raw }}>
+        <input class="first-start-time" type="text" name="first-start-time" data-autoclose="true" {{ firstStart|raw }}> -
+        <input class="first-end-time" type="text" name="first-end-time" data-autoclose="true" {{ firstEnd|raw }}>
         <div class="clinic-select-wrapper" {{ showClinicSelectWrapper|raw }}>
             <div class="clinik-select-element">
                 <label for="mo_firstSchedule" style="">Понедельник</label>
@@ -147,8 +147,8 @@
         {% else %}
             {% set showClinicSelectWrapper = 'style="display: none;"' %}
         {% endif %}
-        <input class="second-start-time" type="text" name="second-start-time" data-autoclose="true" readonly {{ secondStart|raw }}>
-        - <input class="second-end-time" type="text" name="second-end-time" data-autoclose="true" readonly {{ secondEnd|raw }}>
+        <input class="second-start-time" type="text" name="second-start-time" data-autoclose="true" {{ secondStart|raw }}>
+        - <input class="second-end-time" type="text" name="second-end-time" data-autoclose="true" {{ secondEnd|raw }}>
         <div class="clinic-select-wrapper" {{ showClinicSelectWrapper|raw }}>
             <div class="clinik-select-element">
                 <label for="mo_secondSchedule" style="">Понедельник</label>

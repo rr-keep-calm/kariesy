@@ -1,9 +1,15 @@
 jQuery(document).ready(function() {
+    jQuery('.first-start-time').change(function(){
+        showFirstClinicSelector();
+    });
     jQuery('.first-start-time').clockpicker({
         afterDone: function() {
             // Если не пусты оба поля, то открываем выбор клиник по дням недели
             showFirstClinicSelector();
         }
+    });
+    jQuery('.first-end-time').change(function(){
+        showFirstClinicSelector();
     });
     jQuery('.first-end-time').clockpicker({
         afterDone: function() {
@@ -11,11 +17,17 @@ jQuery(document).ready(function() {
             showFirstClinicSelector();
         }
     });
+    jQuery('.second-start-time').change(function(){
+        showSecondClinicSelector();
+    });
     jQuery('.second-start-time').clockpicker({
         afterDone: function() {
             // Если не пусты оба поля, то открываем выбор клиник по дням недели
             showSecondClinicSelector();
         }
+    });
+    jQuery('.second-end-time').change(function(){
+        showSecondClinicSelector();
     });
     jQuery('.second-end-time').clockpicker({
         afterDone: function() {
