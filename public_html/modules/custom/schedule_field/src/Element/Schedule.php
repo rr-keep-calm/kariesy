@@ -53,7 +53,7 @@ class Schedule extends FormElement {
   }
 
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
-    if ($input) {
+    if ($input !== false) {
 
       $toSave = [];
 
