@@ -1,0 +1,9 @@
+jquery-ui-custom:
+  js:
+    js/clockpicker.js: {attributes: { async: false, defer: true } }
+    js/custom.js: {attributes: { async: false, defer: true } }
+  css:
+    theme:
+      css/standalone.css: {}
+      css/clockpicker.css: {}
+      css/custom.css: {}

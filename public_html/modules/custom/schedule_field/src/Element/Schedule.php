@@ -33,6 +33,15 @@ class Schedule extends FormElement {
 
   public static function preRenderSchedule($element) {
     $element['#attributes']['type'] = 'hidden';
+
+    // Получаем список всех клиник
+    $nids = \Drupal::entityQuery('node')->condition('type','clinic')->execute();
+    $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $element['clinics'] = [];
+    foreach ($nodes as $node) {
+      $element['clinics'][$node->id()] = $node->getTitle();
+    }
+
     Element::setAttributes($element, ['name', 'value']);
 
     return $element;

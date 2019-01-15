@@ -52,7 +52,7 @@ class ScheduleFieldItem extends FieldItemBase {
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
     $properties['value'] = DataDefinition::create('string')
-      ->setLabel(t('Hex color'));
+      ->setLabel(t('Schedule'));
 
     return $properties;
   }
