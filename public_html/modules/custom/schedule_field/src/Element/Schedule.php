@@ -45,6 +45,10 @@ class Schedule extends FormElement {
 
     Element::setAttributes($element, ['name', 'value']);
 
+    if ($element['#value']) {
+      $element['scheduleData'] = json_decode($element['#value'], true);
+    }
+
     return $element;
   }
 

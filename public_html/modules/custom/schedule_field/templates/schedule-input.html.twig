@@ -5,69 +5,121 @@
     {# Выводим поля выбора времени первого графика работы #}
     <div class="first-schedule-block">
         <label>Первая смена</label>
-        <input class="first-start-time" type="text" name="first-start-time" data-autoclose="true" readonly> -
-        <input class="first-end-time" type="text" name="first-end-time" data-autoclose="true" readonly>
-        <div class="clinic-select-wrapper" style="display: none;">
+        {% if element.scheduleData.firstShift.start is defined %}
+            {% set firstStart = 'value="' ~ element.scheduleData.firstShift.start ~ '"' %}
+        {% else %}
+            {% set firstStart = '' %}
+        {% endif %}
+        {% if element.scheduleData.firstShift.end is defined %}
+            {% set firstEnd = 'value="' ~ element.scheduleData.firstShift.end ~ '"' %}
+        {% else %}
+            {% set firstEnd = '' %}
+        {% endif %}
+
+        {# Если уже установлены начальные границы смены, то открываем раздел выбора клиники по дням недели #}
+        {% if firstStart != '' and firstEnd != '' %}
+            {% set showClinicSelectWrapper = '' %}
+        {% else %}
+            {% set showClinicSelectWrapper = 'style="display: none;"' %}
+        {% endif %}
+        <input class="first-start-time" type="text" name="first-start-time" data-autoclose="true" readonly {{ firstStart|raw }}> -
+        <input class="first-end-time" type="text" name="first-end-time" data-autoclose="true" readonly {{ firstEnd|raw }}>
+        <div class="clinic-select-wrapper" {{ showClinicSelectWrapper|raw }}>
             <div class="clinik-select-element">
                 <label for="mo_firstSchedule" style="">Понедельник</label>
                 <select name="mo_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.moClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="tu_firstSchedule">Вторник</label>
                 <select name="tu_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.tuClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="we_firstSchedule">Среда</label>
                 <select name="we_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.weClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="th_firstSchedule">Четверг</label>
                 <select name="th_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.thClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="fr_firstSchedule">Пятница</label>
                 <select name="fr_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.frClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="sa_firstSchedule">Суббота</label>
                 <select name="sa_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.saClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="su_firstSchedule">Воскресенье</label>
                 <select name="su_firstSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.firstShift.suClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -77,69 +129,122 @@
     {# Выводим поля выбора времени второго графика работы #}
     <div class="second-schedule-block">
         <label>Вторая смена</label>
-        <input class="second-start-time" type="text" name="second-start-time" data-autoclose="true" readonly>
-        - <input class="second-end-time" type="text" name="second-end-time" data-autoclose="true" readonly>
-        <div class="clinic-select-wrapper" style="display: none;">
+
+        {% if element.scheduleData.secondShift.start is defined %}
+            {% set secondStart = 'value="' ~ element.scheduleData.secondShift.start ~ '"' %}
+        {% else %}
+            {% set secondStart = '' %}
+        {% endif %}
+        {% if element.scheduleData.secondShift.end is defined %}
+            {% set secondEnd = 'value="' ~ element.scheduleData.secondShift.end ~ '"' %}
+        {% else %}
+            {% set secondEnd = '' %}
+        {% endif %}
+
+        {# Если уже установлены начальные границы смены, то открываем раздел выбора клиники по дням недели #}
+        {% if secondStart != '' and secondEnd != '' %}
+            {% set showClinicSelectWrapper = '' %}
+        {% else %}
+            {% set showClinicSelectWrapper = 'style="display: none;"' %}
+        {% endif %}
+        <input class="second-start-time" type="text" name="second-start-time" data-autoclose="true" readonly {{ secondStart|raw }}>
+        - <input class="second-end-time" type="text" name="second-end-time" data-autoclose="true" readonly {{ secondEnd|raw }}>
+        <div class="clinic-select-wrapper" {{ showClinicSelectWrapper|raw }}>
             <div class="clinik-select-element">
                 <label for="mo_secondSchedule" style="">Понедельник</label>
                 <select name="mo_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.moClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="tu_secondSchedule">Вторник</label>
                 <select name="tu_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.tuClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="we_secondSchedule">Среда</label>
                 <select name="we_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.weClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="th_secondSchedule">Четверг</label>
                 <select name="th_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.thClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="fr_secondSchedule">Пятница</label>
                 <select name="fr_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.frClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="sa_secondSchedule">Суббота</label>
                 <select name="sa_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.saClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="clinik-select-element">
                 <label for="su_secondSchedule">Воскресенье</label>
                 <select name="su_secondSchedule">
-                    <option value="" disabled selected>--Выберите клинику--</option>
+                    <option value="">--Выберите клинику--</option>
                     {% for nid, clinic in element.clinics %}
-                        <option value="{{ nid }}">{{ clinic }}</option>
+                        {% if element.scheduleData.secondShift.suClinic == nid %}
+                            {% set selected = 'selected' %}
+                        {% else %}
+                            {% set selected = '' %}
+                        {% endif %}
+                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
                     {% endfor %}
                 </select>
             </div>
