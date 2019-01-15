@@ -1,0 +1,10 @@
+<?php
+function schedule_field_theme($existing, $type, $theme, $path) {
+  $variables = array(
+    'schedule' => array (
+      'render element' => 'element',
+      'template' => 'schedule-input',
+    ),
+  );
+  return $variables;
+}

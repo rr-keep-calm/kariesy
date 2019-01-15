@@ -1,0 +1,16 @@
+.first-schedule-block {
+    margin-top: 10px;
+}
+.second-schedule-block {
+    margin-top: 20px;
+}
+.clinic-select-wrapper{
+    padding-top: 10px;
+}
+.clinik-select-element{
+    margin-bottom: 10px;
+}
+.clinik-select-element label{
+    display: inline-block;
+    min-width: 150px;
+}

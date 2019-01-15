@@ -72,3 +72,338 @@
  * @ingroup themeable
  */
 #}
+<div class="doctor_about">
+    <div class="wrapper">
+        <div class="doctor_row">
+            <div class="doctor_col">
+                <h2 class="doctor_about-title">О враче</h2>
+
+                <div class="doctor_about-text">
+                    <p>Будучи стоматологом до мозга костей, я являюсь фанатом своей профессии и в качестве фундаментального принципа своей работы выбираю «Sensus <br>communis» – здравый смысл: оптимальное сочетание лишь тех техник лечения, которые будут максимально эффективными в каждом конкретном, индивидуальном случае.
+                        <br><br>
+                        Прямолинеен, честен и принципиален как в профессиональной деятельности, так и в повседневности.
+                    </p>
+                </div>
+            </div>
+            <div class="doctor_col">
+                <h2 class="doctor_about-title">График работы</h2>
+
+                <div class="doctor_plan">
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1"></div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.start is not empty and schedule.firstShift.end is not empty %}
+                                <div class="doctor_time">{{ schedule.firstShift.start }}
+                                    - {{ schedule.firstShift.end }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.start is not empty and schedule.secondShift.end is not empty %}
+                                <div class="doctor_time">{{ schedule.secondShift.start }}
+                                    - {{ schedule.secondShift.end }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1">
+                            <div class="doctor_day">Понедельник</div>
+                        </div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.moClinic is not empty %}
+                                <a href="{{ schedule.firstShift.moClinic.url|raw }}"
+                                   class="doctor_address">{{ schedule.firstShift.moClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.moClinic is not empty %}
+                                <a href="{{ schedule.secondShift.moClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.moClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1">
+                            <div class="doctor_day">Вторник</div>
+                        </div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.tuClinic is not empty %}
+                                <a href="{{ schedule.firstShift.tuClinic.url|raw }}"
+                                   class="doctor_address">{{ schedule.firstShift.tuClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.tuClinic is not empty %}
+                                <a href="{{ schedule.secondShift.tuClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.tuClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1">
+                            <div class="doctor_day">Среда</div>
+                        </div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.weClinic is not empty %}
+                                <a href="{{ schedule.firstShift.weClinic.url|raw }}"
+                                   class="doctor_address">{{ schedule.firstShift.weClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.weClinic is not empty %}
+                                <a href="{{ schedule.secondShift.weClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.weClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1">
+                            <div class="doctor_day">Четверг</div>
+                        </div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.thClinic is not empty %}
+                                <a href="{{ schedule.firstShift.thClinic.url|raw }}"
+                                   class="doctor_address">{{ schedule.firstShift.thClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.thClinic is not empty %}
+                                <a href="{{ schedule.secondShift.thClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.thClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1">
+                            <div class="doctor_day">Пятница</div>
+                        </div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.frClinic is not empty %}
+                                <a href="{{ schedule.firstShift.frClinic.url|raw }}"
+                                   class="doctor_address">{{ schedule.firstShift.frClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.frClinic is not empty %}
+                                <a href="{{ schedule.secondShift.frClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.frClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan-row">
+                        <div class="doctor_col-1">
+                            <div class="doctor_day">Суббота</div>
+                        </div>
+                        <div class="doctor_col-2">
+                            {% if schedule.firstShift.saClinic is not empty %}
+                                <a href="{{ schedule.firstShift.saClinic.url|raw }}"
+                                   class="doctor_address">{{ schedule.firstShift.saClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="doctor_col-3">
+                            {% if schedule.secondShift.saClinic is not empty %}
+                                <a href="{{ schedule.secondShift.saClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.saClinic.name }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="doctor_plan __cloned">
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1"></div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.start is not empty and schedule.firstShift.end is not empty %}
+                                    <div class="doctor_time">{{ schedule.firstShift.start }}
+                                        - {{ schedule.firstShift.end }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.start is not empty and schedule.secondShift.end is not empty %}
+                                    <div class="doctor_time">{{ schedule.secondShift.start }}
+                                        - {{ schedule.secondShift.end }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Понедельник</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.moClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.moClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.moClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.moClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.moClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.moClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Вторник</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.tuClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.tuClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.tuClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.tuClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.tuClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.tuClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Среда</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.weClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.weClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.weClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.weClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.weClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.weClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Четверг</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.thClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.thClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.thClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.thClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.thClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.thClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Пятница</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.frClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.frClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.frClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.frClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.frClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.frClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Суббота</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.saClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.saClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.saClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.saClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.saClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.saClinic.name }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="doctor_info">
+    <div class="wrapper">
+        <div class="doctor_row">
+            <div class="doctor_col">
+                <h2 class="doctor_about-title">Курсы повышения квалификации</h2>
+
+                <ul class="doctor_list">
+                    <li class="__mobile-visible">Мезиальная окклюзия - 2003</li>
+                    <li class="__mobile-visible">Физиологические и клинические аспекты лечения технологией "ультраслабых сил" - 2004</li>
+                    <li class="__mobile-visible">Новые горизонты в ортодонтии и дентальной стоматологии - 2005</li>
+                    <li class="__mobile-visible">XII Съезд ортодонтов России - 2009</li>
+                    <li class="__mobile-visible">Базовый курс по имплантации - 2011</li>
+                    <li class="__mobile-visible">Реабилитация пациентов высоэстетичными несъемными ортопедическими конструкицями - 2011</li>
+                    <li class="__mobile-visible">Clinical aspects of implant treatment plans in the complex prosthodontic treatment - 2012</li>
+                    <li>Tooth preparations for prosthetic restorations - 2012</li>
+                    <li>Эстетика или функция при протезировании в переднем отделе - 2013</li>
+                    <li>Семинар по лингвальной техники IN-OVATION L - 2013</li>
+                    <li>Мастера керамики. Эстетика и функция при протезировании зубов - 2013</li>
+                    <li>Ортодонтия 21 Века с индивидуальной брекет-системой Insignia - 2013</li>
+                    <li>Общий курс по современной диагностике и лечению ортодонтических пациентов - 2013</li>
+                    <li>Лингвальная технология Stb - эстетика без компромиссов - 2014</li>
+                </ul>
+
+                <div class="doctor_more">+ Показать еще</div>
+            </div>
+
+            <div class="doctor_col">
+                <h2 class="doctor_about-title">Дипломы и сертификаты</h2>
+
+                <div class="doctor_images">
+                    <div>
+                        <div class="doctor_image-item">
+                            <div class="doctor_image-content">
+                                <a href="img/sert.jpg" class="popup-image">
+                                    <img src="img/sert.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="doctor_image-item">
+                            <div class="doctor_image-content">
+                                <a href="img/sert.jpg" class="popup-image">
+                                    <img src="img/sert.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="doctor_image-item">
+                            <div class="doctor_image-content">
+                                <a href="img/sert.jpg" class="popup-image">
+                                    <img src="img/sert.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="doctor_image-item">
+                            <div class="doctor_image-content">
+                                <a href="img/sert.jpg" class="popup-image">
+                                    <img src="img/sert.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="doctor_image-item">
+                            <div class="doctor_image-content">
+                                <a href="img/sert.jpg" class="popup-image">
+                                    <img src="img/sert.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="doctor_image-item">
+                            <div class="doctor_image-content">
+                                <a href="img/sert.jpg" class="popup-image">
+                                    <img src="img/sert.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

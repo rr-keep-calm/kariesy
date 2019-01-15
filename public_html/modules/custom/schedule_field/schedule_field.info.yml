@@ -1,0 +1,8 @@
+name: 'Schedule field'
+description: 'Поле для установки графика работы'
+type: module
+core: 8.x
+version: 1.x
+package: Field types
+dependencies:
+  - field
