@@ -148,3 +148,26 @@ function fromTilda_preprocess_page(&$variables) {
     $variables['doctorPhotoUrl']['#markup'] = $url;
   }
 }
+
+function fromTilda_preprocess_node(&$variables){
+  if ($variables['node']->getType() == 'doktor') {
+    // Распаковываем данные по графику работы для отображения на сайте
+    $schedule = $variables['node']->get('field_schedule')->getValue();
+    if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+      $schedule = json_decode($schedule[0]['value'], TRUE);
+    }
+    if ($schedule && is_array($schedule)) {
+      array_walk($schedule, function(&$value) {
+        array_walk($value, function(&$clinik, $key){
+          if ($key != 'start' && $key != 'end' && $clinik) {
+            // Составляем ссылки на страницы клиник
+            $nodeClinic = \Drupal\node\Entity\Node::load($clinik);
+            $url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $nodeClinic->id()]);
+            $clinik = ['name' => $nodeClinic->getTitle(), 'url' => $url->toString()];
+          }
+        });
+      });
+      $variables['schedule'] = $schedule;
+    }
+  }
+}
