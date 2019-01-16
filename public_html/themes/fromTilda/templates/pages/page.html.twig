@@ -282,11 +282,18 @@
             <label class="form_label">Услуга</label>
 
             <div class="form_data">
-                <select>
-                    <option value="Ортопедия">Ортопедия</option>
-                    <option value="Ортопедия">Ортопедия</option>
-                    <option value="Ортопедия">Ортопедия</option>
-                    <option value="Ортопедия">Ортопедия</option>
+                <select class="service-type">
+                    {% for id, serviceType in serviceTypesAll %}
+                        {# Формируем строку со списком докторов для каждой услуги #}
+                        {% set doctorsList = '' %}
+                        {% for nid,doctor in serviceType.doctors %}
+                            {% set doctorsList = doctorsList ~ doctor %}
+                            {% if not loop.last %}
+                                {% set doctorsList = doctorsList ~ '|' %}
+                            {% endif %}
+                        {% endfor %}
+                        <option value="{{ serviceType }}" data-service_id="{{ id }}" data-doctor_list="{{ doctorsList }}">{{ serviceType.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -295,9 +302,10 @@
             <label class="form_label">Врач</label>
 
             <div class="form_data">
-                <select>
-                    {% for doctor in doctors %}
-                        <option value="{{ doctor }}">{{ doctor }}</option>
+                <select class="doctors-select">
+                    {% set firstServiceType = serviceTypesAll|first %}
+                    {% for nid,doctor in firstServiceType.doctors %}
+                        <option value="{{ doctor }}" data-doctor-nid="{{ nid }}">{{ doctor }}</option>
                     {% endfor %}
                 </select>
             </div>

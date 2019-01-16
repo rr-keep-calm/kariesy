@@ -15,13 +15,13 @@ global-js:
    js/jquery.maskedinput.min.js: {}
    js/lib.js: {}
    js/app.js: {}
+   js/custom.js: {attributes: { defer: true }}
    https://maps.googleapis.com/maps/api/js?key=AIzaSyB3tlWbCcY4vawcqAwJgbWjP3DqboRywNY&callback=initMap: { type: external, attributes: { async: true, defer: true } }
   dependencies:
     - core/drupalSettings
 jquery-ui:
   js:
     https://code.jquery.com/ui/1.12.1/jquery-ui.js: { type: external }
-    js/custom.js: {}
   css:
     theme:
       //code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css: { type: external }

@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('.price_item .price_button').on('click', '.button', function (e) {
         e.preventDefault();
-        // Помещаем в орму название выбранной услуги
+        // Помещаем в форму название выбранной услуги
         $('#dialog-form-appointment input.what_exactly').val($(this).parents('.price_item').find('.price_what').text());
         $("#dialog-form-appointment").dialog({
             modal: true,
@@ -38,11 +38,24 @@ $(document).ready(function() {
         });
     });
 
-    $(".price").tabs();
-    $(".price_select").on('change', '.select2-hidden-accessible', function () {
-        var optionSelected = $("option:selected", this);
-        var valueSelected = this.value;
-        $('.price_content').hide();
-        $('.price_content' + valueSelected).show();
-    })
+    if ($(".price").length) {
+        $(".price").tabs();
+        $(".price_select").on('change', '.select2-hidden-accessible', function () {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            $('.price_content').hide();
+            $('.price_content' + valueSelected).show();
+        })
+    }
+
+    $('#form-order').on('change', 'select.service-type', function () {
+        // Получаем всех докторов, которые оказывают выбранную услугу
+        var doctors = $("option:selected", this).data('doctor_list').split('|');
+
+        // Актуализируем список докторов
+        $('select.doctors-select').html('');
+        $.each(doctors, function (index, value) {
+            $('select.doctors-select').append('<option value="' + value + '">' + value + '</option>');
+        });
+    });
 });

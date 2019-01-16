@@ -151,13 +151,22 @@ function fromTilda_preprocess_page(&$variables) {
     $variables['doctorPhotoUrl']['#markup'] = $url;
   }
 
-  // Получаем список всех докторов
+  // Получаем список всех докторов.
+  // Попусно сохраняя список оказываемых доктором услуг.
   $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
   $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
   $variables['doctors'] = [];
+  $serviceTypesAll = [];
   foreach ($nodes as $node) {
-    $variables['doctors'][$node->id()] = $node->getTitle();
+    $serviceTypes = $node->get('field_service_type')->getValue();
+    foreach ($serviceTypes as $serviceType) {
+      $serviceTypeTerm = Term::load($serviceType['target_id']);
+      $serviceTypesAll[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
+      $serviceTypesAll[$serviceType['target_id']]['doctors'][$node->id()] = $node->getTitle();
+    }
   }
+  $variables['serviceTypesAll'] = $serviceTypesAll;
+  $a = 1;
 }
 
 function fromTilda_preprocess_node(&$variables){
