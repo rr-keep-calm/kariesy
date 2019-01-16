@@ -150,6 +150,14 @@ function fromTilda_preprocess_page(&$variables) {
     }
     $variables['doctorPhotoUrl']['#markup'] = $url;
   }
+
+  // Получаем список всех докторов
+  $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
+  $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+  $variables['doctors'] = [];
+  foreach ($nodes as $node) {
+    $variables['doctors'][$node->id()] = $node->getTitle();
+  }
 }
 
 function fromTilda_preprocess_node(&$variables){

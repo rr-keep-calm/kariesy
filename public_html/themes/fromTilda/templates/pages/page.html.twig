@@ -296,9 +296,9 @@
 
             <div class="form_data">
                 <select>
-                    <option>Рыбин Валерий Анатольевич</option>
-                    <option>Рыбин Валерий Анатольевич</option>
-                    <option>Рыбин Валерий Анатольевич</option>
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor }}">{{ doctor }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
