@@ -17,7 +17,7 @@ $(document).ready(function() {
             }
         });
     });
-    // Отправка формы "Записаться на приём"
+    // Отправка формы "Записаться на приём" со страницы таксономии
     $('#dialog-form-appointment').on('submit', 'form', function (e) {
         e.preventDefault();
         // Получаем путь на который отправляются данные формы
@@ -33,6 +33,28 @@ $(document).ready(function() {
                 if (resp == 'Спасибо за обращение! Наш менеджер свяжется с вами в ближайшее время.') {
                     jQuery('#dialog-form-appointment').dialog('close');
                     $('#dialog-form-appointment form').find("input[type=text], textarea").val("");
+                }
+            }
+        });
+    });
+
+    // Отправка формы "Записаться на приём"
+    $('#form-order').on('submit', 'form', function (e) {
+        e.preventDefault();
+        // Получаем путь на который отправляются данные формы
+        var action = $(this).attr('action');
+        var data = $(this).serialize();
+        $.ajax({
+            data: data,
+            url: action,
+            type: 'post',
+            dataType: 'text',
+            success: function (resp) {
+                if (resp == 'OK') {
+                    $(this).find('.popup-close').click();
+                    openForm('#form-normal');
+                } else {
+                    alert(resp);
                 }
             }
         });

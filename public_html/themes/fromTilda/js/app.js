@@ -153,14 +153,12 @@ app.addModule('form', function () {
 			
 			if (day.getDay() === 0) {
 				day = tomorrow(day);
-			} else if (day.getDay() === 6) {
-				day = tomorrow(tomorrow(day));
 			}
 			
 			$('.date').datepicker({
 				language: "ru",
 				autoclose:true,
-				daysOfWeekDisabled: [0,6],
+				daysOfWeekDisabled: [0],
 				startDate: new Date()
 			}).datepicker('setDate', day);
 		}
