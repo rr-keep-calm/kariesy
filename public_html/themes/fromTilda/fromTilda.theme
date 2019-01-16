@@ -127,6 +127,7 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
  * Preprocess function for page*.html.twig.
  */
 function fromTilda_preprocess_page(&$variables) {
+  $defaultDoctor = false;
   if (($node = \Drupal::routeMatch()->getParameter('node')) &&
     $node->getType() == 'doktor'
   ) {
@@ -149,6 +150,7 @@ function fromTilda_preprocess_page(&$variables) {
       $url = file_create_url($uri);
     }
     $variables['doctorPhotoUrl']['#markup'] = $url;
+    $defaultDoctor = $node->id();
   }
 
   // Получаем список всех докторов.
@@ -157,16 +159,28 @@ function fromTilda_preprocess_page(&$variables) {
   $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
   $variables['doctors'] = [];
   $serviceTypesAll = [];
+  $defaulServiceType = [];
   foreach ($nodes as $node) {
     $serviceTypes = $node->get('field_service_type')->getValue();
     foreach ($serviceTypes as $serviceType) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
-      $serviceTypesAll[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
-      $serviceTypesAll[$serviceType['target_id']]['doctors'][$node->id()] = $node->getTitle();
+      if ($defaultDoctor && $defaultDoctor == $node->id()) {
+        $defaulServiceType[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
+        $defaulServiceType[$serviceType['target_id']]['doctors'][]['name'] = $node->getTitle();
+      } else {
+        $serviceTypesAll[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
+        $serviceTypesAll[$serviceType['target_id']]['doctors'][]['name'] = $node->getTitle();
+      }
     }
   }
-  $variables['serviceTypesAll'] = $serviceTypesAll;
-  $a = 1;
+  if ($defaulServiceType) {
+    foreach ($defaulServiceType as $key => &$defaulServiceTypeItem) {
+      if (isset($serviceTypesAll[$key]['doctors'])) {
+        $defaulServiceTypeItem['doctors'] = array_merge($defaulServiceTypeItem['doctors'], $serviceTypesAll[$key]['doctors']);
+      }
+    }
+  }
+  $variables['serviceTypesAll'] = array_merge($defaulServiceType, $serviceTypesAll);
 }
 
 function fromTilda_preprocess_node(&$variables){
