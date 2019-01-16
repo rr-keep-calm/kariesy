@@ -99,6 +99,35 @@ class formHandler {
     }
   }
 
+  protected function questionHandle()
+  {
+    // Проверяем что были переданы все праметры
+    if (!isset($_POST['phone'], $_POST['name'], $_POST['question']) ||
+      empty($_POST['name']) ||
+      empty($_POST['question']) ||
+      empty($_POST['phone'])
+    ) {
+      $this->response = 'Пожалуйста заполните все поля';
+    }
+    else {
+      // Формируем тело письма
+      $this->message = "Вопрос для доктора: {$_POST['doctor']}\n\n";
+      $this->message .= "Имя: {$_POST['name']}\n";
+      $this->message .= "Телефон: {$_POST['phone']}\n\n";
+      $this->message .= "Вопрос\n {$_POST['question']}";
+
+      $this->subject = 'Вопрос для доктора: ' . $_POST['doctor'];
+
+      $this->headers = 'From: robot@kariesy.net';
+      $this->headers .= "\r\nReply-To: robot@kariesy.net";
+      $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
+      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+      $this->response = 'OK';
+      $this->valid = true;
+    }
+  }
+
 }
 
 $formHandler = new formHandler();

@@ -275,7 +275,7 @@
 </div>
 
 <div class="forms __order mfp-hide" id="form-order">
-    <form class="form" action="/formHandler.php">
+    <form class="form" action="/formHandler.php" data-success_form="#form-normal">
         <input type="hidden" name="formName" value="appointment">
         <h3 class="form_title">Запись на прием</h3>
 
@@ -455,14 +455,6 @@
     <div class="form">
         <div class="form_normal">Ваша заявка принята!</div>
         <p class="form_normal-text">В ближайшее время с Вами свяжутся наши специалисты для подтверждения запроса</p>
-    </div>
-
-    <button type="button" class="forms_close popup-close"></button>
-</div>
-
-<div class="forms __normal mfp-hide" id="form-question-ok">
-    <div class="form">
-        <div class="form_normal">Ваша вопрос получен!</div>
     </div>
 
     <button type="button" class="forms_close popup-close"></button>

@@ -39,11 +39,12 @@ $(document).ready(function() {
     });
 
     // Отправка формы "Записаться на приём"
-    $('#form-order').on('submit', 'form', function (e) {
+    $('#form-order, #form-question').on('submit', 'form', function (e) {
         e.preventDefault();
+        var form = this;
         // Получаем путь на который отправляются данные формы
-        var action = $(this).attr('action');
-        var data = $(this).serialize();
+        var action = $(form).attr('action');
+        var data = $(form).serialize();
         $.ajax({
             data: data,
             url: action,
@@ -51,8 +52,12 @@ $(document).ready(function() {
             dataType: 'text',
             success: function (resp) {
                 if (resp == 'OK') {
-                    $(this).find('.popup-close').click();
-                    openForm('#form-normal');
+                    var successForm = $(form).data('success_form');
+                    if (successForm) {
+                        openForm(successForm);
+                    } else {
+                        closeForm();
+                    }
                 } else {
                     alert(resp);
                 }
