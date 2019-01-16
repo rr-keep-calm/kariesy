@@ -151,6 +151,7 @@ function fromTilda_preprocess_page(&$variables) {
     }
     $variables['doctorPhotoUrl']['#markup'] = $url;
     $defaultDoctor = $node->id();
+    $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
   }
 
   // Получаем список всех докторов.

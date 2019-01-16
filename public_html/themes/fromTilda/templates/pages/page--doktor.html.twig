@@ -17,7 +17,7 @@
                         <a href="#form-order" class="button popup">записаться на прием</a>
                     </div>
                     <div class="doctor_btn">
-                        <a href="" class="button-light">задать вопрос</a>
+                        <a href="#form-question" class="button-light popup">задать вопрос</a>
                     </div>
                 </div>
             </div>
@@ -25,5 +25,41 @@
         {% block content %}
             {{ page.content }}
         {% endblock %}
+    </div>
+{% endblock %}
+
+{% block afterFooterAdd %}
+    <div class="forms __order mfp-hide" id="form-question">
+        <form class="form" action="/formHandler.php">
+            <input type="hidden" name="formName" value="question">
+            <input type="hidden" name="doctor" value="{{ doctorName }}">
+            <h3 class="form_title">Задать вопрос доктору "{{ doctorName }}"</h3>
+            <div class="form_item">
+                <label class="form_label">Ваш контактный телефон</label>
+
+                <div class="form_data">
+                    <input name="phone" type="tel" class="form_input" required>
+                </div>
+            </div>
+            <div class="form_item">
+                <label class="form_label">Ваше имя</label>
+
+                <div class="form_data">
+                    <input name="name" type="text" class="form_input" required>
+                </div>
+            </div>
+            <div class="form_item">
+                <label class="form_label">Вопрос</label>
+
+                <div class="form_data">
+                    <textarea name="question" class="form_area" required></textarea>
+                </div>
+            </div>
+
+            <div class="form_button">
+                <button type="submit" class="button">отправить</button>
+            </div>
+        </form>
+        <button type="button" class="forms_close popup-close"></button>
     </div>
 {% endblock %}
