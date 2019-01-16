@@ -9,7 +9,9 @@
                 <div class="doctor_description">
                     {{ doctorDescription }}
                 </div>
-                <img class="doctor_image" src="{{ doctorPhotoUrl|raw }}" alt="">
+                {% if doctorPhotoUrl != '' %}
+                    <img class="doctor_image" src="{{ doctorPhotoUrl|raw }}" alt="">
+                {% endif %}
                 <div class="doctor_buttons">
                     <div class="doctor_btn">
                         <a href="#form-order" class="button popup">записаться на прием</a>
