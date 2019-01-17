@@ -303,64 +303,23 @@
             </div>
 
             <div class="doctor_col">
-                <h2 class="doctor_about-title">Дипломы и сертификаты</h2>
+                {% if node.field_diplomas_and_certificates[0] is not empty %}
+                    <h2 class="doctor_about-title">Дипломы и сертификаты</h2>
 
-                <div class="doctor_images">
-                    <div>
-                        <div class="doctor_image-item">
-                            <div class="doctor_image-content">
-                                <a href="img/sert.jpg" class="popup-image">
-                                    <img src="img/sert.jpg" alt="">
-                                </a>
+                    <div class="doctor_images">
+                        {% for key, certificate in node.field_diplomas_and_certificates %}
+                        <div>
+                            <div class="doctor_image-item">
+                                <div class="doctor_image-content">
+                                    <a href="{{ content.field_diplomas_and_certificates[key] }}" class="popup-image">
+                                        <img src="{{ content.field_diplomas_and_certificates[key] }}" alt="">
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    <div>
-                        <div class="doctor_image-item">
-                            <div class="doctor_image-content">
-                                <a href="img/sert.jpg" class="popup-image">
-                                    <img src="img/sert.jpg" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="doctor_image-item">
-                            <div class="doctor_image-content">
-                                <a href="img/sert.jpg" class="popup-image">
-                                    <img src="img/sert.jpg" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="doctor_image-item">
-                            <div class="doctor_image-content">
-                                <a href="img/sert.jpg" class="popup-image">
-                                    <img src="img/sert.jpg" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="doctor_image-item">
-                            <div class="doctor_image-content">
-                                <a href="img/sert.jpg" class="popup-image">
-                                    <img src="img/sert.jpg" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="doctor_image-item">
-                            <div class="doctor_image-content">
-                                <a href="img/sert.jpg" class="popup-image">
-                                    <img src="img/sert.jpg" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
