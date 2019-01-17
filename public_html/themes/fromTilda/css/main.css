@@ -3694,7 +3694,7 @@ img.mfp-img {
     border-bottom: 1px solid #d7d8d9;
 }
 
-.doctor_list li {
+#block-fromtilda-content li {
     font: 14px/25px 'OpenSansLight';
     color: #524f50;
     display: -webkit-box;
@@ -3705,7 +3705,7 @@ img.mfp-img {
     align-items: flex-start;
 }
 
-.doctor_list li:before {
+#block-fromtilda-content li:before {
     display: inline-block;
     content: '';
     width: 6px;
@@ -7685,13 +7685,13 @@ ul.price_types, .price_types li {
         flex-grow: 1;
     }
 
-    .doctor_list li {
+    #block-fromtilda-content li {
         line-height: 20px;
         margin-bottom: 20px;
         display: none;
     }
 
-    .doctor_list li.__mobile-visible {
+    #block-fromtilda-content .doctor_info li.__mobile-visible {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;

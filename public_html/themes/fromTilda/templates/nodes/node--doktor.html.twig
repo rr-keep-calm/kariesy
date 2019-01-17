@@ -2,14 +2,13 @@
     <div class="wrapper">
         <div class="doctor_row">
             <div class="doctor_col">
-                <h2 class="doctor_about-title">О враче</h2>
+                {% if node.field_about_doctor is not empty %}
+                    <h2 class="doctor_about-title">О враче</h2>
 
-                <div class="doctor_about-text">
-                    <p>Будучи стоматологом до мозга костей, я являюсь фанатом своей профессии и в качестве фундаментального принципа своей работы выбираю «Sensus <br>communis» – здравый смысл: оптимальное сочетание лишь тех техник лечения, которые будут максимально эффективными в каждом конкретном, индивидуальном случае.
-                        <br><br>
-                        Прямолинеен, честен и принципиален как в профессиональной деятельности, так и в повседневности.
-                    </p>
-                </div>
+                    <div class="doctor_about-text">
+                        {{ content.field_about_doctor }}
+                    </div>
+                {% endif %}
             </div>
             <div class="doctor_col">
                 <h2 class="doctor_about-title">График работы</h2>
@@ -296,26 +295,11 @@
     <div class="wrapper">
         <div class="doctor_row">
             <div class="doctor_col">
-                <h2 class="doctor_about-title">Курсы повышения квалификации</h2>
+                {% if node.field_refresher_courses is not empty %}
+                    <h2 class="doctor_about-title">Курсы повышения квалификации</h2>
 
-                <ul class="doctor_list">
-                    <li class="__mobile-visible">Мезиальная окклюзия - 2003</li>
-                    <li class="__mobile-visible">Физиологические и клинические аспекты лечения технологией "ультраслабых сил" - 2004</li>
-                    <li class="__mobile-visible">Новые горизонты в ортодонтии и дентальной стоматологии - 2005</li>
-                    <li class="__mobile-visible">XII Съезд ортодонтов России - 2009</li>
-                    <li class="__mobile-visible">Базовый курс по имплантации - 2011</li>
-                    <li class="__mobile-visible">Реабилитация пациентов высоэстетичными несъемными ортопедическими конструкицями - 2011</li>
-                    <li class="__mobile-visible">Clinical aspects of implant treatment plans in the complex prosthodontic treatment - 2012</li>
-                    <li>Tooth preparations for prosthetic restorations - 2012</li>
-                    <li>Эстетика или функция при протезировании в переднем отделе - 2013</li>
-                    <li>Семинар по лингвальной техники IN-OVATION L - 2013</li>
-                    <li>Мастера керамики. Эстетика и функция при протезировании зубов - 2013</li>
-                    <li>Ортодонтия 21 Века с индивидуальной брекет-системой Insignia - 2013</li>
-                    <li>Общий курс по современной диагностике и лечению ортодонтических пациентов - 2013</li>
-                    <li>Лингвальная технология Stb - эстетика без компромиссов - 2014</li>
-                </ul>
-
-                <div class="doctor_more">+ Показать еще</div>
+                    {{ content.field_refresher_courses }}
+                {% endif %}
             </div>
 
             <div class="doctor_col">
