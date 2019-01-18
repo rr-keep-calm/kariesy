@@ -23,7 +23,8 @@
                     <div class="clinic_data-block">
                         <h4>Единый телефон</h4>
 
-                        <a href="tel:{{ node.field_clinic_phone.value|raw|clearNotNum }}" class="clinic_tel">{{ node.field_clinic_phone.value|raw }}</a>
+                        <a href="tel:{{ node.field_clinic_phone.value|raw|clearNotNum }}"
+                           class="clinic_tel">{{ node.field_clinic_phone.value|raw }}</a>
 
                         <a href="#form-recall" class="clinic_recall">Заказать звонок</a>
                     </div>
@@ -36,7 +37,7 @@
 
     <div class="clinic_about">
         <div class="wrapper">
-            {% if content.field_about_clinic is not empty %}
+            {% if content.field_about_clinic is not empty or content.field_slider[0] is not empty %}
                 <h2 class="clinic_heading">О клинике</h2>
                 <div class="clinic_row">
                     <div class="clinic_col">
@@ -52,18 +53,17 @@
                     </div>
 
                     <div class="clinic_col">
-                        <div class="clinic_slider">
-                            <div>
-                                <div class="clinic_slider-item">
-                                    <img src="img/slider2.jpg" alt="">
-                                </div>
+                        {% if content.field_about_clinic is not empty or content.field_slider[0] is not empty %}
+                            <div class="clinic_slider">
+                                {% for key, sliderItem in node.field_slider %}
+                                    <div>
+                                        <div class="clinic_slider-item">
+                                            <img src="{{ content.field_slider[key] }}" alt="">
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div>
-                                <div class="clinic_slider-item">
-                                    <img src="img/slider2.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             {% endif %}
