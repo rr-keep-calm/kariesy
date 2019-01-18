@@ -11,15 +11,12 @@
                         <h4>График работы клиник</h4>
 
                         <div class="clinic_time-block">
-                            <div class="clinic_time-item">
-                                <div class="clinic_day">Понедельник-пятница</div>
-                                <div class="clinic_time">9:00 – 21:00</div>
-                            </div>
-
-                            <div class="clinic_time-item">
-                                <div class="clinic_day">Суббота-воскресенье</div>
-                                <div class="clinic_time">10:00-16:00</div>
-                            </div>
+                            {% for clinic_schedule in node.field_clinic_schedule %}
+                                <div class="clinic_time-item">
+                                    <div class="clinic_day">{{ clinic_schedule.entity.field_week_days.value }}</div>
+                                    <div class="clinic_time">{{ clinic_schedule.entity.field_opening_hours.value }}</div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
 
@@ -28,10 +25,10 @@
 
                         <a href="tel:777" class="clinic_tel">+7 (495) 215-24-42</a>
 
-                        <a href="" class="clinic_recall">Заказать звонок</a>
+                        <a href="#form-recall" class="clinic_recall">Заказать звонок</a>
                     </div>
 
-                    <a href="" class="button clinic_btn">записаться на прием</a>
+                    <a href="#form-order" class="button clinic_btn">записаться на прием</a>
                 </div>
             </div>
         </div>
