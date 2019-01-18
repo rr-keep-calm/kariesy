@@ -23,7 +23,7 @@
                     <div class="clinic_data-block">
                         <h4>Единый телефон</h4>
 
-                        <a href="tel:777" class="clinic_tel">+7 (495) 215-24-42</a>
+                        <a href="tel:{{ node.field_clinic_phone.value|raw|clearNotNum }}" class="clinic_tel">{{ node.field_clinic_phone.value|raw }}</a>
 
                         <a href="#form-recall" class="clinic_recall">Заказать звонок</a>
                     </div>

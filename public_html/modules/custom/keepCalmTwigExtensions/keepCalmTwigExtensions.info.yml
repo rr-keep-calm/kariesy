@@ -1,0 +1,6 @@
+name: KCTwigExt
+description: Twig Extensions for Drupal 8 made by KeepCalm Team
+package: Twig Extensions
+
+type: module
+core: 8.x

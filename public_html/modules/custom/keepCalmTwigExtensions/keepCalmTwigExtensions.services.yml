@@ -1,0 +1,6 @@
+services:
+  keepCalmTwigExtensions.twig_extension:
+    arguments: ['@renderer']
+    class: Drupal\keepCalmTwigExtensions\TwigExtension\KeepCalmTwigExtensions
+    tags:
+      - { name: twig.extension }
