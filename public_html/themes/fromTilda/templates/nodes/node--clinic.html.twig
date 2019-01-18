@@ -36,36 +36,37 @@
 
     <div class="clinic_about">
         <div class="wrapper">
-            <h2 class="clinic_heading">О клинике</h2>
-            <div class="clinic_row">
-                <div class="clinic_col">
-                    <h2 class="clinic_heading-2">О клинике</h2>
+            {% if content.field_about_clinic is not empty %}
+                <h2 class="clinic_heading">О клинике</h2>
+                <div class="clinic_row">
+                    <div class="clinic_col">
+                        <h2 class="clinic_heading-2">О клинике</h2>
 
-                    <div class="clinic_text">
-                        <p>Стоматологи  расположена прямо между двумя ключевыми станциями московского метрополитена — Дубровка и Автозаводская, по Велозаводской улице. Это один из самых удачных, с точки зрения своего расположения, центров сети «Юнидент». Находясь в центре столицы, клиника стоматологии позволяет своим посетителям существенно сократить время, затрачиваемое на поездку до учреждения. При этом добираться до центра одинаково удобно как на общественном транспорте, так и на личном авто. Подъезд непосредственно к стоматологической клинике на метро Автозаводская оборудован и со стороны Третьего, и со стороны Садового кольца. Где бы вы ни находились, вы всегда сможете доехать  буквально за несколько десятков минут.</p>
-                    </div>
-
-                    <div class="clinic_links">
-                        <a href="">Лицензии</a>
-                        <a href="">График работы</a>
-                    </div>
-                </div>
-
-                <div class="clinic_col">
-                    <div class="clinic_slider">
-                        <div>
-                            <div class="clinic_slider-item">
-                                <img src="img/slider2.jpg" alt="">
-                            </div>
+                        <div class="clinic_text">
+                            {{ content.field_about_clinic }}
                         </div>
-                        <div>
-                            <div class="clinic_slider-item">
-                                <img src="img/slider2.jpg" alt="">
-                            </div>
+
+                        <div class="clinic_links">
+                            <a href="#block-fromtilda-content">График работы</a>
                         </div>
                     </div>
+
+                    <div class="clinic_col">
+                        <div class="clinic_slider">
+                            <div>
+                                <div class="clinic_slider-item">
+                                    <img src="img/slider2.jpg" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="clinic_slider-item">
+                                    <img src="img/slider2.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 </div>
