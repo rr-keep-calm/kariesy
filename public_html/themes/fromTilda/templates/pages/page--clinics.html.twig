@@ -1,0 +1,77 @@
+{% extends  "page.html.twig" %}
+
+{% block globalContent %}
+    {#<div class="content{% block additionalContentClass %}{% endblock %}">
+        <div class="top __1">
+            <div class="wrapper">
+                {{ page.breadcrumbs }}
+                <h1>{{ page.header }}</h1>
+            </div>
+        </div>
+        {% block content %}
+            <div class="content_main __min">
+                <div class="wrapper">
+                    <div class="doctors">
+                        {{ page.content }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </div>#}
+    <div class="content">
+        <div class="top __1 __border-none">
+            <div class="wrapper">
+                {{ page.breadcrumbs }}
+                <h1>{{ page.header }}</h1>
+            </div>
+        </div>
+
+        <div class="content_main">
+            <div class="wrapper">
+                <div class="all-clinic">
+                    <div class="all-clinic_carts-clone"></div>
+                </div>
+            </div>
+
+            <div class="wrapper">
+                <div class="content_row">
+                    <div class="content_left">
+                        <div class="all-clinic">
+                            <div class="all-clinic_carts">
+                                <div class="all-clinic_cart">
+                                    <div class="all-clinic_cart-title">Единый телефон</div>
+                                    <a href="tel:777" class="all-clinic_cart-phone">+7 (495) 215-24-42</a>
+                                    <a href="" class="all-clinic_cart-link">Заказать звонок</a>
+                                </div>
+                                <div class="all-clinic_cart">
+                                    <div class="all-clinic_cart-title">График работы клиник</div>
+                                    <div class="all-clinic_cart-day">Понедельник-пятница</div>
+                                    <div class="all-clinic_cart-time">9:00 – 21:00</div>
+                                </div>
+                            </div>
+
+                            <div class="all-clinic_content">
+                                <div class="clinics ">
+                                    {{ page.content }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content_right">
+                        <div class="all-clinic_maps">
+                            <div class="all-clinic_map" id="map-4"></div>
+
+                            <a href="#map-modal" class="all-clinic_open-full popup">+ Увеличить карту</a>
+
+                            <div class="all-clinic_modal" id="map-modal">
+                                <div class="all-clinic_map-2" id="map-5"></div>
+
+                                <button class="all-clinic_close popup-close"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
