@@ -1,0 +1,21 @@
+{% extends  "page.html.twig" %}
+
+{% block globalContent %}
+    <div class="content{% block additionalContentClass %}{% endblock %}">
+        <div class="top __1">
+            <div class="wrapper">
+                {{ page.breadcrumbs }}
+                <h1>{{ page.header }}</h1>
+            </div>
+        </div>
+        {% block content %}
+            <div class="content_main __min">
+                <div class="wrapper">
+                    <div class="doctors">
+                        {{ page.content }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}
