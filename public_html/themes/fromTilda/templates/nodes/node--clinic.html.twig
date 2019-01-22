@@ -1,72 +1,96 @@
-<div class="clinic">
-    <div class="clinic_map">
-        <div class="clinic_cart">
-            {{ node.field_map_code.value|raw }}
-        </div>
+{% if (view_mode == 'teaser') %}
 
-        <div class="clinic_info">
-            <div class="wrapper">
-                <div class="clinic_data">
-                    <div class="clinic_data-block">
-                        <h4>График работы клиник</h4>
+    <div class="clinics_item">
+        <h4 class="clinics_heading">{{ node.label }}</h4>
 
-                        <div class="clinic_time-block">
-                            {% for clinic_schedule in node.field_clinic_schedule %}
-                                <div class="clinic_time-item">
-                                    <div class="clinic_day">{{ clinic_schedule.entity.field_week_days.value }}</div>
-                                    <div class="clinic_time">{{ clinic_schedule.entity.field_opening_hours.value }}</div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+        <div class="clinics_item-content">
+            <div class="clinics_image">
+                {% if not content.field_image.isEmpty() %}
+                    <img src="{{ file_url(node.field_image.entity.fileuri) }}" alt="">
+                {% endif %}
+            </div>
 
-                    <div class="clinic_data-block">
-                        <h4>Единый телефон</h4>
+            <div class="clinics_text">
+                {% if not content.field_metro.isEmpty() %}
+                    <p>{{ node.field_metro.value|raw }}</p>
+                {% endif %}
+                <p>{{ node.field_city.entity.name.value }}<br> {{ node.field_address.value|raw }}</p>
 
-                        <a href="tel:{{ node.field_clinic_phone.value|raw|clearNotNum }}"
-                           class="clinic_tel">{{ node.field_clinic_phone.value|raw }}</a>
-
-                        <a href="#form-recall" class="clinic_recall">Заказать звонок</a>
-                    </div>
-
-                    <a href="#form-order" class="button clinic_btn">записаться на прием</a>
-                </div>
+                <a href="{{ path('entity.node.canonical', {'node': node.id}) }}">подробнее</a>
             </div>
         </div>
     </div>
+{% else %}
+    <div class="clinic">
+        <div class="clinic_map">
+            <div class="clinic_cart">
+                {{ node.field_map_code.value|raw }}
+            </div>
 
-    <div class="clinic_about">
-        <div class="wrapper">
-            {% if content.field_about_clinic is not empty or content.field_slider[0] is not empty %}
-                <h2 class="clinic_heading">О клинике</h2>
-                <div class="clinic_row">
-                    <div class="clinic_col">
-                        <h2 class="clinic_heading-2">О клинике</h2>
+            <div class="clinic_info">
+                <div class="wrapper">
+                    <div class="clinic_data">
+                        <div class="clinic_data-block">
+                            <h4>График работы клиник</h4>
 
-                        <div class="clinic_text">
-                            {{ content.field_about_clinic }}
-                        </div>
-
-                        <div class="clinic_links">
-                            <a href="#block-fromtilda-content">График работы</a>
-                        </div>
-                    </div>
-
-                    <div class="clinic_col">
-                        {% if content.field_about_clinic is not empty or content.field_slider[0] is not empty %}
-                            <div class="clinic_slider">
-                                {% for key, sliderItem in node.field_slider %}
-                                    <div>
-                                        <div class="clinic_slider-item">
-                                            <img src="{{ content.field_slider[key] }}" alt="">
-                                        </div>
+                            <div class="clinic_time-block">
+                                {% for clinic_schedule in node.field_clinic_schedule %}
+                                    <div class="clinic_time-item">
+                                        <div class="clinic_day">{{ clinic_schedule.entity.field_week_days.value }}</div>
+                                        <div class="clinic_time">{{ clinic_schedule.entity.field_opening_hours.value }}</div>
                                     </div>
                                 {% endfor %}
                             </div>
-                        {% endif %}
+                        </div>
+
+                        <div class="clinic_data-block">
+                            <h4>Единый телефон</h4>
+
+                            <a href="tel:{{ node.field_clinic_phone.value|raw|clearNotNum }}"
+                               class="clinic_tel">{{ node.field_clinic_phone.value|raw }}</a>
+
+                            <a href="#form-recall" class="clinic_recall">Заказать звонок</a>
+                        </div>
+
+                        <a href="#form-order" class="button clinic_btn">записаться на прием</a>
                     </div>
                 </div>
-            {% endif %}
+            </div>
+        </div>
+
+        <div class="clinic_about">
+            <div class="wrapper">
+                {% if content.field_about_clinic is not empty or content.field_slider[0] is not empty %}
+                    <h2 class="clinic_heading">О клинике</h2>
+                    <div class="clinic_row">
+                        <div class="clinic_col">
+                            <h2 class="clinic_heading-2">О клинике</h2>
+
+                            <div class="clinic_text">
+                                {{ content.field_about_clinic }}
+                            </div>
+
+                            <div class="clinic_links">
+                                <a href="#block-fromtilda-content">График работы</a>
+                            </div>
+                        </div>
+
+                        <div class="clinic_col">
+                            {% if content.field_about_clinic is not empty or content.field_slider[0] is not empty %}
+                                <div class="clinic_slider">
+                                    {% for key, sliderItem in node.field_slider %}
+                                        <div>
+                                            <div class="clinic_slider-item">
+                                                <img src="{{ content.field_slider[key] }}" alt="">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
+{% endif %}

@@ -3320,7 +3320,7 @@ img.mfp-img {
     padding-top: 45px;
 }
 
-.clinics_content.__base-2:first-child {
+.clinics > .clinics_content.__base-2:first-child {
     padding-top: 0;
 }
 
