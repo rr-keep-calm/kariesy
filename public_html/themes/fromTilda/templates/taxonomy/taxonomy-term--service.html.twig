@@ -55,22 +55,6 @@
                 </div>
             </div>
         </div>
-        {# Форма записи на приём #}
-        {{ attach_library('fromTilda/jquery-ui') }}
-        <div id="dialog-form-appointment" style="display: none;" title="Запись на приём">
-            <form action="/formHandler.php">
-                <fieldset>
-                    <input type="hidden" name="what_exactly" class="what_exactly" />
-                    <input type="text" name="name" id="name" value="" placeholder="Имя"
-                           class="text ui-widget-content ui-corner-all">
-                    <input type="text" name="phone" id="phone" placeholder="Телефон"
-                           class="text ui-widget-content ui-corner-all">
-                    <div class="price_button">
-                        <input class="button" type="submit" value="Записаться">
-                    </div>
-                </fieldset>
-            </form>
-        </div>
     {% endif %}
     {% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
         <div class="service-detail_block __1">

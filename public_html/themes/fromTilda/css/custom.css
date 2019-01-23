@@ -1,9 +1,0 @@
-#dialog-form-appointment form input {
-    margin-bottom: 15px;
-}
-#dialog-form-appointment form fieldset {
-    text-align: center;
-}
-#dialog-form-appointment form .price_button, #dialog-form-appointment form .price_button input.button {
-    margin: 0;
-}
