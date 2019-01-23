@@ -157,6 +157,22 @@ function fromTilda_preprocess_page(&$variables) {
     $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
   }
 
+  // Если обращение идёт к странице услуги, то запоминаем тип услуги для
+  // правильного отображения на форме записи на приём
+  $defaultServiceForForm = false;
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+    $term = Term::load($tid);
+    $vacabulary_id = $term->getVocabularyId();
+    $suggestions[] = 'taxonomy_term__' . $vacabulary_id;
+    if ($vacabulary_id == 'service') {
+      $defaultServiceForForm = $term->get('field_service_type')->getValue();
+      if ($defaultServiceForForm) {
+        $defaultServiceForForm = Term::load($defaultServiceForForm[0]['target_id'])->name->value;
+        $variables['defaultServiceForForm'] = $defaultServiceForForm;
+      }
+    }
+  }
+
   // Получаем список всех докторов.
   // Попутно сохраняя список оказываемых доктором услуг.
   $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
@@ -168,7 +184,7 @@ function fromTilda_preprocess_page(&$variables) {
     $serviceTypes = $node->get('field_service_type')->getValue();
     foreach ($serviceTypes as $serviceType) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
-      if ($defaultDoctor && $defaultDoctor == $node->id()) {
+      if (($defaultServiceForForm && $defaultServiceForForm == $serviceTypeTerm->name->value) || ($defaultDoctor && $defaultDoctor == $node->id())) {
         $defaulServiceType[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
         $defaulServiceType[$serviceType['target_id']]['doctors'][]['name'] = $node->getTitle();
       } else {

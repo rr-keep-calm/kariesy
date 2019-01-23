@@ -293,7 +293,13 @@
                                 {% set doctorsList = doctorsList ~ '|' %}
                             {% endif %}
                         {% endfor %}
-                        <option value="{{ serviceType.name }}" data-doctor_list="{{ doctorsList }}">{{ serviceType.name }}</option>
+                        <option value="{{ serviceType.name }}" data-doctor_list="{{ doctorsList }}"
+                                {% if defaultServiceForForm is defined and defaultServiceForForm == serviceType.name %}
+                                    selected
+                                {% endif %}
+                        >
+                            {{ serviceType.name }}
+                        </option>
                     {% endfor %}
                 </select>
             </div>
