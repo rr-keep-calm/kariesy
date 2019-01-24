@@ -197,6 +197,7 @@ function fromTilda_preprocess_page(&$variables) {
     foreach ($defaulServiceType as $key => &$defaulServiceTypeItem) {
       if (isset($serviceTypesAll[$key]['doctors'])) {
         $defaulServiceTypeItem['doctors'] = array_merge($defaulServiceTypeItem['doctors'], $serviceTypesAll[$key]['doctors']);
+        unset($serviceTypesAll[$key]);
       }
     }
   }
