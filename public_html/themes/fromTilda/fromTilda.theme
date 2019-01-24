@@ -176,11 +176,11 @@ function fromTilda_preprocess_page(&$variables) {
   // Получаем список всех докторов.
   // Попутно сохраняя список оказываемых доктором услуг.
   $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
-  $nodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+  $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
   $variables['doctors'] = [];
   $serviceTypesAll = [];
   $defaulServiceType = [];
-  foreach ($nodes as $node) {
+  foreach ($doctorsNodes as $node) {
     $serviceTypes = $node->get('field_service_type')->getValue();
     foreach ($serviceTypes as $serviceType) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
@@ -253,5 +253,46 @@ function fromTilda_preprocess_node(&$variables){
       });
       $variables['schedule'] = $schedule;
     }
+  }
+}
+
+function fromTilda_preprocess_views_view(&$variables){
+  $view = $variables['view'];
+
+  // Если обращаются к странице со списком докторов,
+  // то собираем все специализации к которым был отнесён хотя бы один доктор,
+  // а так же все клиники которые были указаны в графиках работы
+  if ($view->storage->id() === 'doctors') {
+    $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
+    $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $translitiration = new PhpTransliteration();
+    $allSpecializations = [];
+    $allClinics = [];
+    foreach ($doctorsNodes as $node) {
+      $specializations = $node->get('field_specialization')->getValue();
+      foreach ($specializations as $specialization) {
+        $key = str_replace(' ', '_', $translitiration->transliterate($specialization['value'], 'en', '_'));
+        $allSpecializations[$key] = $specialization['value'];
+      }
+      $schedule = $node->get('field_schedule')->getValue();
+      if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+        $schedule = json_decode($schedule[0]['value'], TRUE);
+      }
+      if ($schedule && is_array($schedule)) {
+        array_walk($schedule, function(&$value) use($translitiration, &$allClinics) {
+          array_walk($value, function(&$clinik, $key) use($translitiration, &$allClinics){
+            if ($key != 'start' && $key != 'end' && $clinik) {
+              // Составляем ссылки на страницы клиник
+              $nodeClinic = \Drupal\node\Entity\Node::load($clinik);
+              $name = $nodeClinic->getTitle();
+              $clinicKey = str_replace(' ', '_', $translitiration->transliterate($name, 'en', '_'));
+              $allClinics[$clinicKey] = $name;
+            }
+          });
+        });
+      }
+    }
+    $variables['allSpecializations'] = $allSpecializations;
+    $variables['allClinics'] = $allClinics;
   }
 }
