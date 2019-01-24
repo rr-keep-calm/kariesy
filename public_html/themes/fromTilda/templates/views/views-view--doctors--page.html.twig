@@ -48,7 +48,7 @@
 
   <form class="views-exposed-form doctors_filter" data-drupal-selector="views-exposed-form-doctors-page-1" action="{{ url('<current>') }}" method="get" id="views-exposed-form-doctors-page-1" accept-charset="UTF-8">
     <div class="doctors_select">
-      <select>
+      <select name="clinic">
         <option value="All">Все клиники</option>
         {% if allClinics is defined and allClinics|length > 0%}
           {% for clinic in allClinics %}

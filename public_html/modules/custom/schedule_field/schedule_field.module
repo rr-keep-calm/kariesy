@@ -21,7 +21,53 @@ function schedule_field_theme($existing, $type, $theme, $path) {
  */
 function schedule_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
   if ($view->id() == 'doctors' && $view->current_display == 'page_1') {
-    $query->addWhere(count($query->where), 'node_field_data.nid', 219, '=');
-    $a = 1;
+    // Проверяем производится ли фильтрация по клинике
+    $clinic = \Drupal::request()->query->get('clinic');
+    if ($clinic && $clinic != 'All') {
+      // Получаем идентификатор клиники по названию
+      $clinicQuery = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('title', $clinic, '=');
+      $nid = $clinicQuery->execute();
+      if ($nid) {
+        $nid = current($nid);
+
+        // Если нашли идентификатор клиники, то перебираем всех врачей и находим
+        // в их графиках работы эту клинику
+        $doctorsNids = [];
+        $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
+        $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+        foreach ($doctorsNodes as $node) {
+          $clinics = [];
+          $schedule = $node->get('field_schedule')->getValue();
+          if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+            $schedule = json_decode($schedule[0]['value'], TRUE);
+          }
+          if ($schedule && is_array($schedule)) {
+            array_walk($schedule, function(&$value) use(&$clinics) {
+              array_walk($value, function(&$clinik, $key) use(&$clinics){
+                if ($key != 'start' && $key != 'end' && $clinik) {
+                  $clinics[$clinik] = $clinik;
+                }
+              });
+            });
+          }
+
+          // Определяем работает ли доктор в указанной клинике
+          if (in_array($nid, $clinics)) {
+            $doctorsNids[] = $node->id();
+          }
+        }
+
+        if ($doctorsNids) {
+          $query->addWhere(
+            count($query->where),
+            'node_field_data.nid',
+            $doctorsNids,
+            'in'
+          );
+        }
+      }
+    }
   }
 }
