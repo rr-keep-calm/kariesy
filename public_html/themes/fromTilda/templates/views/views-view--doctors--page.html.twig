@@ -48,22 +48,34 @@
 
   <form class="views-exposed-form doctors_filter" data-drupal-selector="views-exposed-form-doctors-page-1" action="{{ url('<current>') }}" method="get" id="views-exposed-form-doctors-page-1" accept-charset="UTF-8">
     <div class="doctors_select">
+      {% set selectedClinic = '' %}
+      {% if getVars.clinic is defined  and getVars.clinic != 'All'%}
+        {% set selectedClinic = getVars.clinic %}
+      {% endif %}
       <select name="clinic">
         <option value="All">Все клиники</option>
         {% if allClinics is defined and allClinics|length > 0%}
           {% for clinic in allClinics %}
-            <option value="{{ clinic|raw }}">{{ clinic|raw|capitalize }}</option>
+            <option value="{{ clinic|raw }}" {{ selectedClinic != '' and selectedClinic|replace({' ': '+'}) == clinic|raw|replace({' ': '+'}) ? 'selected' : '' }}>
+              {{ clinic|raw|capitalize }}
+            </option>
           {% endfor %}
         {% endif %}
       </select>
     </div>
 
     <div class="doctors_select">
+      {% set selectedSpec = '' %}
+      {% if getVars.spec is defined  and getVars.spec != 'All'%}
+        {% set selectedSpec = getVars.spec %}
+      {% endif %}
       <select name="spec">
         <option value="All">Все специализации</option>
         {% if allSpecializations is defined and allSpecializations|length > 0%}
           {% for specialization in allSpecializations %}
-            <option value="{{ specialization|raw }}">{{ specialization|raw|capitalize }}</option>
+            <option value="{{ specialization|raw }}" {{ selectedSpec != '' and selectedSpec|replace({' ': '+'}) == specialization|raw|replace({' ': '+'}) ? 'selected' : '' }}>
+              {{ specialization|raw|capitalize }}
+            </option>
           {% endfor %}
         {% endif %}
       </select>

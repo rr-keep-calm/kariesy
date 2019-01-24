@@ -294,5 +294,6 @@ function fromTilda_preprocess_views_view(&$variables){
     }
     $variables['allSpecializations'] = $allSpecializations;
     $variables['allClinics'] = $allClinics;
+    $variables['getVars'] = $_GET;
   }
 }
