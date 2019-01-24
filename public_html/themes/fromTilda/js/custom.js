@@ -36,7 +36,7 @@ $(document).ready(function() {
         })
     }
 
-    $('#form-order').on('change', 'select.service-type', function () {
+    $('#form-order, #form-order-doctor-page').on('change', 'select.service-type', function () {
         // Получаем всех докторов, которые оказывают выбранную услугу
         var doctors = $("option:selected", this).data('doctor_list').split('|');
 
