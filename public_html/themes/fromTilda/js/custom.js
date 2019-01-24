@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Отправка формы "Записаться на приём"
-    $('#form-order, #form-question').on('submit', 'form', function (e) {
+    $('#form-order, #form-question, #form-order-doctor-page').on('submit', 'form', function (e) {
         e.preventDefault();
         var form = this;
         // Получаем путь на который отправляются данные формы
