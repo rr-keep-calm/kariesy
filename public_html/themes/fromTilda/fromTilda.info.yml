@@ -21,3 +21,4 @@ regions:
   after_content: 'After Content'
   footer_services_menu: 'Footer services menu'
   footer_navigation_menu: 'Footer navigation menu'
+  clinic_list_on_doctor_page: 'Clinic list on doctor page'

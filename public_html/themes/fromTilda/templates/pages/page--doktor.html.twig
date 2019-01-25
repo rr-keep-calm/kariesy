@@ -33,7 +33,7 @@
                 <div class="wrapper">
                     <div class="doctor_work-row">
                         <div id="form-order-doctor-page" class="doctor_work-col">
-                            <form class="form" action="/formHandler.php" data-success_form="#form-normal">
+                            <form class="doctor_form form" action="/formHandler.php" data-success_form="#form-normal">
                                 <input type="hidden" name="formName" value="appointment">
                                 <h3 class="form_title">Запись на прием</h3>
 
@@ -185,6 +185,9 @@
                                     <button type="submit" class="button">отправить</button>
                                 </div>
                             </form>
+                        </div>
+                        <div class="doctor_work-col">
+                            {{ page.clinic_list_on_doctor_page }}
                         </div>
                     </div>
                 </div>
