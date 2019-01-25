@@ -163,7 +163,6 @@ function fromTilda_preprocess_page(&$variables) {
   if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
     $vacabulary_id = $term->getVocabularyId();
-    $suggestions[] = 'taxonomy_term__' . $vacabulary_id;
     if ($vacabulary_id == 'service') {
       $defaultServiceForForm = $term->get('field_service_type')->getValue();
       if ($defaultServiceForForm) {
@@ -297,4 +296,19 @@ function fromTilda_preprocess_views_view(&$variables){
     $variables['allClinics'] = $allClinics;
     $variables['getVars'] = $_GET;
   }
+}
+
+/**
+ * Implements hook_theme_suggestions_container_alter().
+ *
+ * @param array $suggestions
+ * @param array $variables
+ */
+function fromTilda_theme_suggestions_container_alter(array &$suggestions, array $variables) {
+  $pieces = [
+    $variables['element']['#type'],
+    $variables['element']['#name'],
+    $variables['element']['#display_id'],
+  ];
+  $suggestions[] = 'container__' . implode('_', $pieces);
 }

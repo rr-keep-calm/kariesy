@@ -20,6 +20,8 @@ function schedule_field_theme($existing, $type, $theme, $path) {
  * @param \Drupal\views\Plugin\views\query\QueryPluginBase $query
  */
 function schedule_field_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+
+  // Представление на странцие всех докторов
   if ($view->id() == 'doctors' && $view->current_display == 'page_1') {
     // Проверяем производится ли фильтрация по клинике
     $clinic = \Drupal::request()->query->get('clinic');
@@ -67,6 +69,37 @@ function schedule_field_views_query_alter(ViewExecutable $view, QueryPluginBase 
             'in'
           );
         }
+      }
+    }
+  }
+
+  // Представление (блок клиник) на странцие доктора
+  if ($view->id() == 'clinics' && $view->current_display == 'block_1') {
+    if (($node = \Drupal::routeMatch()->getParameter('node')) &&
+      $node->getType() == 'doktor'
+    ) {
+      // Получаем идентификаторы клиник из графика работы доктора
+      $clinics = [];
+      $schedule = $node->get('field_schedule')->getValue();
+      if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+        $schedule = json_decode($schedule[0]['value'], TRUE);
+      }
+      if ($schedule && is_array($schedule)) {
+        array_walk($schedule, function(&$value) use(&$clinics) {
+          array_walk($value, function(&$clinik, $key) use(&$clinics){
+            if ($key != 'start' && $key != 'end' && $clinik) {
+              $clinics[$clinik] = $clinik;
+            }
+          });
+        });
+      }
+      if ($clinics) {
+        $query->addWhere(
+          count($query->where),
+          'node_field_data.nid',
+          $clinics,
+          'in'
+        );
       }
     }
   }
