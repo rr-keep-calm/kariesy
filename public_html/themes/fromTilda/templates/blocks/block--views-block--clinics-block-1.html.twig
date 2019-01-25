@@ -27,7 +27,7 @@
 #}
 <div class="doctor_clinics">
     {% block content %}
-        {% if label %}
+        {% if content|render|striptags|trim and label %}
             <h2 class="doctor_clinics-title">{{ label }}</h2>
         {% endif %}
         {{ content }}

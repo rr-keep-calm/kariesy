@@ -100,6 +100,13 @@ function schedule_field_views_query_alter(ViewExecutable $view, QueryPluginBase 
           $clinics,
           'in'
         );
+      } else {
+        $query->addWhere(
+          count($query->where),
+          'node_field_data.nid',
+          0,
+          '='
+        );
       }
     }
   }
