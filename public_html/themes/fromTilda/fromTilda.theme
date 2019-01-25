@@ -262,7 +262,7 @@ function fromTilda_preprocess_views_view(&$variables){
   // Если обращаются к странице со списком докторов,
   // то собираем все специализации к которым был отнесён хотя бы один доктор,
   // а так же все клиники которые были указаны в графиках работы
-  if ($view->storage->id() === 'doctors') {
+  if ($view->storage->id() === 'doctors' && $view->current_display == 'page_1') {
     $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
     $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
     $translitiration = new PhpTransliteration();

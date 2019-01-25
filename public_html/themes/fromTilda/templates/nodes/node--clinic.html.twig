@@ -20,7 +20,6 @@
         </div>
     </div>
 {% else %}
-    <div class="clinic">
         <div class="clinic_map">
             <div class="clinic_cart">
                 {{ node.field_map_code.value|raw }}
@@ -51,7 +50,7 @@
                             <a href="#form-recall" class="clinic_recall">Заказать звонок</a>
                         </div>
 
-                        <a href="#form-order" class="button clinic_btn">записаться на прием</a>
+                        <a href="#form-order" class="button clinic_btn popup">записаться на прием</a>
                     </div>
                 </div>
             </div>
@@ -91,5 +90,4 @@
                 {% endif %}
             </div>
         </div>
-    </div>
 {% endif %}

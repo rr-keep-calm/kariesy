@@ -22,6 +22,15 @@ app.addModule('clinic', function () {
 			slidesToScroll: 1,
 			adaptiveHeight: true
 		});
+		$('.doctors-more').on('click', '.doctors-more_btn', function(e){
+			// Проходим по всем скрытым строкам и открываем одну
+			$('.doctors-more .doctors-more_items:hidden:first').show();
+
+			// Убираем кнопку открытия дополнительных элементов, если скрытых больше не осталось.
+			if ($('.doctors-more .doctors-more_items:hidden').length < 1) {
+				$('.doctors-more .doctors-more_btn').hide();
+			}
+		});
 	};
 });
 app.addModule('clinics', function () {

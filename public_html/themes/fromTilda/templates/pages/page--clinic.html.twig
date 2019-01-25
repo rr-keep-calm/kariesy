@@ -1,5 +1,8 @@
 {% extends  "page.html.twig" %}
 
 {% block content %}
-    {{ page.content }}
+    <div class="clinic">
+        {{ page.content }}
+    </div>
+    {{ page.doctor_list_on_clinic_page }}
 {% endblock %}

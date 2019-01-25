@@ -73,7 +73,7 @@ function schedule_field_views_query_alter(ViewExecutable $view, QueryPluginBase 
     }
   }
 
-  // Представление (блок клиник) на странцие доктора
+  // Представление (блок клиник) на странице доктора
   if ($view->id() == 'clinics' && $view->current_display == 'block_1') {
     if (($node = \Drupal::routeMatch()->getParameter('node')) &&
       $node->getType() == 'doktor'
@@ -106,6 +106,51 @@ function schedule_field_views_query_alter(ViewExecutable $view, QueryPluginBase 
           'node_field_data.nid',
           0,
           '='
+        );
+      }
+    }
+  }
+
+  // Представление (блок доктора) на странице клиники
+  if ($view->id() == 'doctors' && $view->current_display == 'block_1') {
+    if (($node = \Drupal::routeMatch()->getParameter('node')) &&
+      $node->getType() == 'clinic'
+    ) {
+      $nid = $node->id();
+
+      // Если нашли идентификатор клиники, то перебираем всех врачей и находим
+      // в их графиках работы эту клинику
+      $doctorsNids = [];
+      $nids = \Drupal::entityQuery('node')->condition('type','doktor')->execute();
+      $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+      foreach ($doctorsNodes as $node) {
+        $clinics = [];
+        $schedule = $node->get('field_schedule')->getValue();
+        if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+          $schedule = json_decode($schedule[0]['value'], TRUE);
+        }
+        if ($schedule && is_array($schedule)) {
+          array_walk($schedule, function(&$value) use(&$clinics) {
+            array_walk($value, function(&$clinik, $key) use(&$clinics){
+              if ($key != 'start' && $key != 'end' && $clinik) {
+                $clinics[$clinik] = $clinik;
+              }
+            });
+          });
+        }
+
+        // Определяем работает ли доктор в указанной клинике
+        if (in_array($nid, $clinics)) {
+          $doctorsNids[] = $node->id();
+        }
+      }
+
+      if ($doctorsNids) {
+        $query->addWhere(
+          count($query->where),
+          'node_field_data.nid',
+          $doctorsNids,
+          'in'
         );
       }
     }
