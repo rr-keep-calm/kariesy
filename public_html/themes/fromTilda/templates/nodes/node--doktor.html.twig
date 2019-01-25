@@ -1,4 +1,32 @@
-{% if (view_mode == 'teaser') %}
+{% if (view_mode == 'short_list') %}
+    <div class="doctors-more_item" style="background-image: url({{ file_url(node.field_foto.entity.fileuri) }})">
+        <div class="doctors-more_content">
+            <div class="doctors-more_name">
+                {% set doctorNameParts = node.label|striptags|split(' ') %}
+                {% for doctorNamePart in doctorNameParts %}
+                    {% if loop.first %}
+                        <strong>{{ doctorNamePart }}</strong>
+                    {% else %}
+                        {{ doctorNamePart }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="doctors-more_text">
+                {%- for specialization in node.field_specialization.getvalue -%}
+                    {%- if loop.first == true -%}
+                        {{- specialization.value|capitalize -}}
+                    {%- else -%}
+                        {{- specialization.value -}}
+                    {%- endif -%}
+                    {%- if not loop.last -%}
+                        ,&nbsp;
+                    {%- endif -%}
+                {%- endfor -%}
+            </div>
+            <a href="{{ path('entity.node.canonical', {'node': node.id}) }}" class="doctors-more_link">О враче</a>
+        </div>
+    </div>
+{% elseif (view_mode == 'teaser') %}
     {% set viewIndex = 0 %}
     {% for viewItem in view.result if viewItem.nid == node.id %}
         {% set viewIndex = viewItem.index %}

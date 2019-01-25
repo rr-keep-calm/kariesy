@@ -3839,6 +3839,7 @@ img.mfp-img {
     background-size: 190px;
     background-repeat: no-repeat;
     background-position: left 20px bottom;
+    position: relative;
 }
 
 .doctors-more_content {
@@ -3862,6 +3863,8 @@ img.mfp-img {
 .doctors-more_link {
     font: 14px 'OpenSansSemiBold';
     color: #2299d2;
+    bottom: 5px;
+    position: absolute;
 }
 
 .doctors-more_link:hover {
@@ -3880,6 +3883,7 @@ img.mfp-img {
     border-radius: 5px;
     -webkit-transition: .3s;
     transition: .3s;
+    cursor: pointer;
 }
 
 .doctors-more_btn:hover {
