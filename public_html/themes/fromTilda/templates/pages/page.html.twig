@@ -168,7 +168,9 @@
 </footer>
 
 <div class="forms mfp-hide" id="form-recall">
-    <form action="" class="form">
+    <form action="/formHandler.php" class="form">
+        <input type="hidden" name="token" id="token">
+        <input type="hidden" name="action" id="captcha-action">
         <h4 class="form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами</h4>
 
         <div class="form_item">
@@ -188,7 +190,11 @@
         </div>
 
         <div class="form_button">
-            <button class="button" type="submit">заказать звонок</button>
+            <button type="submit" class="button g-recaptcha"
+                    data-sitekey="6LdLQo0UAAAAAAEBcbkJeVNeB3x6wRhY_c8_KE1x"
+                    data-callback="YourOnSubmitFn">
+                заказать звонок
+            </button>
         </div>
     </form>
 

@@ -47,3 +47,16 @@ $(document).ready(function() {
         });
     });
 });
+
+
+function redyRecaptcha() {
+    let captchaAction = 'kariesy_net_forms';
+
+    grecaptcha.execute('6LcDTI0UAAAAAOgjhsEqD0k4r0ct4jMFUeijTiq3', {action: captchaAction})
+        .then(function (token) {
+            if (token) {
+                $('#token').val(token);
+                $('#captcha-action').val(captchaAction);
+            }
+        });
+}

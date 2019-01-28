@@ -21,15 +21,54 @@ class formHandler {
   public function sendEmail() {
     if ($this->isPostRequest()) {
 
-      // Определяем метод для обработки формы
-      // на основании данных из поля "formName"
-      $formHandlerMethod = 'defaultHandle';
-      if (isset($_POST['formName']) && class_exists(get_class($this), $_POST['formName'] . 'Handle')) {
-        $formHandlerMethod = $_POST['formName'] . 'Handle';
+      // Проверяем на валидность капчу от гугла
+      if (!isset($_POST['token'], $_POST['action'])) {
+        $this->response = 'Капча работает некорректно. Обратитесь к администратору!';
+
       }
-      $this->$formHandlerMethod();
-      if ($this->valid) {
-        mail($this->to, $this->subject, $this->message, $this->headers);
+      else {
+        $captcha_token = $_POST['token'];
+        $captcha_action = $_POST['action'];
+
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $params = [
+          'secret' => '6Lfwl4MUAAAAAKCP8ZV13J6ngN_A9RiPtzxM9CDi',
+          'response' => $captcha_token,
+          'remoteip' => $_SERVER['REMOTE_ADDR']
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $response = curl_exec($ch);
+        if(!empty($response)) $decoded_response = json_decode($response);
+
+        $success = false;
+
+        if ($decoded_response && $decoded_response->success && $decoded_response->action == $captcha_action && $decoded_response->score > 0) {
+          $success = $decoded_response->success;
+          // обрабатываем данные формы, которая защищена капчей
+        } else {
+          // прописываем действие, если пользователь оказался ботом
+        }
+
+        echo json_encode($result);
+
+
+        // Определяем метод для обработки формы
+        // на основании данных из поля "formName"
+        $formHandlerMethod = 'defaultHandle';
+        if (isset($_POST['formName']) && class_exists(get_class($this), $_POST['formName'] . 'Handle')) {
+          $formHandlerMethod = $_POST['formName'] . 'Handle';
+        }
+        $this->$formHandlerMethod();
+        if ($this->valid) {
+          mail($this->to, $this->subject, $this->message, $this->headers);
+        }
       }
     }
     $this->sendResponse();
