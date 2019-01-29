@@ -5192,6 +5192,10 @@ ul.price_types, .price_types li {
     background: none !important;
 }
 
+.price_types li:before {
+    display: none !important;
+}
+
 .price_select {
     display: none;
 }
