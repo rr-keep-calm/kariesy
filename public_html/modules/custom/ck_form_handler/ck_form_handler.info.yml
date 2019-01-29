@@ -1,0 +1,9 @@
+name: Keep Calm custom form handler
+description: Обработчик кастомных форм
+type: module
+core: 8.x
+version: 1.x
+package: KeepCalm
+
+dependencies:
+ - rest

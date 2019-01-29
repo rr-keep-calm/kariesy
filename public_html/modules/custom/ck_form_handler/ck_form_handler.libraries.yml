@@ -1,0 +1,5 @@
+form_handler:
+  version: 1
+  js:
+    //www.google.com/recaptcha/api.js?render=6LcDTI0UAAAAAOgjhsEqD0k4r0ct4jMFUeijTiq3&onload=redyRecaptcha: { type: external, attributes: { async: true, defer: true } }
+    js/formHandler.js: {attributes: { defer: true }}
