@@ -27,13 +27,13 @@ class formHandler {
 
       }
       else {
-        $captcha_token = $_POST['token'];
-        $captcha_action = $_POST['action'];
+        $captchaToken = $_POST['token'];
+        $captchaAction = $_POST['action'];
 
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
-          'secret' => '6Lfwl4MUAAAAAKCP8ZV13J6ngN_A9RiPtzxM9CDi',
-          'response' => $captcha_token,
+          'secret' => '6LcDTI0UAAAAAKm6YzyjVHVeZXnBhzUmJa4TUYKg',
+          'response' => $captchaToken,
           'remoteip' => $_SERVER['REMOTE_ADDR']
         ];
 
@@ -45,29 +45,19 @@ class formHandler {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec($ch);
-        if(!empty($response)) $decoded_response = json_decode($response);
+        if(!empty($response)) $decodedResponse = json_decode($response);
 
-        $success = false;
-
-        if ($decoded_response && $decoded_response->success && $decoded_response->action == $captcha_action && $decoded_response->score > 0) {
-          $success = $decoded_response->success;
-          // обрабатываем данные формы, которая защищена капчей
-        } else {
-          // прописываем действие, если пользователь оказался ботом
-        }
-
-        echo json_encode($result);
-
-
-        // Определяем метод для обработки формы
-        // на основании данных из поля "formName"
-        $formHandlerMethod = 'defaultHandle';
-        if (isset($_POST['formName']) && class_exists(get_class($this), $_POST['formName'] . 'Handle')) {
-          $formHandlerMethod = $_POST['formName'] . 'Handle';
-        }
-        $this->$formHandlerMethod();
-        if ($this->valid) {
-          mail($this->to, $this->subject, $this->message, $this->headers);
+        if ($decodedResponse && $decodedResponse->success && $decodedResponse->action == $captchaAction && $decodedResponse->score > 0) {
+          // Определяем метод для обработки формы
+          // на основании данных из поля "formName"
+          $formHandlerMethod = 'defaultHandle';
+          if (isset($_POST['formName']) && class_exists(get_class($this), $_POST['formName'] . 'Handle')) {
+            $formHandlerMethod = $_POST['formName'] . 'Handle';
+          }
+          $this->$formHandlerMethod();
+          if ($this->valid) {
+            mail($this->to, $this->subject, $this->message, $this->headers);
+          }
         }
       }
     }
@@ -127,6 +117,31 @@ class formHandler {
       if (isset($_POST['comment']) && !empty($_POST['comment'])) {
         $this->message .= "Комментарий\n {$_POST['comment']}";
       }
+
+      $this->headers = 'From: robot@kariesy.net';
+      $this->headers .= "\r\nReply-To: robot@kariesy.net";
+      $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
+      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+      $this->response = 'OK';
+      $this->valid = true;
+    }
+  }
+
+  protected function recallHandle()
+  {
+    // Проверяем что были переданы все праметры
+    if (!isset($_POST['phone'], $_POST['name']) ||
+      empty($_POST['name']) ||
+      empty($_POST['phone'])
+    ) {
+      $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    }
+    else {
+      $this->subject = 'Заказ звонка';
+
+      // Формируем тело письма
+      $this->message = "\"{$_POST['name']}\" просит с ним связаться по телефону \"{$_POST['phone']}\"";
 
       $this->headers = 'From: robot@kariesy.net';
       $this->headers .= "\r\nReply-To: robot@kariesy.net";

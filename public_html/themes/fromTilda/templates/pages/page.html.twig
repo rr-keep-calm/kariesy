@@ -168,16 +168,17 @@
 </footer>
 
 <div class="forms mfp-hide" id="form-recall">
-    <form action="/formHandler.php" class="form">
-        <input type="hidden" name="token" id="token">
-        <input type="hidden" name="action" id="captcha-action">
+    <form action="/formHandler.php" class="form" method="post" data-success_form="#form-normal">
+        <input type="hidden" name="token" class="token">
+        <input type="hidden" name="action" class="captcha-action">
+        <input type="hidden" name="formName" value="recall">
         <h4 class="form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами</h4>
 
         <div class="form_item">
             <label class="form_label">Ваше имя</label>
 
             <div class="form_data">
-                <input type="text" class="form_input">
+                <input type="text" name="name" class="form_input">
             </div>
         </div>
 
@@ -185,7 +186,7 @@
             <label class="form_label">Номер телефона</label>
 
             <div class="form_data">
-                <input type="tel" class="form_input">
+                <input type="tel" name="phone" class="form_input">
             </div>
         </div>
 
@@ -282,6 +283,8 @@
 
 <div class="forms __order mfp-hide" id="form-order">
     <form class="form" action="/formHandler.php" data-success_form="#form-normal">
+        <input type="hidden" name="token" class="token">
+        <input type="hidden" name="action" class="captcha-action">
         <input type="hidden" name="formName" value="appointment">
         <h3 class="form_title">Запись на прием</h3>
 

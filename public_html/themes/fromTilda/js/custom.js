@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Отправка формы "Записаться на приём"
-    $('#form-order, #form-question, #form-order-doctor-page').on('submit', 'form', function (e) {
+    $('#form-order, #form-question, #form-order-doctor-page, #form-recall').on('submit', 'form', function (e) {
         e.preventDefault();
         var form = this;
         // Получаем путь на который отправляются данные формы
@@ -55,8 +55,8 @@ function redyRecaptcha() {
     grecaptcha.execute('6LcDTI0UAAAAAOgjhsEqD0k4r0ct4jMFUeijTiq3', {action: captchaAction})
         .then(function (token) {
             if (token) {
-                $('#token').val(token);
-                $('#captcha-action').val(captchaAction);
+                $('input.token').val(token);
+                $('input.captcha-action').val(captchaAction);
             }
         });
 }
