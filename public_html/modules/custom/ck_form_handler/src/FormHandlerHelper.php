@@ -1,6 +1,7 @@
 <?php
+namespace Drupal\ck_form_handler;
 
-class formHandler {
+class FormHandlerHelper {
 
   protected $response = 'Бот';
   protected $to = 'rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
@@ -8,27 +9,22 @@ class formHandler {
   protected $message = '';
   protected $headers = '';
   protected $valid = false;
+  protected $formData = [];
 
-  /**
-   * Проверка на передачу данных формы методом POST
-   *
-   * @return bool
-   */
-  protected function isPostRequest() {
-    return (isset($_SERVER['REQUEST_METHOD']) && (strtoupper($_SERVER['REQUEST_METHOD']) == 'POST'));
+  public function __construct($formData) {
+    $this->formData = $formData;
   }
 
   public function sendEmail() {
-    if ($this->isPostRequest()) {
 
       // Проверяем на валидность капчу от гугла
-      if (!isset($_POST['token'], $_POST['action'])) {
+      if (!isset($this->formData['token'], $this->formData['action'])) {
         $this->response = 'Капча работает некорректно. Обратитесь к администратору!';
 
       }
       else {
-        $captchaToken = $_POST['token'];
-        $captchaAction = $_POST['action'];
+        $captchaToken = $this->formData['token'];
+        $captchaAction = $this->formData['action'];
 
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $params = [
@@ -45,14 +41,16 @@ class formHandler {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $response = curl_exec($ch);
-        if(!empty($response)) $decodedResponse = json_decode($response);
+        if(!empty($response)){
+          $decodedResponse = json_decode($response);
+        }
 
         if ($decodedResponse && $decodedResponse->success && $decodedResponse->action == $captchaAction && $decodedResponse->score > 0) {
           // Определяем метод для обработки формы
           // на основании данных из поля "formName"
           $formHandlerMethod = 'defaultHandle';
-          if (isset($_POST['formName']) && class_exists(get_class($this), $_POST['formName'] . 'Handle')) {
-            $formHandlerMethod = $_POST['formName'] . 'Handle';
+          if (isset($this->formData['formName']) && class_exists(get_class($this), $this->formData['formName'] . 'Handle')) {
+            $formHandlerMethod = $this->formData['formName'] . 'Handle';
           }
           $this->$formHandlerMethod();
           if ($this->valid) {
@@ -60,30 +58,28 @@ class formHandler {
           }
         }
       }
-    }
-    $this->sendResponse();
   }
 
-  protected function sendResponse() {
-    echo $this->response;
+  public function getResponse() {
+    return $this->response;
   }
 
   protected function defaultHandle()
   {
     // Проверяем что были переданы все праметры
-    if (!isset($_POST['what_exactly'], $_POST['name'], $_POST['phone']) ||
-      empty($_POST['what_exactly']) ||
-      empty($_POST['name']) ||
-      empty($_POST['phone'])
+    if (!isset($this->formData['what_exactly'], $this->formData['name'], $this->formData['phone']) ||
+      empty($this->formData['what_exactly']) ||
+      empty($this->formData['name']) ||
+      empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста заполните все поля';
     }
     else {
       // Формируем тело письма
-      $this->message = "Выбранная услуга: {$_POST['what_exactly']}\n\n";
+      $this->message = "Выбранная услуга: {$this->formData['what_exactly']}\n\n";
       $this->message .= "Данные заказчика\n\n";
-      $this->message .= "Имя: {$_POST['name']}\n";
-      $this->message .= "Телефон: {$_POST['phone']}\n";
+      $this->message .= "Имя: {$this->formData['name']}\n";
+      $this->message .= "Телефон: {$this->formData['phone']}\n";
 
       $this->headers = 'From: robot@kariesy.net';
       $this->headers .= "\r\nReply-To: robot@kariesy.net";
@@ -99,23 +95,23 @@ class formHandler {
   protected function appointmentHandle()
   {
     // Проверяем что были переданы все праметры
-    if (!isset($_POST['phone'], $_POST['name']) ||
-      empty($_POST['name']) ||
-      empty($_POST['phone'])
+    if (!isset($this->formData['phone'], $this->formData['name']) ||
+      empty($this->formData['name']) ||
+      empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
     }
     else {
       // Формируем тело письма
-      $this->message = "Запись на приём ко врачу: {$_POST['doctor']}\n\n";
-      $this->message .= "Выбранная услуга: {$_POST['service']}\n\n";
-      $this->message .= "Желаемая дата приёма: {$_POST['date']}\n\n";
-      $this->message .= "Желаемое время приёма: {$_POST['time']}\n\n";
+      $this->message = "Запись на приём ко врачу: {$this->formData['doctor']}\n\n";
+      $this->message .= "Выбранная услуга: {$this->formData['service']}\n\n";
+      $this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
+      $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";
       $this->message .= "Данные заказчика\n\n";
-      $this->message .= "Имя: {$_POST['name']}\n";
-      $this->message .= "Телефон: {$_POST['phone']}\n";
-      if (isset($_POST['comment']) && !empty($_POST['comment'])) {
-        $this->message .= "Комментарий\n {$_POST['comment']}";
+      $this->message .= "Имя: {$this->formData['name']}\n";
+      $this->message .= "Телефон: {$this->formData['phone']}\n";
+      if (isset($this->formData['comment']) && !empty($this->formData['comment'])) {
+        $this->message .= "Комментарий\n {$this->formData['comment']}";
       }
 
       $this->headers = 'From: robot@kariesy.net';
@@ -131,9 +127,9 @@ class formHandler {
   protected function recallHandle()
   {
     // Проверяем что были переданы все праметры
-    if (!isset($_POST['phone'], $_POST['name']) ||
-      empty($_POST['name']) ||
-      empty($_POST['phone'])
+    if (!isset($this->formData['phone'], $this->formData['name']) ||
+      empty($this->formData['name']) ||
+      empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
     }
@@ -141,7 +137,7 @@ class formHandler {
       $this->subject = 'Заказ звонка';
 
       // Формируем тело письма
-      $this->message = "\"{$_POST['name']}\" просит с ним связаться по телефону \"{$_POST['phone']}\"";
+      $this->message = "\"{$this->formData['name']}\" просит с ним связаться по телефону \"{$this->formData['phone']}\"";
 
       $this->headers = 'From: robot@kariesy.net';
       $this->headers .= "\r\nReply-To: robot@kariesy.net";
@@ -156,21 +152,21 @@ class formHandler {
   protected function questionHandle()
   {
     // Проверяем что были переданы все праметры
-    if (!isset($_POST['phone'], $_POST['name'], $_POST['question']) ||
-      empty($_POST['name']) ||
-      empty($_POST['question']) ||
-      empty($_POST['phone'])
+    if (!isset($this->formData['phone'], $this->formData['name'], $this->formData['question']) ||
+      empty($this->formData['name']) ||
+      empty($this->formData['question']) ||
+      empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста заполните все поля';
     }
     else {
       // Формируем тело письма
-      $this->message = "Вопрос для доктора: {$_POST['doctor']}\n\n";
-      $this->message .= "Имя: {$_POST['name']}\n";
-      $this->message .= "Телефон: {$_POST['phone']}\n\n";
-      $this->message .= "Вопрос\n {$_POST['question']}";
+      $this->message = "Вопрос для доктора: {$this->formData['doctor']}\n\n";
+      $this->message .= "Имя: {$this->formData['name']}\n";
+      $this->message .= "Телефон: {$this->formData['phone']}\n\n";
+      $this->message .= "Вопрос\n {$this->formData['question']}";
 
-      $this->subject = 'Вопрос для доктора: ' . $_POST['doctor'];
+      $this->subject = 'Вопрос для доктора: ' . $this->formData['doctor'];
 
       $this->headers = 'From: robot@kariesy.net';
       $this->headers .= "\r\nReply-To: robot@kariesy.net";
@@ -181,8 +177,4 @@ class formHandler {
       $this->valid = true;
     }
   }
-
 }
-
-$formHandler = new formHandler();
-$formHandler->sendEmail();
