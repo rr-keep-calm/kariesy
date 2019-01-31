@@ -5635,7 +5635,9 @@ ul.price_types, .price_types li {
     font: 14px/25px 'OpenSansLight';
     color: #524f50;
     margin-bottom: 10px;
-    padding-left: 80px;
+    padding-left: 19px;
+    max-height: 100px;
+    overflow-y: scroll;
 }
 
 .reviews_images {
