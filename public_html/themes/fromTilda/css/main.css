@@ -5533,6 +5533,7 @@ ul.price_types, .price_types li {
     border: 1px solid #eaf0f4;
     padding: 27px 24px 13px;
     margin-bottom: 10px;
+    min-height: 240px;
 }
 
 .reviews_top {
@@ -5687,7 +5688,7 @@ ul.price_types, .price_types li {
     background-image: url("../img/reviews-form.jpg");
     background-position: top left;
     background-repeat: no-repeat;
-    padding: 10px 39px 5px 45px;
+    padding: 10px 39px 6px 45px;
     background-size: cover;
     border-radius: 0 10px 10px 0;
 }
