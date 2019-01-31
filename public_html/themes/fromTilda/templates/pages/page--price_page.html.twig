@@ -3,3 +3,40 @@
 {% block content %}
     {{ page.content }}
 {% endblock %}
+
+{% block afterFooterAdd %}
+    <div class="forms mfp-hide" id="form-recall-price">
+        <form id="recall-form-on-price-page" action="/keep-calm-custom-form-handler" class="form" method="post" data-success_form="#form-normal">
+            <input type="hidden" name="token" class="token">
+            <input type="hidden" name="action" class="captcha-action">
+            <input type="hidden" name="formName" value="recallPrice">
+            <h4 class="form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами<br>для уточнения деталей</h4>
+
+            <div class="form_item">
+                <label class="form_label">Ваше имя</label>
+
+                <div class="form_data">
+                    <input type="text" name="name" class="form_input">
+                </div>
+            </div>
+
+            <div class="form_item">
+                <label class="form_label">Номер телефона</label>
+
+                <div class="form_data">
+                    <input type="tel" name="phone" class="form_input">
+                </div>
+            </div>
+
+            <div class="form_button">
+                <button type="submit" class="button g-recaptcha"
+                        data-sitekey="6LdLQo0UAAAAAAEBcbkJeVNeB3x6wRhY_c8_KE1x">
+                    Записаться на приём
+                </button>
+            </div>
+        </form>
+
+        <button type="button" class="forms_close popup-close"></button>
+    </div>
+
+{% endblock %}

@@ -1,11 +1,18 @@
 $(document).ready(function() {
     // Отправка формы "Записаться на приём"
-    $('#form-order, #form-question, #form-order-doctor-page, #form-recall').on('submit', 'form', function (e) {
+    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price').on('submit', 'form', function (e) {
         e.preventDefault();
         var form = this;
         var action = $(form).attr('action');
         var data = serializeFormJSON(form);
 
+        // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
+        var id = $(form).attr('id');
+        if (id == 'recall-form-on-price-page') {
+            // Вычисляем активный таб
+            var link = $(".price .price_types .ui-state-active a");
+            data.whatPriceTab = $(link).text() + $(link).attr('href');
+        }
 
         let sessionToken = new Promise((resolve, reject) => {
             $.ajax({
@@ -46,7 +53,10 @@ $(document).ready(function() {
                         }
                     },
                     error: response => {
-                        alert('ERROR');
+                        alert('Произошла ошибка, пожалуйста повторите попытку позже.');
+                    },
+                    complete: response => {
+                        redyRecaptcha();
                     },
                 });
             },
