@@ -1748,11 +1748,11 @@ img.mfp-img {
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     display: block;
-    padding: 15px 30px 14px 20px;
+    padding: 2px 30px 14px 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    height: 50px;
+    height: 25px;
     border: 1px solid #e8eaeb;
 }
 
@@ -1825,7 +1825,7 @@ img.mfp-img {
 }
 
 .select2-results__option {
-    padding: 15px 21px;
+    padding: 2px 21px;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -5687,7 +5687,7 @@ ul.price_types, .price_types li {
     background-image: url("../img/reviews-form.jpg");
     background-position: top left;
     background-repeat: no-repeat;
-    padding: 50px 39px 23px 45px;
+    padding: 10px 39px 5px 45px;
     background-size: cover;
     border-radius: 0 10px 10px 0;
 }
@@ -5696,7 +5696,7 @@ ul.price_types, .price_types li {
     font: 30px/35px 'GothamProLight';
     color: #191919;
     letter-spacing: -0.3px;
-    margin-bottom: 42px;
+    margin-bottom: 5px;
 }
 
 .reviews_label {
@@ -5711,7 +5711,16 @@ ul.price_types, .price_types li {
 }
 
 .reviews_form-item {
-    margin-bottom: 36px;
+    margin-bottom: 15px;
+}
+
+.review_form_item-fio {
+    width: 100%;
+    padding-left: 20px;
+    border: 1px solid #e8eaeb;
+    height: 25px;
+    color: #1d1e1e;
+    font: 14px 'OpenSansLight';
 }
 
 .reviews_form-item.__offset-min {
