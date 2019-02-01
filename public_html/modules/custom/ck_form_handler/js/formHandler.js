@@ -10,13 +10,13 @@ $(document).ready(function() {
         }
     }
 
-    function checkDataReadyAndSendForm(action, successForm) {
+    function checkDataReadyAndSendForm(action, form) {
         if(window.dataIsReady == false) {
             window.setTimeout(function() {
-                checkDataReadyAndSendForm(action, successForm);
+                checkDataReadyAndSendForm(action, form);
             }, 100);
         } else {
-            sendForm(action, successForm)
+            sendForm(action, form)
         }
     }
 
@@ -50,6 +50,13 @@ $(document).ready(function() {
 
         // Собираем информацию для отправки
         var form = this;
+
+        // Если есть экран блокирующий форму пока она не отвветила, то активируем его
+        var wait = $(form).siblings('.wait-form');
+        if ($(wait).length) {
+            $(wait).show();
+        }
+
         var action = $(form).attr('action');
         var successForm = $(form).data('success_form');
         var id = $(form).attr('id');
@@ -73,11 +80,11 @@ $(document).ready(function() {
             window.dataIsReady = true;
         }
 
-        checkDataReadyAndSendForm(action, successForm);
+        checkDataReadyAndSendForm(action, form);
 
     });
 
-    function sendForm (action, successForm)
+    function sendForm (action, form)
     {
         let sessionToken = new Promise((resolve, reject) => {
             $.ajax({
@@ -107,6 +114,7 @@ $(document).ready(function() {
                     success: response => {
                         response = $.parseJSON(response);
                         if (response.text == 'OK') {
+                            var successForm = $(form).data('success_form');
                             if (successForm) {
                                 openForm(successForm);
                             } else {
@@ -123,6 +131,12 @@ $(document).ready(function() {
                         redyRecaptcha();
                         window.dataIsReady = false;
                         window.data = false;
+
+                        // Если есть экран блокирующий форму скрываем его
+                        var wait = $(form).siblings('.wait-form');
+                        if ($(wait).length) {
+                            $(wait).hide();
+                        }
                     },
                 });
             },
@@ -155,6 +169,8 @@ $(document).ready(function() {
         });
         return o;
     };
+
+    redyRecaptcha();
 });
 
 
