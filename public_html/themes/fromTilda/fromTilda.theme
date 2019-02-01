@@ -155,6 +155,14 @@ function fromTilda_preprocess_page(&$variables) {
     $variables['doctorPhotoUrl']['#markup'] = $url;
     $defaultDoctor = $node->id();
     $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
+
+    // На странице доктора нужен список всех клиник для формы отзыва
+    $variables['clinics'] = [];
+    $clinicNids = \Drupal::entityQuery('node')->condition('type','clinic')->execute();
+    $clinicNodes =  \Drupal\node\Entity\Node::loadMultiple($clinicNids);
+    foreach ($clinicNodes as $clinicNode) {
+      $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
+    }
   }
 
   // Если обращение идёт к странице услуги, то запоминаем тип услуги для
@@ -191,6 +199,7 @@ function fromTilda_preprocess_page(&$variables) {
         $serviceTypesAll[$serviceType['target_id']]['doctors'][]['name'] = $node->getTitle();
       }
     }
+    $variables['doctors'][$node->id()] = $node->getTitle();
   }
   if ($defaulServiceType) {
     foreach ($defaulServiceType as $key => &$defaulServiceTypeItem) {

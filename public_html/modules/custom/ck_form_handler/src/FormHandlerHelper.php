@@ -1,9 +1,12 @@
 <?php
 namespace Drupal\ck_form_handler;
 
+use \Drupal\node\Entity\Node;
+use \Drupal\file\Entity\File;
+
 class FormHandlerHelper {
 
-  protected $response = 'Бот';
+  protected $response = 'Произошла ошибка, пожалуйста повторите попытку позже.';
   protected $to = 'rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
   protected $subject = 'Запись на приём';
   protected $message = '';
@@ -199,6 +202,65 @@ class FormHandlerHelper {
       $this->message .= "Вопрос\n {$this->formData['question']}";
 
       $this->subject = 'Вопрос для доктора: ' . $this->formData['doctor'];
+
+      $this->headers = 'From: robot@kariesy.net';
+      $this->headers .= "\r\nReply-To: robot@kariesy.net";
+      $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
+      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+      $this->response = 'OK';
+      $this->valid = true;
+    }
+  }
+
+  protected function reviewHandle()
+  {
+    // Проверяем что были переданы все праметры
+    if (!isset($this->formData['fio'], $this->formData['review-text']) ||
+      empty($this->formData['fio']) ||
+      empty($this->formData['review-text'])
+    ) {
+      $this->response = 'Пожалуйста заполните все поля';
+    }
+    else {
+      // Проверяем были ли переданы фотографии и обрабатываем их при наличии
+      $files = [];
+      $path = 'review/' . date('Y-m');
+      foreach ($this->formData as $key => $value) {
+        if (preg_match('/files(\d)+base/', $key, $matches)) {
+          $img = new Base64Image($value, $this->formData['files'.$matches[1].'name']);
+          $img->setFileDirectory($path);
+          $file = file_save_data($img->getFileData(), 'public://' . $path . '/' . $img->getFileName() , FILE_EXISTS_REPLACE);
+          $files[] = $file->id();
+        }
+      }
+
+      // Создаём отзыв по переданным данным
+      // Create node object and save it.
+      $nodeCreate = [
+        'type'        => 'review',
+        'title'       => $this->formData['fio'] . ' - ' . date('d.m.Y'),
+        'field_doctor' => [$this->formData['doctor']],
+        'field_clinic' => [$this->formData['clinic']],
+        'field_review_text' => $this->formData['review-text']
+      ];
+      if ($files) {
+        foreach($files as $fid) {
+          $nodeCreate['field_photos_of_review'][] = [
+            'target_id' => $fid
+          ];
+        }
+      }
+      $node = Node::create($nodeCreate);
+      $node->save();
+      $nid = $node->id();
+      $request = \Drupal::request();
+      $origin = $request->headers->get('origin');
+
+      // Формируем тело письма
+      $this->message = "Ссылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
+
+      $this->subject = 'Новый отзыв на сайте "' . $origin . '"';
 
       $this->headers = 'From: robot@kariesy.net';
       $this->headers .= "\r\nReply-To: robot@kariesy.net";
