@@ -163,6 +163,20 @@ function fromTilda_preprocess_page(&$variables) {
     foreach ($clinicNodes as $clinicNode) {
       $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
     }
+
+    // Получаем блок с отзывами для доктора
+    // Получаем идентификаторы отзывов относящихся к просматриваемому доктору
+    $reviewsNids = \Drupal::entityQuery('node')
+      ->condition('type','review')
+      ->condition('field_doctor', $node->id())
+      ->execute();
+    $viewReviews = \Drupal\views\Views::getView('reviews');
+    $viewReviews->setDisplay('block_1');
+    $viewReviews->setArguments([implode('+', $reviewsNids)]);
+    $renderReviews = $viewReviews->render();
+    if (count($renderReviews['#rows']) > 0) {
+      $variables['reviews'] = \Drupal::service('renderer')->render($renderReviews);
+    }
   }
 
   // Если обращение идёт к странице услуги, то запоминаем тип услуги для

@@ -5649,7 +5649,7 @@ ul.price_types, .price_types li {
     margin-bottom: 10px;
     padding-left: 19px;
     max-height: 100px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .reviews_images {

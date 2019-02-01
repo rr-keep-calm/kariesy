@@ -1,0 +1,7 @@
+{% if items|length > 0 %}
+    <div class="reviews_images">
+        {% for item in items %}
+            <img src="{{ item.content }}" alt="">
+        {% endfor %}
+    </div>
+{% endif %}
