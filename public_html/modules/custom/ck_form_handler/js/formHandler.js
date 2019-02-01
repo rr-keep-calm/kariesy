@@ -169,8 +169,6 @@ $(document).ready(function() {
         });
         return o;
     };
-
-    redyRecaptcha();
 });
 
 
