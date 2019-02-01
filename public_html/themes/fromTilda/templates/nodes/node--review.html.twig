@@ -1,0 +1,63 @@
+{% if (view_mode == 'teaser') %}
+    <article class="reviews_item">
+        <div class="reviews_top">
+            <div class="reviews_human">
+                <div class="reviews_image">
+                </div>
+
+                <div class="reviews_human-content">
+                    {% set nameParts = label|render|striptags|split('-') %}
+                    <div class="reviews_name">{{ nameParts.0 }}</div>
+                    {% set createdDate = node.getCreatedTime|format_date('rus') %}
+                    <div class="reviews_date">{{ createdDate }}</div>
+                </div>
+            </div>
+
+            <ul class="reviews_about">
+                <li>О враче: {{ content.field_doctor }}</li>
+                <li>Клиника: {{ content.field_clinic }}</li>
+            </ul>
+        </div>
+
+        <div class="reviews_text">{{ content.field_review_text }}</div>
+
+        {{ content.field_photos_of_review }}
+    </article>
+{% else %}
+    {%
+        set classes = [
+        'node',
+        'node--type-' ~ node.bundle|clean_class,
+        node.isPromoted() ? 'node--promoted',
+        node.isSticky() ? 'node--sticky',
+        not node.isPublished() ? 'node--unpublished',
+        view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    ]
+    %}
+    {{ attach_library('classy/node') }}
+    <article{{ attributes.addClass(classes) }}>
+
+        {{ title_prefix }}
+        {% if not page %}
+            <h2{{ title_attributes }}>
+                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+            </h2>
+        {% endif %}
+        {{ title_suffix }}
+
+        {% if display_submitted %}
+            <footer class="node__meta">
+                {{ author_picture }}
+                <div{{ author_attributes.addClass('node__submitted') }}>
+                    {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+                    {{ metadata }}
+                </div>
+            </footer>
+        {% endif %}
+
+        <div{{ content_attributes.addClass('node__content') }}>
+            {{ content }}
+        </div>
+
+    </article>
+{% endif %}

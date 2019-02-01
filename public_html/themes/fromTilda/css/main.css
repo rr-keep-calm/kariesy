@@ -174,6 +174,17 @@ ul {
     list-style: none;
 }
 
+.wait-form {
+    background-image: url("../img/loading_spinner.gif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1000;
+    display: none;
+}
+
 a:hover,
 a:active {
     outline: none;
@@ -1748,11 +1759,11 @@ img.mfp-img {
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     display: block;
-    padding: 15px 30px 14px 20px;
+    padding: 2px 30px 14px 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    height: 50px;
+    height: 25px;
     border: 1px solid #e8eaeb;
 }
 
@@ -1825,7 +1836,7 @@ img.mfp-img {
 }
 
 .select2-results__option {
-    padding: 15px 21px;
+    padding: 2px 21px;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -5421,6 +5432,7 @@ ul.price_types, .price_types li {
     margin-left: 20px;
     -ms-flex-negative: 0;
     flex-shrink: 0;
+    position: relative;
 }
 
 .reviews_select {
@@ -5533,6 +5545,7 @@ ul.price_types, .price_types li {
     border: 1px solid #eaf0f4;
     padding: 27px 24px 13px;
     margin-bottom: 10px;
+    min-height: 240px;
 }
 
 .reviews_top {
@@ -5634,7 +5647,9 @@ ul.price_types, .price_types li {
     font: 14px/25px 'OpenSansLight';
     color: #524f50;
     margin-bottom: 10px;
-    padding-left: 80px;
+    padding-left: 19px;
+    max-height: 100px;
+    overflow-y: auto;
 }
 
 .reviews_images {
@@ -5687,7 +5702,7 @@ ul.price_types, .price_types li {
     background-image: url("../img/reviews-form.jpg");
     background-position: top left;
     background-repeat: no-repeat;
-    padding: 50px 39px 23px 45px;
+    padding: 10px 39px 6px 45px;
     background-size: cover;
     border-radius: 0 10px 10px 0;
 }
@@ -5696,7 +5711,7 @@ ul.price_types, .price_types li {
     font: 30px/35px 'GothamProLight';
     color: #191919;
     letter-spacing: -0.3px;
-    margin-bottom: 42px;
+    margin-bottom: 5px;
 }
 
 .reviews_label {
@@ -5711,7 +5726,16 @@ ul.price_types, .price_types li {
 }
 
 .reviews_form-item {
-    margin-bottom: 36px;
+    margin-bottom: 15px;
+}
+
+.review_form_item-fio {
+    width: 100%;
+    padding-left: 20px;
+    border: 1px solid #e8eaeb;
+    height: 25px;
+    color: #1d1e1e;
+    font: 14px 'OpenSansLight';
 }
 
 .reviews_form-item.__offset-min {

@@ -1,19 +1,91 @@
 $(document).ready(function() {
-    // Отправка формы "Записаться на приём"
-    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price').on('submit', 'form', function (e) {
+
+    window.data = false;
+    window.dataIsReady = false;
+
+    // Скрыть ссылку на загрузку файлов если технология не поддерживается
+    if (!window.File || !window.FileList || !window.FileReader) {
+        if ($('.jfilestyle').length) {
+            $('.jfilestyle').hide();
+        }
+    }
+
+    function checkDataReadyAndSendForm(action, form) {
+        if(window.dataIsReady == false) {
+            window.setTimeout(function() {
+                checkDataReadyAndSendForm(action, form);
+            }, 100);
+        } else {
+            sendForm(action, form)
+        }
+    }
+
+    function readFile(files, length, step, readForce)
+    {
+        if(readForce == true) {
+            if (files[step].type.indexOf("image") == 0) {
+                window.fileReader = new FileReader();
+                window.fileReader.readAsDataURL(files[step]);
+                readFile(files, length, step, false);
+            }
+        } else if(window.fileReader.readyState != 2) {
+            window.setTimeout(function() {
+                readFile(files, length, step, false);
+            }, 100);
+        } else {
+            window.data['files'+step+'base'] = window.fileReader.result;
+            window.data['files'+step+'name'] = files[step].name;
+            step++;
+            if (step < length) {
+                readFile(files, length, step, true);
+            } else {
+                window.dataIsReady = true;
+            }
+        }
+    }
+
+    // Отправка форм
+    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review').on('submit', 'form', function (e) {
         e.preventDefault();
+
+        // Собираем информацию для отправки
         var form = this;
+
+        // Если есть экран блокирующий форму пока она не отвветила, то активируем его
+        var wait = $(form).siblings('.wait-form');
+        if ($(wait).length) {
+            $(wait).show();
+        }
+
         var action = $(form).attr('action');
-        var data = serializeFormJSON(form);
+        var successForm = $(form).data('success_form');
+        var id = $(form).attr('id');
+        window.data = serializeFormJSON(form);
 
         // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
-        var id = $(form).attr('id');
         if (id == 'recall-form-on-price-page') {
             // Вычисляем активный таб
             var link = $(".price .price_types .ui-state-active a");
-            data.whatPriceTab = $(link).text() + $(link).attr('href');
+            window.data.whatPriceTab = $(link).text() + $(link).attr('href');
         }
 
+        if (id == 'review-form-on-doctor-page') {
+            var files = $("#photos").prop("files");
+            if (files.length > 0) {
+                readFile(files, files.length, 0, true);
+            } else {
+                window.dataIsReady = true;
+            }
+        } else {
+            window.dataIsReady = true;
+        }
+
+        checkDataReadyAndSendForm(action, form);
+
+    });
+
+    function sendForm (action, form)
+    {
         let sessionToken = new Promise((resolve, reject) => {
             $.ajax({
                 url: '/rest/session/token',
@@ -38,7 +110,7 @@ $(document).ready(function() {
                         'X-CSRF-Token': token,
                     },
                     dataType: 'json',
-                    data: JSON.stringify(data),
+                    data: JSON.stringify(window.data),
                     success: response => {
                         response = $.parseJSON(response);
                         if (response.text == 'OK') {
@@ -57,11 +129,19 @@ $(document).ready(function() {
                     },
                     complete: response => {
                         redyRecaptcha();
+                        window.dataIsReady = false;
+                        window.data = false;
+
+                        // Если есть экран блокирующий форму скрываем его
+                        var wait = $(form).siblings('.wait-form');
+                        if ($(wait).length) {
+                            $(wait).hide();
+                        }
                     },
                 });
             },
         );
-    });
+    }
 
     $('#form-order, #form-order-doctor-page').on('change', 'select.service-type', function () {
         // Получаем всех докторов, которые оказывают выбранную услугу
@@ -89,6 +169,8 @@ $(document).ready(function() {
         });
         return o;
     };
+
+    redyRecaptcha();
 });
 
 
