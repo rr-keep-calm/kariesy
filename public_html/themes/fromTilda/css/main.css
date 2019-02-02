@@ -3738,6 +3738,9 @@ img.mfp-img {
     flex-shrink: 0;
     margin-top: 9px;
 }
+#block-fromtilda-content ul li:before {
+	margin-top: 0;
+}
 
 .doctor_images {
     display: -webkit-box;
