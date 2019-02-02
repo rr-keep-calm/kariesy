@@ -1759,12 +1759,17 @@ img.mfp-img {
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     display: block;
-    padding: 2px 30px 14px 20px;
+    padding: 15px 30px 14px 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    height: 25px;
+    height: 50px;
     border: 1px solid #e8eaeb;
+}
+
+#review-form-on-doctor-page .select2-container .select2-selection--single .select2-selection__rendered {
+    padding: 2px 30px 14px 20px;
+    height: 25px;
 }
 
 .select2-container .select2-selection--single .select2-selection__clear {
@@ -1836,11 +1841,15 @@ img.mfp-img {
 }
 
 .select2-results__option {
-    padding: 2px 21px;
+    padding: 15px 21px;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     -webkit-user-select: none;
+}
+
+#review-form-on-doctor-page .select2-results__option {
+    padding: 2px 21px;
 }
 
 .select2-results__option:not(:last-child) {
@@ -5702,15 +5711,23 @@ ul.price_types, .price_types li {
     background-image: url("../img/reviews-form.jpg");
     background-position: top left;
     background-repeat: no-repeat;
-    padding: 10px 39px 6px 45px;
+    padding: 50px 39px 23px 45px;
     background-size: cover;
     border-radius: 0 10px 10px 0;
+}
+
+#review-form-on-doctor-page .reviews_form {
+    padding: 10px 39px 5px 45px;
 }
 
 .reviews_form-title {
     font: 30px/35px 'GothamProLight';
     color: #191919;
     letter-spacing: -0.3px;
+    margin-bottom: 42px;
+}
+
+#review-form-on-doctor-page .reviews_form-title {
     margin-bottom: 5px;
 }
 
@@ -5726,6 +5743,10 @@ ul.price_types, .price_types li {
 }
 
 .reviews_form-item {
+    margin-bottom: 36px;
+}
+
+#review-form-on-doctor-page .reviews_form-item {
     margin-bottom: 15px;
 }
 
