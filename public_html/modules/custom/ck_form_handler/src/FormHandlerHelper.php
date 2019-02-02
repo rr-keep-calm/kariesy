@@ -108,8 +108,8 @@ class FormHandlerHelper {
       // Формируем тело письма
       $this->message = "Запись на приём ко врачу: {$this->formData['doctor']}\n\n";
       $this->message .= "Выбранная услуга: {$this->formData['service']}\n\n";
-      $this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
-      $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";
+      /*$this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
+      $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";*/
       $this->message .= "Данные заказчика\n\n";
       $this->message .= "Имя: {$this->formData['name']}\n";
       $this->message .= "Телефон: {$this->formData['phone']}\n";
