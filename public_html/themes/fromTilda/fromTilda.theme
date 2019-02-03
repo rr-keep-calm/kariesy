@@ -34,7 +34,7 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
     $page_title = \Drupal::service('title_resolver')
       ->getTitle($request, $route_match->getRouteObject());
 
-    if ($page_title) {
+    if ($page_title && \Drupal::routeMatch()->getRouteName() != 'price_page.price_page') {
       $variables['breadcrumb'][] = [
         'text' => $page_title,
       ];
