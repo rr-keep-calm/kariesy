@@ -3738,6 +3738,9 @@ img.mfp-img {
     flex-shrink: 0;
     margin-top: 9px;
 }
+#block-fromtilda-content ul li:before {
+	margin-top: 0;
+}
 
 .doctor_images {
     display: -webkit-box;
@@ -6478,7 +6481,7 @@ ul.price_types, .price_types li {
 .services_base-text h4 {
     font: 20px 'RobotoRegular';
     color: #303234;
-    margin-bottom: 2px;
+    margin-bottom: 10px;
 }
 
 .services_base-text p {
@@ -8853,7 +8856,7 @@ ul.price_types, .price_types li {
     .services_base-text h4 {
         padding-top: 0;
         font-size: 16px;
-        margin-bottom: 0;
+        margin-bottom: 10px;
     }
 
     .services_base-text p {
