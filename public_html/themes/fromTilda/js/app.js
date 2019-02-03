@@ -235,44 +235,6 @@ var map3 = {
 	]
 };
 
-var map4 = {
-	id: 'map-4',
-	zoom: 5,
-	center: {
-		lat: 54.391143,
-		lng: 41.561887
-	},
-	markers: [
-		{
-			lat: 55.888526,
-			lng: 37.558169,
-
-			content: '' +
-			'<h3 class="__no-offset">Москва</h3>' +
-			'<p>3 клиники</p>'
-		},
-		{
-			lat: 56.344310,
-			lng: 43.920870,
-
-			content: '' +
-			'<h3 class="__no-offset">Нижний Новгород</h3>' +
-			'<p>3 клиники</p>'
-		},
-		{
-			lat: 51.836865,
-			lng: 39.169186,
-
-			content: '' +
-			'<h3 class="__no-offset">Воронеж</h3>' +
-			'<p>3 клиники</p>'
-		}
-	]
-};
-
-var map5 = jQuery.extend({}, map4);
-map5['id'] = 'map-5';
-
 var map6 = {
 	id: 'map-6',
 	zoom: 14,
@@ -295,7 +257,7 @@ if ($(window).width() < 768) {
 }
 
 
-var mapsData = [map1, map2, map3, map4, map5, map6];
+var mapsData = [map1, map2, map3, map6];
 
 var maps = [];
 function initMap() {
