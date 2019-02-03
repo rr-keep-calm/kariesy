@@ -6,3 +6,14 @@ function price_page_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+function price_page_page_attachments(array &$page) {
+  $description = [
+    '#tag' => 'meta',
+    '#attributes' => [
+      'name' => 'description',
+      'content' => 'Подробный прайс-лист на цены в стоматологии «Кариесу.нет» с описанием услуг. Скидка на первое посещение по купону с сайта, а так же дисконтная карта в подарок',
+    ],
+  ];
+  $page['#attached']['html_head'][] = [$description, 'description'];
+}
