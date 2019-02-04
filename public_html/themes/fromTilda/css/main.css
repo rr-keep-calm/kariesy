@@ -6512,6 +6512,7 @@ ul.price_types, .price_types li {
 .services_text strong {
     font: 16px 'RobotoRegular';
     color: #231f20;
+    display: inline;
 }
 
 .services_mobile {
