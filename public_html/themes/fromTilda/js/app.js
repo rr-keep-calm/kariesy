@@ -492,8 +492,20 @@ app.addModule('popup', function () {
 				callbacks: {
 					beforeOpen: function () {
 						$('html').addClass('hidden');
+						var eventLabel = $(this.items[this.index]).attr('data-eventLabel');
+						var containerId = $(this.items[this.index]).attr('href');
+						if (typeof eventLabel === typeof undefined || eventLabel === false) {
+							eventLabel = '';
+						}
+						if (eventLabel != '') {
+							$(containerId).find('form').attr('data-eventLabel', eventLabel);
+						} else {
+							$(containerId).find('form').attr('data-eventLabel', '');
+						}
 					},
 					afterClose: function () {
+						var containerId = $(this.items[this.index]).attr('href');
+						$(containerId).find('form').attr('data-eventLabel', '');
 						$('html').removeClass('hidden');
 					}
 				}
