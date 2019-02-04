@@ -211,6 +211,26 @@
                                 {% endif %}
                             </div>
                         </div>
+                        <div class="doctor_plan-row">
+                            <div class="doctor_col-1">
+                                <div class="doctor_day">Воскресенье</div>
+                            </div>
+                            <div class="doctor_col-2">
+                                {% if schedule.firstShift.suClinic is not empty %}
+                                    <a href="{{ schedule.firstShift.suClinic.url|raw }}"
+                                       class="doctor_address">{{ schedule.firstShift.suClinic.name }}</a>
+                                {% else %}
+                                    &mdash;
+                                {% endif %}
+                            </div>
+                            <div class="doctor_col-3">
+                                {% if schedule.secondShift.suClinic is not empty %}
+                                    <a href="{{ schedule.secondShift.suClinic.url|raw }}" class="doctor_address">{{ schedule.secondShift.suClinic.name }}</a>
+                                {% else %}
+                                    &mdash;
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
