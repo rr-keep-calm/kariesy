@@ -2,6 +2,7 @@ global-css:
   css:
    theme:
     css/main.css: {}
+    css/custom.css: {}
 global-js:
   js:
    js/jquery-1.10.2.min.js: {}
@@ -25,4 +26,3 @@ jquery-ui:
   css:
     theme:
       //code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css: { type: external }
-      css/custom.css: {}
