@@ -114,6 +114,34 @@ $(document).ready(function() {
                     success: response => {
                         response = $.parseJSON(response);
                         if (response.text == 'OK') {
+                            // смотрим есть ли метка в атрибутах самой формы
+                            var eventLabel = '';
+                            var eventLabelAttr = $(form).attr('data-eventLabel');
+                            if (typeof eventLabelAttr !== typeof undefined && eventLabelAttr !== false) {
+                                eventLabel = eventLabelAttr;
+                            }
+
+                            if (eventLabel == '') {
+                                var parentContainerId = $(form).closest('div').attr('id');
+                                if (parentContainerId == 'form-recall') {
+                                    eventLabel = 'form-recall';
+                                } else if (parentContainerId == 'form-order' || parentContainerId == 'form-order-doctor-page') {
+                                    eventLabel = 'form-order';
+                                } else if (parentContainerId == 'form-recall-price') {
+                                    eventLabel = 'form-price-main';
+                                } else if (parentContainerId == 'form-question') {
+                                    eventLabel = 'form-question';
+                                }
+                            }
+
+                            if (eventLabel != '') {
+                                dataLayer.push({
+                                    'event': 'event-to-ua',
+                                    'eventCategory': 'Form',
+                                    'eventAction': 'Send',
+                                    'eventLabel': eventLabel
+                                });
+                            }
                             var successForm = $(form).data('success_form');
                             if (successForm) {
                                 openForm(successForm);
