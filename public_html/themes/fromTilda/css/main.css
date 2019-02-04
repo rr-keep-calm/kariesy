@@ -5677,8 +5677,6 @@ ul.price_types, .price_types li {
     color: #524f50;
     margin-bottom: 10px;
     padding-left: 19px;
-    max-height: 100px;
-    overflow-y: auto;
 }
 
 .reviews_images {
