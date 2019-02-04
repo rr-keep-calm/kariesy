@@ -177,25 +177,6 @@ app.addModule('form', function () {
 		return new Date(date.getTime() + 24 * 60 * 60 * 1000);
 	}
 });
-var map1 = {
-	id: 'map-1',
-	zoom: 14,
-	markers: [
-		{
-			lat: 55.753913,
-			lng: 37.603319,
-			
-			content: '<p>Большая Никитская ул., 3</p>'
-		},
-		{
-			lat: 55.755474,
-			lng: 37.610123,
-			
-			content: '<p>Большая Никитская ул., 3</p>'
-		}
-	]
-};
-
 var map2 = {
 	id: 'map-2',
 
@@ -257,7 +238,7 @@ if ($(window).width() < 768) {
 }
 
 
-var mapsData = [map1, map2, map3, map6];
+var mapsData = [map2, map3, map6];
 
 var maps = [];
 function initMap() {
