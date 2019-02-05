@@ -143,54 +143,68 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
  */
 function fromTilda_preprocess_page(&$variables) {
   $defaultDoctor = false;
-  if (($node = \Drupal::routeMatch()->getParameter('node')) &&
-    $node->getType() == 'doktor'
-  ) {
-    $description = '';
-    $specializations = $node->get('field_specialization')->getValue();
-    $specializations = array_map(function ($v) {
-      return $v['value'];
-    }, $specializations);
-    $description .= implode(', ', $specializations);
-    if (!$node->get('field_experience_since_what_year')->isEmpty()) {
-      $description .= ', клинический стаж с ';
-      $description .= $node->get('field_experience_since_what_year')
-        ->getValue()[0]['value'];
-      $description .= ' года';
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    if ($node->getType() == 'doktor') {
+      $doctorNidForReviews = $node->id();
+      $description = '';
+      $specializations = $node->get('field_specialization')->getValue();
+      $specializations = array_map(function ($v) {
+        return $v['value'];
+      }, $specializations);
+      $description .= implode(', ', $specializations);
+      if (!$node->get('field_experience_since_what_year')->isEmpty()) {
+        $description .= ', клинический стаж с ';
+        $description .= $node->get('field_experience_since_what_year')
+          ->getValue()[0]['value'];
+        $description .= ' года';
+      }
+      $description = trim($description);
+      $descriptionParts = explode(' ', $description);
+      $descriptionParts[0] = mb_convert_case($descriptionParts[0], MB_CASE_TITLE, 'UTF-8');
+      $variables['doctorDescription']['#markup'] = implode(' ', $descriptionParts);
+      $url = '';
+      if (!$node->field_foto->isEmpty()) {
+        $uri = $node->field_foto->entity->getFileUri();
+        $url = file_create_url($uri);
+      }
+      $variables['doctorPhotoUrl']['#markup'] = $url;
+      $defaultDoctor = $node->id();
+      $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
+    } elseif ($node->getType() == 'clinic') {
+        $clinicNidForReviews = $node->id();
     }
-    $description = trim($description);
-    $descriptionParts = explode(' ', $description);
-    $descriptionParts[0] = mb_convert_case($descriptionParts[0], MB_CASE_TITLE, 'UTF-8');
-    $variables['doctorDescription']['#markup'] = implode(' ', $descriptionParts);
-    $url = '';
-    if (!$node->field_foto->isEmpty()) {
-      $uri = $node->field_foto->entity->getFileUri();
-      $url = file_create_url($uri);
-    }
-    $variables['doctorPhotoUrl']['#markup'] = $url;
-    $defaultDoctor = $node->id();
-    $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
+  }
 
-    // На странице доктора нужен список всех клиник для формы отзыва
+  if (isset($doctorNidForReviews) || isset($clinicNidForReviews)) {
+
+    // На странице доктора и клиники нужен список всех клиник для формы отзыва
     $variables['clinics'] = [];
-    $clinicNids = \Drupal::entityQuery('node')->condition('type','clinic')->execute();
-    $clinicNodes =  \Drupal\node\Entity\Node::loadMultiple($clinicNids);
+    $clinicNids = \Drupal::entityQuery('node')
+      ->condition('type', 'clinic')
+      ->execute();
+    $clinicNodes = \Drupal\node\Entity\Node::loadMultiple($clinicNids);
     foreach ($clinicNodes as $clinicNode) {
       $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
     }
 
-    // Получаем блок с отзывами для доктора
+    // Получаем блок с отзывами для доктора или клиники
     // Получаем идентификаторы отзывов относящихся к просматриваемому доктору
+    // или клинике
     $reviewsNids = \Drupal::entityQuery('node')
-      ->condition('type','review')
-      ->condition('field_doctor', $node->id())
-      ->execute();
+      ->condition('type', 'review');
+    if (isset($doctorNidForReviews)) {
+      $reviewsNids->condition('field_doctor', $doctorNidForReviews);
+    } elseif (isset($clinicNidForReviews)) {
+      $reviewsNids->condition('field_clinic', $clinicNidForReviews);
+    }
+    $reviewsNids = $reviewsNids->execute();
     $viewReviews = \Drupal\views\Views::getView('reviews');
     $viewReviews->setDisplay('block_1');
     $viewReviews->setArguments([implode('+', $reviewsNids)]);
     $renderReviews = $viewReviews->render();
     if (count($renderReviews['#rows']) > 0) {
-      $variables['reviews'] = \Drupal::service('renderer')->render($renderReviews);
+      $variables['reviews'] = \Drupal::service('renderer')
+        ->render($renderReviews);
     }
   }
 
