@@ -5187,6 +5187,10 @@ h6 {
     border: none !important;
 }
 
+.price .get-cart_button a {
+	color:#ffffff !important;
+}
+
 .price_types {
     display: -webkit-box;
     display: -ms-flexbox;
