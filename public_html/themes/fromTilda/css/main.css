@@ -1767,11 +1767,6 @@ img.mfp-img {
     border: 1px solid #e8eaeb;
 }
 
-#review-form-on-doctor-page .select2-container .select2-selection--single .select2-selection__rendered {
-    padding: 2px 30px 14px 20px;
-    height: 25px;
-}
-
 .select2-container .select2-selection--single .select2-selection__clear {
     position: relative;
 }
@@ -1846,10 +1841,6 @@ img.mfp-img {
     -ms-user-select: none;
     user-select: none;
     -webkit-user-select: none;
-}
-
-#review-form-on-doctor-page .select2-results__option {
-    padding: 2px 21px;
 }
 
 .select2-results__option:not(:last-child) {
@@ -5734,19 +5725,11 @@ ul.price_types, .price_types li {
     border-radius: 0 10px 10px 0;
 }
 
-#review-form-on-doctor-page .reviews_form {
-    padding: 10px 39px 5px 45px;
-}
-
 .reviews_form-title {
     font: 30px/35px 'GothamProLight';
     color: #191919;
     letter-spacing: -0.3px;
     margin-bottom: 42px;
-}
-
-#review-form-on-doctor-page .reviews_form-title {
-    margin-bottom: 5px;
 }
 
 .reviews_label {
@@ -5764,15 +5747,11 @@ ul.price_types, .price_types li {
     margin-bottom: 36px;
 }
 
-#review-form-on-doctor-page .reviews_form-item {
-    margin-bottom: 15px;
-}
-
 .review_form_item-fio {
     width: 100%;
     padding-left: 20px;
     border: 1px solid #e8eaeb;
-    height: 25px;
+    height: 50px;
     color: #1d1e1e;
     font: 14px 'OpenSansLight';
 }
