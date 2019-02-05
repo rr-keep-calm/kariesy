@@ -7,7 +7,7 @@ use \Drupal\file\Entity\File;
 class FormHandlerHelper {
 
   protected $response = 'Произошла ошибка, пожалуйста повторите попытку позже.';
-  protected $to = 'rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
+  protected $to = 'kxz-stom@yandex.ru, dentkariesynet@gmail.com, rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
   protected $subject = 'Запись на приём';
   protected $message = '';
   protected $headers = '';

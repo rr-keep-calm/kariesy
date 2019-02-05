@@ -1,7 +1,10 @@
 $(document).ready(function() {
 
+    window.reToken = '';
     window.data = false;
     window.dataIsReady = false;
+    window.photoIsReady = false;
+    window.formProcessPool = {}
 
     // Скрыть ссылку на загрузку файлов если технология не поддерживается
     if (!window.File || !window.FileList || !window.FileReader) {
@@ -11,12 +14,29 @@ $(document).ready(function() {
     }
 
     function checkDataReadyAndSendForm(action, form) {
-        if(window.dataIsReady == false) {
+        // Првоеряем был ли получен токен от Google хотя бы один раз
+        // Токен может не успеть подгрузиться у особо торопливых пользователей
+        if (window.reToken == '') {
             window.setTimeout(function() {
                 checkDataReadyAndSendForm(action, form);
             }, 100);
         } else {
-            sendForm(action, form)
+            if (!window.data.action || !window.data.token) {
+                // Проверить установлены ли у формы token и action?
+                // Если нет, то установить их.
+                window.data.action = $(form).find('input.captcha-action').val();
+                window.data.token = window.reToken
+                window.dataIsReady = true;
+            } else {
+                window.dataIsReady = true;
+            }
+            if (window.dataIsReady == false || window.photoIsReady == false) {
+                window.setTimeout(function () {
+                    checkDataReadyAndSendForm(action, form);
+                }, 100);
+            } else {
+                sendForm(action, form)
+            }
         }
     }
 
@@ -39,7 +59,7 @@ $(document).ready(function() {
             if (step < length) {
                 readFile(files, length, step, true);
             } else {
-                window.dataIsReady = true;
+                window.photoIsReady = true;
             }
         }
     }
@@ -50,38 +70,39 @@ $(document).ready(function() {
 
         // Собираем информацию для отправки
         var form = this;
-
-        // Если есть экран блокирующий форму пока она не отвветила, то активируем его
-        var wait = $(form).siblings('.wait-form');
-        if ($(wait).length) {
-            $(wait).show();
-        }
-
-        var action = $(form).attr('action');
-        var successForm = $(form).data('success_form');
         var id = $(form).attr('id');
-        window.data = serializeFormJSON(form);
 
-        // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
-        if (id == 'recall-form-on-price-page') {
-            // Вычисляем активный таб
-            var link = $(".price .price_types .ui-state-active a");
-            window.data.whatPriceTab = $(link).text() + $(link).attr('href');
-        }
+        // Если форма уже запущена в работу, то повторно её запускать не нужно
+        if (typeof window.formProcessPool.id === typeof undefined || window.formProcessPool.id === false) {
+            window.formProcessPool.id = true;
 
-        if (id == 'review-form-on-doctor-page' || id == 'review-form-on-clinic-page') {
-            var files = $("#photos").prop("files");
-            if (files.length > 0) {
-                readFile(files, files.length, 0, true);
-            } else {
-                window.dataIsReady = true;
+            // Если есть экран блокирующий форму пока она не отвветила, то активируем его
+            var wait = $(form).siblings('.wait-form');
+            if ($(wait).length) {
+                $(wait).show();
             }
-        } else {
-            window.dataIsReady = true;
+
+            var action = $(form).attr('action');
+            window.data = serializeFormJSON(form);
+
+            // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
+            if (id == 'recall-form-on-price-page') {
+                // Вычисляем активный таб
+                var link = $(".price .price_types .ui-state-active a");
+                window.data.whatPriceTab = $(link).text() + $(link).attr('href');
+            }
+
+            if (id == 'review-form-on-doctor-page' || id == 'review-form-on-clinic-page') {
+                var files = $("#photos").prop("files");
+                if (files.length > 0) {
+                    readFile(files, files.length, 0, true);
+                } else {
+                    window.photoIsReady = true;
+                }
+            }
+
+            checkDataReadyAndSendForm(action, form);
         }
-
-        checkDataReadyAndSendForm(action, form);
-
     });
 
     function sendForm (action, form)
@@ -165,6 +186,8 @@ $(document).ready(function() {
                         if ($(wait).length) {
                             $(wait).hide();
                         }
+                        var id = $(form).attr('id');
+                        window.formProcessPool.id = false;
                     },
                 });
             },
@@ -208,6 +231,7 @@ function redyRecaptcha() {
             if (token) {
                 $('input.token').val(token);
                 $('input.captcha-action').val(captchaAction);
+                window.reToken = token;
             }
         });
 }
