@@ -5904,6 +5904,14 @@ ul.price_types, .price_types li {
     color: #1a94cf;
 }
 
+.home-text {
+	padding-bottom: 50px;
+}
+
+.home-text .pagination-block_more {
+	margin-top: 20px;
+}
+
 .search_form {
     display: -webkit-box;
     display: -ms-flexbox;
