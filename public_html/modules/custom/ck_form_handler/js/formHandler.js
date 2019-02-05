@@ -99,6 +99,8 @@ $(document).ready(function() {
                 } else {
                     window.photoIsReady = true;
                 }
+            } else {
+                window.photoIsReady = true;
             }
 
             checkDataReadyAndSendForm(action, form);
