@@ -69,7 +69,7 @@ $(document).ready(function() {
             window.data.whatPriceTab = $(link).text() + $(link).attr('href');
         }
 
-        if (id == 'review-form-on-doctor-page') {
+        if (id == 'review-form-on-doctor-page' || id == 'review-form-on-clinic-page') {
             var files = $("#photos").prop("files");
             if (files.length > 0) {
                 readFile(files, files.length, 0, true);
