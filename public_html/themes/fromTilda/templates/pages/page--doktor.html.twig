@@ -110,7 +110,7 @@
                 <div class="wrapper">
                     <div class="doctor_work-row">
                         <div id="form-order-doctor-page" class="doctor_work-col">
-                            <form class="doctor_form form" action="/keep-calm-custom-form-handler" data-success_form="#form-normal">
+                            <form id="form-order-doctor-page-form" class="doctor_form form" action="/keep-calm-custom-form-handler" data-success_form="#form-normal">
                                 <input type="hidden" name="token" class="token">
                                 <input type="hidden" name="action" class="captcha-action">
                                 <input type="hidden" name="formName" value="appointment">
@@ -278,7 +278,7 @@
 
 {% block afterFooterAdd %}
     <div class="forms __order mfp-hide" id="form-question">
-        <form class="form" action="/keep-calm-custom-form-handler" data-success_form="#form-question-ok">
+        <form id="question-for-doctor-form" class="form" action="/keep-calm-custom-form-handler" data-success_form="#form-question-ok">
             <input type="hidden" name="token" class="token">
             <input type="hidden" name="action" class="captcha-action">
             <input type="hidden" name="formName" value="question">
