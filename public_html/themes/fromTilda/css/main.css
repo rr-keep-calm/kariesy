@@ -5078,6 +5078,23 @@ h6 {
     margin-bottom: 50px;
 }
 
+.page_notice span {
+	font: 30px 'GothamProLight';
+    color: #2299d2;
+}
+
+.page_notice span.old {
+    text-decoration: line-through;
+    color: #231f20;
+}
+
+.page_notice strong {
+	display: inline;
+    font: 16px 'OpenSansLight';
+    color: #231f20;
+    font-weight: bold;
+}
+
 .pagination-block {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -5660,8 +5677,6 @@ ul.price_types, .price_types li {
     color: #524f50;
     margin-bottom: 10px;
     padding-left: 19px;
-    max-height: 100px;
-    overflow-y: auto;
 }
 
 .reviews_images {
