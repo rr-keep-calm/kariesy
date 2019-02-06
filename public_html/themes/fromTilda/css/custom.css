@@ -2,3 +2,43 @@
     margin-top: 80px;
     padding: 0 15px;
 }
+.comagic-c-sitephone-button {
+	padding: 6px 0 !important;
+    border-radius: 5px !important;
+    text-align: center !important;
+    text-transform: uppercase;
+    font: 12px/1 'OpenSansSemiBold' !important;
+    color: #fbfbfb !important;
+    text-decoration: none;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+.comagic-c-sitephone-button:hover {
+	    background: #0077cb;
+}
+.comagic-c-sitephone__header-icon {
+	display: none;
+}
+.comagic-c-sitephone-container__header-title {
+	text-align: center !important;
+	font: 19px/1 'OpenSansSemiBold' !important;
+}
+.comagic-c-sitephone-field--default {
+	border: 1px solid #e8eaeb !important;
+    font: 14px 'OpenSansLight' !important;
+    color: #585959 !important;
+    padding: 15px 18px 14px !important;
+    box-shadow: none !important;
+}
+.comagic-js-date-fields--is-active .comagic-c-sitephone-field-title--date-change {
+	font: 11px 'OpenSansLight' !important;
+    color: #1d1e1e !important;
+    margin-bottom: 6px !important;
+}
+.comagic-c-sitephone-container__banner-branding-text {
+	font-family: 'OpenSansLight', sans-serif !important;
+}
+.comagic-c-sitephone-container--right {
+	right:50% !important;
+	margin-right: -160px !important;
+}
