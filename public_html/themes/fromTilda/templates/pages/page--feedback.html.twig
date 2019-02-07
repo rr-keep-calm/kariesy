@@ -1,0 +1,166 @@
+{% extends  "page.html.twig" %}
+
+{% block globalContent %}
+    <div class="content">
+        <div class="top __1">
+            <div class="wrapper">
+                {{ page.breadcrumbs }}
+
+                <h1>{{ page.header }}</h1>
+            </div>
+        </div>
+        {% block content %}
+            <div class="content_main __no-padding">
+                <div class="wrapper">
+                    <div class="reviews">
+                        <div class="reviews_block">
+                            <div class="reviews_left">
+                                {{ page.content }}
+                            </div>
+
+                            <div class="reviews_right">
+                                <form action="" class="reviews_form">
+                                    <div class="reviews_form-title">Оставить отзыв</div>
+
+                                    <div class="reviews_form-item">
+                                        <label class="reviews_label">Доктор</label>
+
+                                        <div class="reviews_form-data">
+                                            <select required>
+                                                <option value="Доктор 1">Доктор 1</option>
+                                                <option value="Доктор 2">Доктор 2</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="reviews_star">
+                                            <div class="reviews_star-text __type-2">Оцените доктора:</div>
+
+                                            <select class="no-select rating">
+                                                <option></option>
+                                                <option value="1"></option>
+                                                <option value="2"></option>
+                                                <option value="3"></option>
+                                                <option value="4"></option>
+                                                <option value="5"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="reviews_form-item">
+                                        <label class="reviews_label">Клиника</label>
+
+                                        <div class="reviews_form-data">
+                                            <select required>
+                                                <option value="Клиника 1">Клиника 1</option>
+                                                <option value="Клиника 2">Клиника 2</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="reviews_star">
+                                            <div class="reviews_star-text __type-2">Оцените клинику:</div>
+
+                                            <select class="no-select rating">
+                                                <option></option>
+                                                <option value="1"></option>
+                                                <option value="2"></option>
+                                                <option value="3"></option>
+                                                <option value="4"></option>
+                                                <option value="5"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="reviews_form-item __offset-min">
+                                        <label class="reviews_label">Ваш отзыв</label>
+
+                                        <div class="reviews_form-data">
+                                            <textarea required class="reviews_area"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="reviews_form-item __offset-min-2">
+                                        <div class="reviews_row">
+                                            <div class="reviews_col">
+                                                <input type="file" multiple class="jfilestyle" data-input="false"
+                                                       data-text="Приложить фото">
+                                            </div>
+                                            <div class="reviews_col">
+                                                <button type="submit" class="button">Оставить отзыв</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="reviews_form-text">Нажимая на кнопку “Оставить отзыв” я даю согласие на
+                                        обработку персональных данных
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {#<div class="clinics __padding __offset-top __bordered">
+                    <div class="clinics_content __base">
+                        <div class="wrapper clinics_wrapper">
+                            <h2>Наши клиники</h2>
+
+                            <div class="clinics_items">
+                                <div class="clinics_item">
+                                    <h4 class="clinics_heading">Взрослое и детское отделение</h4>
+
+                                    <div class="clinics_item-content">
+                                        <div class="clinics_image">
+                                            <img src="img/clinic.jpg" alt="">
+                                        </div>
+
+                                        <div class="clinics_text">
+                                            <p>метро Медведково</p>
+
+                                            <p>г. Москва, <br>ул. Советская, 30А</p>
+
+                                            <a href="">подробнее</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clinics_item">
+                                    <h4 class="clinics_heading">Взрослое и детское отделение</h4>
+
+                                    <div class="clinics_item-content">
+                                        <div class="clinics_image">
+                                            <img src="img/clinic.jpg" alt="">
+                                        </div>
+
+                                        <div class="clinics_text">
+                                            <p>метро Медведково</p>
+
+                                            <p>г. Москва, <br>ул. Советская, 30А</p>
+
+                                            <a href="">подробнее</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clinics_item">
+                                    <h4 class="clinics_heading">Взрослое и детское отделение</h4>
+
+                                    <div class="clinics_item-content">
+                                        <div class="clinics_image">
+                                            <img src="img/clinic.jpg" alt="">
+                                        </div>
+
+                                        <div class="clinics_text">
+                                            <p>метро Медведково</p>
+
+                                            <p>г. Москва, <br>ул. Советская, 30А</p>
+
+                                            <a href="">подробнее</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>#}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

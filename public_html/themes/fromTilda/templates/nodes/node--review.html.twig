@@ -14,8 +14,15 @@
             </div>
 
             <ul class="reviews_about">
-                <li>О враче: {{ content.field_doctor }}</li>
-                <li>Клиника: {{ content.field_clinic }}</li>
+                {% set doctorNid = content.field_doctor['#cache'].tags.0|split(':').1 %}
+                {% if content.field_doctor|render|striptags != '' %}
+                    <li>О враче: {{ content.field_doctor }}</li>
+                {% elseif unpublishedDoctors is defined and unpublishedDoctors[doctorNid] is defined %}
+                    <li>О враче: {{ unpublishedDoctors[doctorNid] }}</li>
+                {% endif %}
+                {% if content.field_clinic|render|striptags != '' %}
+                    <li>Клиника: {{ content.field_clinic }}</li>
+                {% endif %}
             </ul>
         </div>
 
