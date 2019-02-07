@@ -171,6 +171,9 @@ class FormHandlerHelper {
         $request = \Drupal::request();
         $referer = $request->headers->get('referer');
         list($tabText, $tabAnchor) = explode('#', $this->formData['whatPriceTab']);
+        if (strpos($referer, 'price') === false) {
+          $referer .= 'price';
+        }
         $this->message .= "<br /><br />Ссылка на страницу с формой - <a href='{$referer}#{$tabAnchor}'>Цена на услугу \"$tabText\"</a>";
       }
 
