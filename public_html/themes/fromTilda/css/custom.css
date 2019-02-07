@@ -9,3 +9,7 @@
     display: inline-block;
     cursor: pointer;
 }
+.header_item:nth-child(3) {
+    min-width: 200px;
+    margin-right: 70px;
+}
