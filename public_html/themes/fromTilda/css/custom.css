@@ -2,3 +2,10 @@
     margin-top: 80px;
     padding: 0 15px;
 }
+.home-text.page .wrapper > *:not(:first-child) {
+    display: none;
+}
+.home-text.page .wrapper .pagination-block_more {
+    display: inline-block;
+    cursor: pointer;
+}
