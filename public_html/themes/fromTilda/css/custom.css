@@ -19,3 +19,14 @@
 .doctor_plan.weekends {
     margin-top: 15px;
 }
+@media screen and (max-width: 767px) {
+    .doctor_col-2-3 {
+        width: 75%
+    }
+}
+@media screen and (max-width: 480px) {
+    .doctor_col-2-3 {
+        width: 62.5%;
+        margin-left: 2%;
+    }
+}

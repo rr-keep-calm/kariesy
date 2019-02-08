@@ -80,12 +80,16 @@ app.addModule('clinics', function () {
 });
 app.addModule('doctor', function () {
 	var images  = $('.doctor_images');
-	var plan = $('.doctor_plan');
+	var plan = $('.doctor_plan:not(.weekends)');
+	var planWeekends = $('.doctor_plan.weekends');
 	var slickCreated = false;
 	
 	this.init = function () {
 		plan.append(
 			plan.clone().addClass('__cloned')
+		);
+		planWeekends.append(
+			planWeekends.clone().addClass('__cloned')
 		);
 		
 		$('.doctor_more').click(function () {
