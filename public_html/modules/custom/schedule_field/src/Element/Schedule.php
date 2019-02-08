@@ -66,8 +66,7 @@ class Schedule extends FormElement {
       $weFirstSchedule = \Drupal::request()->request->get('we_firstSchedule');
       $thFirstSchedule = \Drupal::request()->request->get('th_firstSchedule');
       $frFirstSchedule = \Drupal::request()->request->get('fr_firstSchedule');
-      $saFirstSchedule = \Drupal::request()->request->get('sa_firstSchedule');
-      $suFirstSchedule = \Drupal::request()->request->get('su_firstSchedule');
+
       $secondStartTime = \Drupal::request()->request->get('second-start-time');
       $secondEndTime = \Drupal::request()->request->get('second-end-time');
       $moSecondSchedule = \Drupal::request()->request->get('mo_secondSchedule');
@@ -75,8 +74,16 @@ class Schedule extends FormElement {
       $weSecondSchedule = \Drupal::request()->request->get('we_secondSchedule');
       $thSecondSchedule = \Drupal::request()->request->get('th_secondSchedule');
       $frSecondSchedule = \Drupal::request()->request->get('fr_secondSchedule');
-      $saSecondSchedule = \Drupal::request()->request->get('sa_secondSchedule');
-      $suSecondSchedule = \Drupal::request()->request->get('su_secondSchedule');
+
+      $firstStartTimeWeekends = \Drupal::request()->request->get('first-start-time-weekends');
+      $firstEndTimeWeekends = \Drupal::request()->request->get('first-end-time-weekends');
+      $saFirstScheduleWeekends = \Drupal::request()->request->get('sa_firstScheduleWeekends');
+      $suFirstScheduleWeekends = \Drupal::request()->request->get('su_firstScheduleWeekends');
+
+      $secondStartTimeWeekends = \Drupal::request()->request->get('second-start-time-weekends');
+      $secondEndTimeWeekends = \Drupal::request()->request->get('second-end-time-weekends');
+      $saSecondScheduleWeekends = \Drupal::request()->request->get('sa_secondScheduleWeekends');
+      $suSecondScheduleWeekends = \Drupal::request()->request->get('su_secondScheduleWeekends');
 
       if ($firstStartTime && $firstEndTime) {
         $toSave['firstShift']['start'] = $firstStartTime;
@@ -86,8 +93,6 @@ class Schedule extends FormElement {
         $toSave['firstShift']['weClinic'] = $weFirstSchedule;
         $toSave['firstShift']['thClinic'] = $thFirstSchedule;
         $toSave['firstShift']['frClinic'] = $frFirstSchedule;
-        $toSave['firstShift']['saClinic'] = $saFirstSchedule;
-        $toSave['firstShift']['suClinic'] = $suFirstSchedule;
       }
 
       if ($secondStartTime && $secondEndTime) {
@@ -98,8 +103,20 @@ class Schedule extends FormElement {
         $toSave['secondShift']['weClinic'] = $weSecondSchedule;
         $toSave['secondShift']['thClinic'] = $thSecondSchedule;
         $toSave['secondShift']['frClinic'] = $frSecondSchedule;
-        $toSave['secondShift']['saClinic'] = $saSecondSchedule;
-        $toSave['secondShift']['suClinic'] = $suSecondSchedule;
+      }
+
+      if ($firstStartTimeWeekends && $firstEndTimeWeekends) {
+        $toSave['firstShiftWeekends']['start'] = $firstStartTimeWeekends;
+        $toSave['firstShiftWeekends']['end'] = $firstEndTimeWeekends;
+        $toSave['firstShiftWeekends']['saClinic'] = $saFirstScheduleWeekends;
+        $toSave['firstShiftWeekends']['suClinic'] = $suFirstScheduleWeekends;
+      }
+
+      if ($secondStartTimeWeekends && $secondEndTimeWeekends) {
+        $toSave['secondShiftWeekends']['start'] = $secondStartTimeWeekends;
+        $toSave['secondShiftWeekends']['end'] = $secondEndTimeWeekends;
+        $toSave['secondShiftWeekends']['saClinic'] = $saSecondScheduleWeekends;
+        $toSave['secondShiftWeekends']['suClinic'] = $suSecondScheduleWeekends;
       }
 
       if ($toSave) {
