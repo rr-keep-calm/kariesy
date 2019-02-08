@@ -175,9 +175,13 @@ function fromTilda_preprocess_page(&$variables) {
     }
   }
 
-  if (isset($doctorNidForReviews) || isset($clinicNidForReviews)) {
+  $viewIdReviews = \Drupal::routeMatch()->getParameter('view_id');
+  $currentPath = \Drupal::service('path.current')->getPath();
+  if ((isset($doctorNidForReviews) || isset($clinicNidForReviews)) ||
+    ($viewIdReviews === 'reviews' && $currentPath === '/feedback')
+  ) {
 
-    // На странице доктора и клиники нужен список всех клиник для формы отзыва
+    // На странице доктора, клиники и отзывов нужен список всех клиник для формы отзыва
     $variables['clinics'] = [];
     $clinicNids = \Drupal::entityQuery('node')
       ->condition('type', 'clinic')
@@ -187,24 +191,27 @@ function fromTilda_preprocess_page(&$variables) {
       $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
     }
 
-    // Получаем блок с отзывами для доктора или клиники
-    // Получаем идентификаторы отзывов относящихся к просматриваемому доктору
-    // или клинике
-    $reviewsNids = \Drupal::entityQuery('node')
-      ->condition('type', 'review');
-    if (isset($doctorNidForReviews)) {
-      $reviewsNids->condition('field_doctor', $doctorNidForReviews);
-    } elseif (isset($clinicNidForReviews)) {
-      $reviewsNids->condition('field_clinic', $clinicNidForReviews);
-    }
-    $reviewsNids = $reviewsNids->execute();
-    $viewReviews = \Drupal\views\Views::getView('reviews');
-    $viewReviews->setDisplay('block_1');
-    $viewReviews->setArguments([implode('+', $reviewsNids)]);
-    $renderReviews = $viewReviews->render();
-    if (count($renderReviews['#rows']) > 0) {
-      $variables['reviews'] = \Drupal::service('renderer')
-        ->render($renderReviews);
+    if (isset($doctorNidForReviews) || isset($clinicNidForReviews)) {
+      // Получаем блок с отзывами для доктора или клиники
+      // Получаем идентификаторы отзывов относящихся к просматриваемому доктору
+      // или клинике
+      $reviewsNids = \Drupal::entityQuery('node')
+        ->condition('type', 'review');
+      if (isset($doctorNidForReviews)) {
+        $reviewsNids->condition('field_doctor', $doctorNidForReviews);
+      }
+      elseif (isset($clinicNidForReviews)) {
+        $reviewsNids->condition('field_clinic', $clinicNidForReviews);
+      }
+      $reviewsNids = $reviewsNids->execute();
+      $viewReviews = \Drupal\views\Views::getView('reviews');
+      $viewReviews->setDisplay('block_1');
+      $viewReviews->setArguments([implode('+', $reviewsNids)]);
+      $renderReviews = $viewReviews->render();
+      if (count($renderReviews['#rows']) > 0) {
+        $variables['reviews'] = \Drupal::service('renderer')
+          ->render($renderReviews);
+      }
     }
   }
 

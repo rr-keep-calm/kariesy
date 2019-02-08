@@ -18,30 +18,21 @@
                                 {{ page.content }}
                             </div>
 
-                            <div class="reviews_right">
-                                <form action="" class="reviews_form">
+                            <div class="reviews_right" id="form-review">
+                                <form id="review-form-on-doctor-page" enctype="multipart/form-data" action="/keep-calm-custom-form-handler" data-success_form="#form-review-send" class="reviews_form" data-eventLabel="form-feedback">
+                                    <input type="hidden" name="token" class="token">
+                                    <input type="hidden" name="action" class="captcha-action">
+                                    <input type="hidden" name="formName" value="review">
                                     <div class="reviews_form-title">Оставить отзыв</div>
 
                                     <div class="reviews_form-item">
                                         <label class="reviews_label">Доктор</label>
 
                                         <div class="reviews_form-data">
-                                            <select required>
-                                                <option value="Доктор 1">Доктор 1</option>
-                                                <option value="Доктор 2">Доктор 2</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="reviews_star">
-                                            <div class="reviews_star-text __type-2">Оцените доктора:</div>
-
-                                            <select class="no-select rating">
-                                                <option></option>
-                                                <option value="1"></option>
-                                                <option value="2"></option>
-                                                <option value="3"></option>
-                                                <option value="4"></option>
-                                                <option value="5"></option>
+                                            <select name="doctor" required>
+                                                {% for nid,doctor in doctors %}
+                                                    <option value="{{ nid }}">{{ doctor }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -50,23 +41,19 @@
                                         <label class="reviews_label">Клиника</label>
 
                                         <div class="reviews_form-data">
-                                            <select required>
-                                                <option value="Клиника 1">Клиника 1</option>
-                                                <option value="Клиника 2">Клиника 2</option>
+                                            <select name="clinic" required>
+                                                {% for nid,clinic in clinics %}
+                                                    <option value="{{ nid }}">{{ clinic }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
+                                    </div>
 
-                                        <div class="reviews_star">
-                                            <div class="reviews_star-text __type-2">Оцените клинику:</div>
+                                    <div class="reviews_form-item __offset-min">
+                                        <label class="reviews_label">Фамилия И. О.</label>
 
-                                            <select class="no-select rating">
-                                                <option></option>
-                                                <option value="1"></option>
-                                                <option value="2"></option>
-                                                <option value="3"></option>
-                                                <option value="4"></option>
-                                                <option value="5"></option>
-                                            </select>
+                                        <div class="reviews_form-data">
+                                            <input type="text" name="fio" class="review_form_item-fio" placeholder="Иванов И. И." required />
                                         </div>
                                     </div>
 
@@ -74,15 +61,14 @@
                                         <label class="reviews_label">Ваш отзыв</label>
 
                                         <div class="reviews_form-data">
-                                            <textarea required class="reviews_area"></textarea>
+                                            <textarea name="review-text" required class="reviews_area"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="reviews_form-item __offset-min-2">
                                         <div class="reviews_row">
                                             <div class="reviews_col">
-                                                <input type="file" multiple class="jfilestyle" data-input="false"
-                                                       data-text="Приложить фото">
+                                                <input id="photos" name="photos" type="file" multiple class="jfilestyle" data-input="false" data-text="Приложить фото">
                                             </div>
                                             <div class="reviews_col">
                                                 <button type="submit" class="button">Оставить отзыв</button>
@@ -90,9 +76,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="reviews_form-text">Нажимая на кнопку “Оставить отзыв” я даю согласие на
-                                        обработку персональных данных
-                                    </div>
+                                    <div class="reviews_form-text">Нажимая на кнопку “Оставить отзыв” я даю согласие на обработку персональных данных</div>
                                 </form>
                             </div>
                         </div>
