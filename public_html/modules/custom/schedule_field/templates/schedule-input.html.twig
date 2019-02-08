@@ -192,34 +192,6 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="clinik-select-element">
-                <label for="sa_secondSchedule">Суббота</label>
-                <select name="sa_secondSchedule">
-                    <option value="">--Выберите клинику--</option>
-                    {% for nid, clinic in element.clinics %}
-                        {% if element.scheduleData.secondShift.saClinic == nid %}
-                            {% set selected = 'selected' %}
-                        {% else %}
-                            {% set selected = '' %}
-                        {% endif %}
-                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="clinik-select-element">
-                <label for="su_secondSchedule">Воскресенье</label>
-                <select name="su_secondSchedule">
-                    <option value="">--Выберите клинику--</option>
-                    {% for nid, clinic in element.clinics %}
-                        {% if element.scheduleData.secondShift.suClinic == nid %}
-                            {% set selected = 'selected' %}
-                        {% else %}
-                            {% set selected = '' %}
-                        {% endif %}
-                        <option value="{{ nid }}" {{ selected }}>{{ clinic }}</option>
-                    {% endfor %}
-                </select>
-            </div>
         </div>
     </div>
 
