@@ -141,18 +141,25 @@
                         <div class="doctor_plan weekends">
                             <div class="doctor_plan-row">
                                 <div class="doctor_col-1"></div>
-                                <div class="doctor_col-2">
-                                    {% if schedule.firstShiftWeekends.start is not empty and schedule.firstShiftWeekends.end is not empty %}
-                                        <div class="doctor_time">{{ schedule.firstShiftWeekends.start }}
-                                            - {{ schedule.firstShiftWeekends.end }}</div>
-                                    {% endif %}
-                                </div>
-                                <div class="doctor_col-3">
-                                    {% if schedule.secondShiftWeekends.start is not empty and schedule.secondShiftWeekends.end is not empty %}
-                                        <div class="doctor_time">{{ schedule.secondShiftWeekends.start }}
+                                {% if schedule.firstShiftWeekends.end is not empty and schedule.secondShiftWeekends.start is not empty and schedule.firstShiftWeekends.end == schedule.secondShiftWeekends.start %}
+                                    <div class="doctor_col-2-3">
+                                        <div class="doctor_time text-align-center">{{ schedule.firstShiftWeekends.start }}
                                             - {{ schedule.secondShiftWeekends.end }}</div>
-                                    {% endif %}
-                                </div>
+                                    </div>
+                                {% else %}
+                                    <div class="doctor_col-2">
+                                        {% if schedule.firstShiftWeekends.start is not empty and schedule.firstShiftWeekends.end is not empty %}
+                                            <div class="doctor_time">{{ schedule.firstShiftWeekends.start }}
+                                                - {{ schedule.firstShiftWeekends.end }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="doctor_col-3">
+                                        {% if schedule.secondShiftWeekends.start is not empty and schedule.secondShiftWeekends.end is not empty %}
+                                            <div class="doctor_time">{{ schedule.secondShiftWeekends.start }}
+                                                - {{ schedule.secondShiftWeekends.end }}</div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                             </div>
                             {% for weekDay, weekDaySchedule in schedule.firstShiftWeekends[2:] %}
                                 <div class="doctor_plan-row">
