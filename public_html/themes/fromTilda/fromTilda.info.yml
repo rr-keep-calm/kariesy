@@ -23,3 +23,4 @@ regions:
   footer_navigation_menu: 'Footer navigation menu'
   clinic_list_on_doctor_page: 'Clinic list on doctor page'
   doctor_list_on_clinic_page: 'Doctor list on clinic page'
+  clinic_list_on_feedback_page: 'Clinic list on feedback page'

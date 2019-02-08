@@ -175,9 +175,13 @@ function fromTilda_preprocess_page(&$variables) {
     }
   }
 
-  if (isset($doctorNidForReviews) || isset($clinicNidForReviews)) {
+  $viewIdReviews = \Drupal::routeMatch()->getParameter('view_id');
+  $currentPath = \Drupal::service('path.current')->getPath();
+  if ((isset($doctorNidForReviews) || isset($clinicNidForReviews)) ||
+    ($viewIdReviews === 'reviews' && $currentPath === '/feedback')
+  ) {
 
-    // На странице доктора и клиники нужен список всех клиник для формы отзыва
+    // На странице доктора, клиники и отзывов нужен список всех клиник для формы отзыва
     $variables['clinics'] = [];
     $clinicNids = \Drupal::entityQuery('node')
       ->condition('type', 'clinic')
@@ -187,24 +191,27 @@ function fromTilda_preprocess_page(&$variables) {
       $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
     }
 
-    // Получаем блок с отзывами для доктора или клиники
-    // Получаем идентификаторы отзывов относящихся к просматриваемому доктору
-    // или клинике
-    $reviewsNids = \Drupal::entityQuery('node')
-      ->condition('type', 'review');
-    if (isset($doctorNidForReviews)) {
-      $reviewsNids->condition('field_doctor', $doctorNidForReviews);
-    } elseif (isset($clinicNidForReviews)) {
-      $reviewsNids->condition('field_clinic', $clinicNidForReviews);
-    }
-    $reviewsNids = $reviewsNids->execute();
-    $viewReviews = \Drupal\views\Views::getView('reviews');
-    $viewReviews->setDisplay('block_1');
-    $viewReviews->setArguments([implode('+', $reviewsNids)]);
-    $renderReviews = $viewReviews->render();
-    if (count($renderReviews['#rows']) > 0) {
-      $variables['reviews'] = \Drupal::service('renderer')
-        ->render($renderReviews);
+    if (isset($doctorNidForReviews) || isset($clinicNidForReviews)) {
+      // Получаем блок с отзывами для доктора или клиники
+      // Получаем идентификаторы отзывов относящихся к просматриваемому доктору
+      // или клинике
+      $reviewsNids = \Drupal::entityQuery('node')
+        ->condition('type', 'review');
+      if (isset($doctorNidForReviews)) {
+        $reviewsNids->condition('field_doctor', $doctorNidForReviews);
+      }
+      elseif (isset($clinicNidForReviews)) {
+        $reviewsNids->condition('field_clinic', $clinicNidForReviews);
+      }
+      $reviewsNids = $reviewsNids->execute();
+      $viewReviews = \Drupal\views\Views::getView('reviews');
+      $viewReviews->setDisplay('block_1');
+      $viewReviews->setArguments([implode('+', $reviewsNids)]);
+      $renderReviews = $viewReviews->render();
+      if (count($renderReviews['#rows']) > 0) {
+        $variables['reviews'] = \Drupal::service('renderer')
+          ->render($renderReviews);
+      }
     }
   }
 
@@ -309,6 +316,22 @@ function fromTilda_preprocess_node(&$variables){
       $variables['schedule'] = $schedule;
     }
   }
+  // Если обращаются к странице со отзывов,
+  // то получаем всех не активных докторов для вывода в отзыве
+  $view_id = \Drupal::routeMatch()->getParameter('view_id');
+  if ($view_id === 'reviews' && isset($variables['view']) && $variables['view']->current_display == 'page_1') {
+    // Получаем список всех докторов.
+    // Попутно сохраняя список оказываемых доктором услуг.
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type','doktor')
+      ->condition('status', 0)
+      ->execute();
+    $unpublishedDoctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $variables['unpublishedDoctors'] = [];
+    foreach ($unpublishedDoctorsNodes as $node) {
+      $variables['unpublishedDoctors'][$node->id()] = $node->getTitle();
+    }
+  }
 }
 
 function fromTilda_preprocess_views_view(&$variables){
@@ -351,6 +374,45 @@ function fromTilda_preprocess_views_view(&$variables){
       }
     }
     $variables['allSpecializations'] = $allSpecializations;
+    $variables['allClinics'] = $allClinics;
+    $variables['getVars'] = $_GET;
+  }
+
+  // Если обращаются к странице со списком отзывов,
+  // то собираем всех докторов и все клиники, которые встречаются в отзывах
+  // хотябы один раз
+  if ($view->storage->id() === 'reviews' && $view->current_display == 'page_1') {
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type','review')
+      ->condition('status', 1)
+      ->execute();
+    $reviewNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $allDoctors = [];
+    $allClinics = [];
+    foreach ($reviewNodes as $review) {
+      $clinic = $review->get('field_clinic')->getValue();
+      if ($clinic) {
+        $allClinics[] = $clinic[0]['target_id'];
+      }
+      $doctor = $review->get('field_doctor')->getValue();
+      if ($doctor) {
+        $allDoctors[] = $doctor[0]['target_id'];
+      }
+    }
+
+    $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($allDoctors);
+    $allDoctors = [];
+    foreach ($doctorsNodes as $doctor) {
+      $allDoctors[$doctor->id()] = $doctor->getTitle();
+    }
+
+    $clinicsNodes =  \Drupal\node\Entity\Node::loadMultiple($allClinics);
+    $allClinics = [];
+    foreach ($clinicsNodes as $clinic) {
+      $allClinics[$clinic->id()] = $clinic->getTitle();
+    }
+
+    $variables['allDoctors'] = $allDoctors;
     $variables['allClinics'] = $allClinics;
     $variables['getVars'] = $_GET;
   }
