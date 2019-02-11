@@ -274,4 +274,29 @@ class FormHandlerHelper {
       $this->valid = true;
     }
   }
+
+  protected function recallServiceHandle()
+  {
+    // Проверяем что были переданы все праметры
+    if (!isset($this->formData['phone'], $this->formData['name']) ||
+      empty($this->formData['name']) ||
+      empty($this->formData['phone'])
+    ) {
+      $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } else {
+      $this->subject = 'Запись на приём со страницы Услуги';
+
+      // Формируем тело письма
+      $this->message = "\"{$this->formData['name']}\" хочет записаться на \"{$this->formData['whatExactlyService']}\"<br />";
+      $this->message .= "Телефон для связи \"{$this->formData['phone']}\"";
+
+      $this->headers = 'From: robot@kariesy.net';
+      $this->headers .= "\r\nReply-To: robot@kariesy.net";
+      $this->headers .= "\r\nContent-Type: text/html; charset=\"utf-8\"";
+      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+      $this->response = 'OK';
+      $this->valid = true;
+    }
+  }
 }

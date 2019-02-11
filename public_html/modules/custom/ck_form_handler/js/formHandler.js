@@ -65,7 +65,7 @@ $(document).ready(function() {
     }
 
     // Отправка форм
-    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review').on('submit', 'form', function (e) {
+    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review, #recall-form-on-service-page').on('submit', 'form', function (e) {
         e.preventDefault();
 
         // Собираем информацию для отправки
@@ -84,6 +84,12 @@ $(document).ready(function() {
 
             var action = $(form).attr('action');
             window.data = serializeFormJSON(form);
+
+            // Если происходит отправка формы со страницы услуги то пытаемся получить название самой услуги
+            if (id == 'recall-form-on-service-page-form') {
+                var magnificPopup = $.magnificPopup.instance;
+                window.data.whatExactlyService = $(magnificPopup.st.el).parents('.price_item').find('.price_what').text();
+            }
 
             // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
             if (id == 'recall-form-on-price-page') {
