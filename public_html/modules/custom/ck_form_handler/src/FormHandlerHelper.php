@@ -284,7 +284,7 @@ class FormHandlerHelper {
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
     } else {
-      $this->subject = 'Запись на приём со страницы Услуги';
+      $this->subject = 'Запись на приём со страницы услуги';
 
       // Формируем тело письма
       $this->message = "\"{$this->formData['name']}\" хочет записаться на \"{$this->formData['whatExactlyService']}\"<br />";
