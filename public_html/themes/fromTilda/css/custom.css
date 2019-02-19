@@ -19,9 +19,19 @@
 .doctor_plan.weekends {
     margin-top: 15px;
 }
+.price_old {
+    text-decoration: line-through;
+    color: #231f20;
+    font: 36px 'GothamProLight';
+    padding-right: 10px;
+}
+
 @media screen and (max-width: 767px) {
     .doctor_col-2-3 {
         width: 75%
+    }
+    .price_old {
+        font-size: 26px;
     }
 }
 @media screen and (max-width: 480px) {

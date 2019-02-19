@@ -26,6 +26,9 @@
                                 </div>
 
                                 <div class="price_cnt">
+                                    {% if price.price_old %}
+                                        <span class="price_old">{{ price.price_old }}</span>
+                                    {% endif %}
                                     <span class="price_num">{{ price.price }}</span>
                                     <span class="price_sign">руб</span>
                                 </div>
