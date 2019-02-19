@@ -80,6 +80,11 @@
         </div>
 
         <div class="price_cnt __min">
+            {% if content.field_old_price|render %}
+                <span class="price_old">
+                    {{ content.field_old_price.0['#markup'] }}
+                </span>
+            {% endif %}
             <span class="price_num">
                 {{ content.field_price_from.0['#markup'] == 'Вкл' ? 'от ' : '' }}{{ content.field_cena.0['#markup'] }}
             </span>

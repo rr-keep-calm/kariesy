@@ -46,6 +46,7 @@ class PricePageRepository {
         'name' => $node->getTitle(),
         'description' => $node->body->value,
         'price' => $node->field_cena->value,
+        'price_old' => $node->field_old_price->value,
       ];
       if ((bool)$node->field_price_from->value) {
         $node_variables['price'] = 'от ' . $node_variables['price'];
