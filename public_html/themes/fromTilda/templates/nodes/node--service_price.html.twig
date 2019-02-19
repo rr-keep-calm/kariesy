@@ -73,7 +73,7 @@
  */
 #}
 {% if (view_mode == 'short_list') %}
-    <div class="price_item __align-center">
+    <div class="price_item __align-center{{ content.field_old_price|render ? ' with_old' : '' }}">
         <div class="price_text">
             <div class="price_what">{{ node.label }}</div>
             <div class="price_data">{{ content.body }}</div>

@@ -18,7 +18,25 @@
                         <header class="price_header">{{ type.name }}</header>
 
                         <div class="price_items">
-                            {% for price in type.prices %}
+                            {# вначале выводим список цен со старыми ценами #}
+                            {% for price in type.prices if price.price_old %}
+                            <div class="price_item with_old">
+                                <div class="price_text">
+                                    <div class="price_what">{{ price.name }}</div>
+                                    <div class="price_data">{{ price.description|raw }}</div>
+                                </div>
+
+                                <div class="price_cnt">
+                                    {% if price.price_old %}
+                                        <span class="price_old">{{ price.price_old }}</span>
+                                    {% endif %}
+                                    <span class="price_num">{{ price.price }}</span>
+                                    <span class="price_sign">руб</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {# вначале выводим список оставшихся цен #}
+                            {% for price in type.prices if not price.price_old %}
                             <div class="price_item">
                                 <div class="price_text">
                                     <div class="price_what">{{ price.name }}</div>
