@@ -1,0 +1,53 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="services_item __full __main">
+    <header class="services_header">
+        <div class="services_left">
+            <div class="services_image">
+                {% if not rows.0.content['#row']._entity.field_piktogramma %}
+                    <img alt="" src="/themes/fromTilda/img/s1.svg" width="57">
+                {% else %}
+                    <img alt="" src="{{file_url(rows.0.content['#row']._entity.field_piktogramma.entity.uri.value)}}" width="57">
+                {% endif %}
+            </div>
+
+            <div class="services_base-text">
+                <h4>{{ title }}</h4>
+                <p>{{rows.0.content['#row']._entity.field_caption_caption[0].value}}</p>
+            </div>
+        </div>
+
+        <div class="services_right"><a class="services_link" href="{{rows.0.content['#row']._entity.field_link_in_list[0].value}}">подробнее</a></div>
+    </header>
+    <div class="services_row">
+        <div class="services_text">
+            {{rows.0.content['#row']._entity.description[0].value|raw}}
+            <div class="services_mobile"><a class="services_link" href="{{rows.0.content['#row']._entity.field_link_in_list[0].value}}">подробнее</a></div>
+        </div>
+    </div>
+
+    <div class="services_types">
+        <div class="services_type-items">
+            {% for row in rows %}
+                {{- row.content -}}
+            {% endfor %}
+        </div>
+    </div>
+</div>
