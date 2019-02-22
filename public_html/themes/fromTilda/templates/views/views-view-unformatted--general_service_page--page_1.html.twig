@@ -17,33 +17,34 @@
  * @ingroup themeable
  */
 #}
+{% set firstRow = rows|first %}
 <div class="services_item __full __main">
     <header class="services_header">
         <div class="services_left">
             <div class="services_image">
-                {% if not rows.0.content['#row']._entity.field_piktogramma %}
+                {% if not firstRow.content['#row']._entity.field_piktogramma %}
                     <img alt="" src="/themes/fromTilda/img/s1.svg" width="57">
                 {% else %}
-                    <img alt="" src="{{ file_url(rows.0.content['#row']._entity.field_piktogramma.entity.uri.value) }}"
+                    <img alt="" src="{{ file_url(firstRow.content['#row']._entity.field_piktogramma.entity.uri.value) }}"
                          width="57">
                 {% endif %}
             </div>
 
             <div class="services_base-text">
                 <h4>{{ title }}</h4>
-                <p>{{ rows.0.content['#row']._entity.field_caption_caption[0].value }}</p>
+                <p>{{ firstRow.content['#row']._entity.field_caption_caption[0].value }}</p>
             </div>
         </div>
 
         <div class="services_right"><a class="services_link"
-                                       href="{{ rows.0.content['#row']._entity.field_link_in_list[0].value }}">подробнее</a>
+                                       href="{{ firstRow.content['#row']._entity.field_link_in_list[0].value }}">подробнее</a>
         </div>
     </header>
     <div class="services_row">
         <div class="services_text">
-            {{ rows.0.content['#row']._entity.description[0].value|raw }}
+            {{ firstRow.content['#row']._entity.description[0].value|raw }}
             <div class="services_mobile"><a class="services_link"
-                                            href="{{ rows.0.content['#row']._entity.field_link_in_list[0].value }}">подробнее</a>
+                                            href="{{ firstRow.content['#row']._entity.field_link_in_list[0].value }}">подробнее</a>
             </div>
         </div>
     </div>
