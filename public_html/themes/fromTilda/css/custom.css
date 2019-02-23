@@ -47,9 +47,13 @@
     content: '';
     flex: 0 1 24.7%;
 }
-
 .services_item.__full.__main .services_types .services_type-item img {
     margin-bottom: 0;
+}
+
+/* Скрываем reCAPTCHA от Google*/
+.grecaptcha-badge {
+    display: none !important;
 }
 
 @media screen and (max-width: 1230px) {
