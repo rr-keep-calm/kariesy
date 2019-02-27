@@ -38,5 +38,16 @@ $(document).ready(function() {
     // Сортировка на странице всех отзывов срабатывает сразу же при смене значения
     $('#views-exposed-form-reviews-page-1 select').change(function () {
         $('#views-exposed-form-reviews-page-1').submit();
-    })
+    });
 });
+
+var jivo_onLoadCallback = function () {
+    var setTokenForJivo = '';
+    var credentials = Comagic.getCredentials();
+    for (var field in credentials) {
+        if (credentials.hasOwnProperty(field)) {
+            setTokenForJivo += field + '---' + credentials[field] + '|||';
+        }
+    }
+    jivo_api.setUserToken(setTokenForJivo);
+};
