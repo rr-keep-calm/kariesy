@@ -65,7 +65,7 @@ $(document).ready(function() {
     }
 
     // Отправка форм
-    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review, #recall-form-on-service-page').on('submit', 'form', function (e) {
+    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review, #recall-form-on-service-page, #form-order-doctor-page-popup').on('submit', 'form', function (e) {
         e.preventDefault();
 
         // Собираем информацию для отправки
@@ -144,6 +144,8 @@ $(document).ready(function() {
                         response = $.parseJSON(response);
                         if (response.text == 'OK') {
                             // смотрим есть ли метка в атрибутах самой формы
+                            var parentContainerId = $(form).closest('div').attr('id');
+                            var formId = $(form).attr('id');
                             var eventLabel = '';
                             var eventLabelAttr = $(form).attr('data-eventLabel');
                             if (typeof eventLabelAttr !== typeof undefined && eventLabelAttr !== false) {
@@ -151,7 +153,6 @@ $(document).ready(function() {
                             }
 
                             if (eventLabel == '') {
-                                var parentContainerId = $(form).closest('div').attr('id');
                                 if (parentContainerId == 'form-recall') {
                                     eventLabel = 'form-recall';
                                 } else if (parentContainerId == 'form-order' || parentContainerId == 'form-order-doctor-page') {
@@ -171,6 +172,62 @@ $(document).ready(function() {
                                     'eventLabel': eventLabel
                                 });
                             }
+
+                            // Отправляем данные в coMagic
+                            // Массив разрешённых идентификаторов форм
+                            var allowedForm = new Array("form-recall-form", "form-order-form", "form-order-doctor-page-form", "form-order-doctor-page-popup-form", "recall-form-on-price-page", "recall-form-on-service-page-form", "question-for-doctor-form");
+                            if (typeof Comagic !== typeof undefined && Comagic !== null && allowedForm.indexOf(formId) != -1) {
+                                var name = typeof window.data.name !== typeof undefined && window.data.name !== null ? window.data.name : 'не передаётся в форме';
+                                var email = typeof window.data.email !== typeof undefined && window.data.email !== null ? window.data.email : 'не передаётся в форме';
+                                var phone = typeof window.data.phone !== typeof undefined && window.data.phone !== null ? window.data.phone : 'не передаётся в форме';
+                                var coMagicMessage = '';
+                                if (formId == 'form-recall-form') {
+                                    coMagicMessage += 'Обратный звонок\n';
+                                }
+                                if (formId == 'form-order-form' ||
+                                    formId == 'form-order-doctor-page-form' ||
+                                    formId == 'form-order-doctor-page-popup-form'
+                                ) {
+                                    switch (formId) {
+                                        case 'form-order-form':
+                                            coMagicMessage += 'Запись на приём в шапке\n';
+                                            break;
+                                        case 'form-order-doctor-page-form':
+                                        case 'form-order-doctor-page-popup-form':
+                                            coMagicMessage += 'Запись на приём на странице врача\n';
+                                            break;
+                                    }
+                                    coMagicMessage += 'Услуга - ' + window.data.service + '\n';
+                                    coMagicMessage += 'Врач - ' + window.data.doctor + '\n';
+                                    if (typeof window.data.comment !== typeof undefined &&
+                                        window.data.comment !== null &&
+                                        window.data.comment !== '') {
+                                        coMagicMessage += 'Комментарий:\n ' + window.data.comment;
+                                    }
+
+                                }
+                                if (formId == 'recall-form-on-price-page') {
+                                    coMagicMessage += 'Запись на приём на странице прайса\n';
+                                }
+                                if (formId == 'recall-form-on-service-page-form') {
+                                    coMagicMessage += 'Запись на приём на странице услуги через блок с ценами\n';
+                                }
+                                if (formId == 'question-for-doctor-form') {
+                                    coMagicMessage += 'Вопрос врачу\n';
+                                    if (typeof window.data.question !== typeof undefined &&
+                                        window.data.question !== null &&
+                                        window.data.question !== '') {
+                                        coMagicMessage += 'Вопрос:\n ' + window.data.question;
+                                    }
+                                }
+                                Comagic.addOfflineRequest({
+                                    name: name,
+                                    email: email,
+                                    phone: phone.replace(/\D+/g, ''),
+                                    message: coMagicMessage
+                                });
+                            }
+
                             var successForm = $(form).data('success_form');
                             if (successForm) {
                                 openForm(successForm);
@@ -202,7 +259,7 @@ $(document).ready(function() {
         );
     }
 
-    $('#form-order, #form-order-doctor-page').on('change', 'select.service-type', function () {
+    $('#form-order, #form-order-doctor-page, #form-order-doctor-page-popup-form').on('change', 'select.service-type', function () {
         // Получаем всех докторов, которые оказывают выбранную услугу
         var doctors = $("option:selected", this).data('doctor_list').split('|');
 
