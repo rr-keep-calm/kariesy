@@ -29,3 +29,4 @@
 /.drush/
 /.subversion/
 /public_html/themes/fromTilda/templates/tildaExport/
+/public_html/sitemap.xml
