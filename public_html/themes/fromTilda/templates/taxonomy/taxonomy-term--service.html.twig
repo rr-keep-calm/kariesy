@@ -27,7 +27,76 @@
 #}
 {% if view_mode == 'services_list' %}
 {# список услуг на странице "services"#}
-    {{ content.field_card_in_list }}
+    {% if not content.field_card_in_list|render %}
+        <div class="services_item{{ child|length > 0 ? ' __full' : '' }}">
+            {% if child|length > 0 %}
+                <div class="services_row">
+                    <div class="services_col-left">
+                        <header class="services_header">
+                            <div class="services_left">
+                                <div class="services_image">
+                                    <img alt="" src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="57">
+                                </div>
+                                <div class="services_base-text">
+                                    <h4>{{ name }}</h4>
+                                    {% if content.field_price.0 > 0 %}
+                                        <p>Лечение от <span>{{ content.field_price.0 }}</span> руб</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
+                        </header>
+                        <div class="services_text">
+                            {{ content.field_opisanie_v_spiske_uslug.0|raw }}
+                            <div class="services_mobile"><a class="services_link" href="{{ url }}">подробнее</a></div>
+                        </div>
+                    </div>
+
+                    <div class="services_col-right">
+                        <div class="services_types">
+                            {% if content.field_sub_term_heading|render %}
+                                <div class="services_type-heading">{{ content.field_sub_term_heading.0 }}</div>
+                            {% endif %}
+
+                            <div class="services_type-items">
+                                {% for childItem in child %}
+                                    <a class="services_type-item" href="{{ childItem.href }}">
+                                        <img alt="" src="{{ childItem.pikt }}" width="41">
+                                        <span>{{ childItem.name }}</span>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <header class="services_header">
+                    <div class="services_left">
+                        <div class="services_image">
+                            <img alt="" src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="57">
+                        </div>
+
+                        <div class="services_base-text">
+                            <h4>{{ name }}</h4>
+                            {% if content.field_price.0 > 0 %}
+                                <p>Лечение от <span>{{ content.field_price.0 }}</span> руб</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
+                </header>
+                <div class="services_text">
+                    {{ content.field_opisanie_v_spiske_uslug.0|raw }}
+                    <div class="services_mobile">
+                        <a class="services_link" href="{{ url }}">подробнее</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        {{ content.field_card_in_list }}
+    {% endif %}
 {% else %}
     {% if content.field_oblozhka['#items'].entity.uri.value is not empty or content.description|render is not empty  %}
         <div class="service-detail_top" style="background-image: url({{ file_url(content.field_oblozhka['#items'].entity.uri.value) }})">
