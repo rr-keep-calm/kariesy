@@ -433,3 +433,25 @@ function fromTilda_theme_suggestions_container_alter(array &$suggestions, array 
   ];
   $suggestions[] = 'container__' . implode('_', $pieces);
 }
+
+/**
+ * Preprocess function for taxonomy-term*.html.twig.
+ */
+function fromTilda_preprocess_taxonomy_term(&$variables) {
+  if ($variables['name']['#bundle'] == 'service' && $variables['view_mode'] == 'services_list') {
+    $term = $variables['term'];
+    // Поулчаем вложенные услуги при наличии
+    $aliasManager = \Drupal::service('path.alias_manager');
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadChildren($term->id());
+    $variables['child'] = [];
+    foreach($terms as $subTerm) {
+      $subContent['href'] = $aliasManager->getAliasByPath('/taxonomy/term/' . $subTerm->id());
+      $subContent['name'] = $subTerm->get('name')->value;
+      $subContent['pikt'] = '';
+      if (!$subTerm->get('field_piktogramma')->isEmpty()) {
+        $subContent['pikt'] = file_create_url($subTerm->field_piktogramma->entity->getFileUri());
+      }
+      $variables['child'][] = $subContent;
+    }
+  }
+}
