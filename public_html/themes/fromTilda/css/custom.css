@@ -55,6 +55,11 @@
 .grecaptcha-badge {
     display: none !important;
 }
+.header_mobile-tel {
+	background-image: url(/themes/fromTilda/img/ico/phone-icon.svg) !important;
+	width: 24px !important;
+    height: 24px !important;
+}
 
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
