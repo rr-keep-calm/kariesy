@@ -55,10 +55,50 @@
 .grecaptcha-badge {
     display: none !important;
 }
+/* // reCaptcha */
+
 .header_mobile-tel {
 	background-image: url(/themes/fromTilda/img/ico/phone-icon.svg) !important;
 	width: 24px !important;
     height: 24px !important;
+}
+
+.h2 {
+    font: 36px/1.2 'GothamProLight';
+    color: #231f20;
+    margin-bottom: 35px;
+    margin-left: -2px;
+}
+
+.h3 {
+    font: 30px/1.2 'GothamProLight';
+    color: #231f20;
+    margin-bottom: 30px;
+    margin-left: -2px;
+}
+
+.h4 {
+    font: 24px/1.2 'GothamProLight';
+    color: #231f20;
+    margin-bottom: 18px;
+}
+
+.h5 {
+    font: 16px/1.2 'GothamProMedium';
+    color: #231f20;
+    margin-bottom: 15px;
+}
+
+.h6 {
+    font: 16px/20px 'GothamPro';
+    color: #231f20;
+    margin-bottom: 20px;
+}
+
+.services_base-text .h4 {
+    font: 20px 'RobotoRegular';
+    color: #303234;
+    margin-bottom: 10px;
 }
 
 @media screen and (max-width: 1230px) {

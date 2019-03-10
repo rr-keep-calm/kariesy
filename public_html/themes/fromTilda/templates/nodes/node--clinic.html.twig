@@ -1,6 +1,6 @@
 {% if (view_mode == 'teaser') %}
     <div class="clinics_item">
-        <h4 class="clinics_heading">{{ node.label }}</h4>
+        <div class="clinics_heading">{{ node.label }}</div>
 
         <div class="clinics_item-content">
             <div class="clinics_image">
@@ -29,7 +29,7 @@
                 <div class="wrapper">
                     <div class="clinic_data">
                         <div class="clinic_data-block">
-                            <h4>График работы клиники</h4>
+                            <div class="h4">График работы клиники</div>
 
                             <div class="clinic_time-block">
                                 {% for clinic_schedule in node.field_clinic_schedule %}
@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="clinic_data-block">
-                            <h4>Единый телефон</h4>
+                            <div class="h4">Единый телефон</div>
 
                             <a href="tel:{{ node.field_clinic_phone.value|raw|clearNotNum }}"
                                class="clinic_tel">{{ node.field_clinic_phone.value|raw }}</a>
