@@ -51,6 +51,37 @@
     margin-bottom: 0;
 }
 
+.service-detail_step ul {
+    margin-bottom: 28px;
+}
+
+.service-detail_step ul:last-child {
+    margin-bottom: 0;
+}
+
+.service-detail_step ul li {
+    font: 14px/25px 'OpenSansLight';
+    color: #524f50;
+    margin-bottom: 11px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.service-detail_step ul li:before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #38b4ef;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 14px;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    position: relative;
+    top: 8px;
+}
+
 /* Скрываем reCAPTCHA от Google*/
 .grecaptcha-badge {
     display: none !important;
