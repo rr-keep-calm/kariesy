@@ -1,5 +1,5 @@
 {% if (view_mode == 'teaser') %}
-    <article class="reviews_item">
+    <div class="reviews_item">
         <div class="reviews_top">
             <div class="reviews_human">
                 <div class="reviews_image">
@@ -29,7 +29,7 @@
         <div class="reviews_text">{{ content.field_review_text }}</div>
 
         {{ content.field_photos_of_review }}
-    </article>
+    </div>
 {% else %}
     {%
         set classes = [
@@ -42,7 +42,7 @@
     ]
     %}
     {{ attach_library('classy/node') }}
-    <article{{ attributes.addClass(classes) }}>
+    <div{{ attributes.addClass(classes) }}>
 
         {{ title_prefix }}
         {% if not page %}
@@ -66,5 +66,5 @@
             {{ content }}
         </div>
 
-    </article>
+    </div>
 {% endif %}
