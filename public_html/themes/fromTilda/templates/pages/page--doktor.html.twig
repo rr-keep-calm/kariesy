@@ -51,7 +51,7 @@
                                 <label class="reviews_label">Доктор</label>
 
                                 <div class="reviews_form-data">
-                                    <select name="doctor" required>
+                                    <select name="doctor">
                                         {% for nid,doctor in doctors %}
                                             <option value="{{ nid }}">{{ doctor }}</option>
                                         {% endfor %}
@@ -63,7 +63,7 @@
                                 <label class="reviews_label">Клиника</label>
 
                                 <div class="reviews_form-data">
-                                    <select name="clinic" required>
+                                    <select name="clinic">
                                         {% for nid,clinic in clinics %}
                                             <option value="{{ nid }}">{{ clinic }}</option>
                                         {% endfor %}

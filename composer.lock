@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fb46c483572b2ab5ac4285c4623581dd",
-    "content-hash": "310509a35498a349062af6500ef6ea2d",
+    "hash": "71eb0cc0d279af4ff2414543a12dba13",
+    "content-hash": "4da76e189b433cab3b43b50bfe341731",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2946,6 +2946,54 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/token"
             }
+        },
+        {
+            "name": "drupal/unset_html_head_link",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/unset_html_head_link",
+                "reference": "fc5e263860ae76710f76adafc93bfc63ce8767a4"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1510604284",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "koddr",
+                    "homepage": "https://www.drupal.org/user/1108962"
+                }
+            ],
+            "description": "Module for unset any wrong HTML links (like rel=delete-form, rel=edit-form, etc.) from head on Drupal 8.x websites. This is trust way to grow up position in SERP Google, Yandex, etc.",
+            "homepage": "https://github.com/webartisans-org/drupal_8_unset_html_head_link",
+            "keywords": [
+                "Drupal",
+                "META",
+                "SEO"
+            ],
+            "support": {
+                "source": "https://github.com/webartisans-org/drupal_8_unset_html_head_link",
+                "issues": "https://github.com/webartisans-org/drupal_8_unset_html_head_link/issues"
+            },
+            "time": "2017-11-13 20:09:04"
         },
         {
             "name": "drush/drush",
@@ -8430,7 +8478,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/taxonomy_menu_ui": 10
+        "drupal/taxonomy_menu_ui": 10,
+        "drupal/unset_html_head_link": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

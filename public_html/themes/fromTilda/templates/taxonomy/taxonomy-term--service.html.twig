@@ -115,7 +115,7 @@
         <div class="service-detail_price">
             <div class="wrapper">
                 <div class="service-detail_heading">
-                    <h2>{{ content.field_zagolovok_bloka_cen }}</h2>
+                    <h2>{{ content.field_zagolovok_bloka_cen|render|striptags }}</h2>
                     <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}" class="service-detail_more">Прайс-лист на все услуги</a>
                 </div>
                 {{ service_price }}
@@ -128,14 +128,14 @@
     {% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
         <div class="service-detail_block __1">
             {% if content.field_zagolovok_pervogo_polya %}
-                <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya }}</h2>
+                <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
             {% endif %}
 
             <div class="wrapper">
                 <div class="service-detail_row">
                     <div class="service-detail_col-1">
                         {% if content.field_zagolovok_pervogo_polya|render %}
-                            <h2>{{ content.field_zagolovok_pervogo_polya }}</h2>
+                            <h2>{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
                         {% endif %}
 
                         {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
@@ -155,7 +155,7 @@
         <div class="service-detail_block __2">
             <div class="wrapper">
                 {% if content.field_zagolovok_vtorogo_polya|render %}
-                    <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya }}</h2>
+                    <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya|render|striptags }}</h2>
                 {% endif %}
                 <div class="service-detail_row">
                     <div class="service-detail_col-3">
@@ -165,7 +165,7 @@
                     </div>
                     <div class="service-detail_col-4">
                         {% if content.field_zagolovok_vtorogo_polya|render %}
-                            <h2>{{ content.field_zagolovok_vtorogo_polya }}</h2>
+                            <h2>{{ content.field_zagolovok_vtorogo_polya|render|striptags }}</h2>
                         {% endif %}
                         {% if content.field_kontent_pravoy_kolonki_vto.0['#text'] %}
                             {{ content.field_kontent_pravoy_kolonki_vto.0['#text']|raw }}
@@ -181,7 +181,7 @@
                 <div class="service-detail_row">
                     <div class="service-detail_col-5">
                         {% if content.field_zagolovok_tretego_polya|render %}
-                            <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya|render }}</h2>
+                            <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya|render|striptags }}</h2>
                         {% endif %}
                         {% if content.field_kontent_levoy_kolonki_tret.0['#text'] %}
                             {{ content.field_kontent_levoy_kolonki_tret.0['#text']|raw }}
