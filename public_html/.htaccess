@@ -22,6 +22,14 @@ DirectoryIndex index.php index.html index.htm
 AddType image/svg+xml svg svgz
 AddEncoding gzip svgz
 
+# Fonts
+# Add correct content-type for fonts
+AddType application/vnd.ms-fontobject .eot
+AddType application/x-font-ttf .ttf
+AddType application/x-font-opentype .otf
+AddType application/x-font-woff .woff
+AddType image/svg+xml .svg
+
 # Most of the following PHP settings cannot be changed at runtime. See
 # sites/default/default.settings.php and
 # Drupal\Core\DrupalKernel::bootEnvironment() for settings that can be
@@ -41,6 +49,7 @@ AddEncoding gzip svgz
 
 # Requires mod_expires to be enabled.
 <IfModule mod_expires.c>
+
   # Enable expirations.
   ExpiresActive On
 
@@ -68,6 +77,7 @@ AddEncoding gzip svgz
 # Various rewrite rules.
 <IfModule mod_rewrite.c>
   RewriteEngine on
+
 
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
