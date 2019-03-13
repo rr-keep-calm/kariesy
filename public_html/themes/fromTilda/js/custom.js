@@ -40,10 +40,10 @@ $(document).ready(function () {
         $('#views-exposed-form-reviews-page-1').submit();
     });
 
-    if ($('.clinics_map').length > 0) {
+    if ($('.ya-map-container').length > 0) {
         var mapsData = {};
         // Обходим все контейнеры предназначенные для отображения карт и собираем данные
-        $('.clinics_map').each(function () {
+        $('.ya-map-container').each(function () {
             let id = $(this).attr('id');
             mapsData[id] = {};
 
@@ -111,7 +111,7 @@ function generateYaMaps(mapsData) {
                 center = mapsData[key]['coords'][0];
             }
 
-            var map = new ymaps.Map(key, {center: center.split(','), zoom: 15});
+            var map = new ymaps.Map(key, {center: center.split(','), zoom: 13});
             collection = new ymaps.GeoObjectCollection();
 
             // Создаём метки для отображения на карте
@@ -133,6 +133,8 @@ function generateYaMaps(mapsData) {
             if (forceCenter) {
                 map.setCenter(center.split(','));
             }
+
+            map.setZoom(13);
         }
     }
 }
