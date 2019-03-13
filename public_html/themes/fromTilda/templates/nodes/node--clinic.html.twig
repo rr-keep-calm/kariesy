@@ -21,9 +21,13 @@
     </div>
 {% else %}
         <div class="clinic_map">
-            <div class="clinic_cart">
-                {{ node.field_map_code.value|raw }}
-            </div>
+            <div
+                    class="clinic_cart ya-map-container"
+                    id="clinic-{{ node.id }}"
+                    {% if content.field_center_coordinates|render|striptags != '' %}data-ym_center="{{ node.field_center_coordinates.value|raw }}"{% endif %}
+                    {% if content.field_clinic_coordinates|render|striptags != '' %}data-ym_coords="{{ node.field_clinic_coordinates.value|raw }}"{% endif %}
+                    {% if content.field_inscriptions_on_icons|render|striptags != '' %}data-ym_balloon_content="{{ node.field_inscriptions_on_icons.value|raw }}"{% endif %}
+            ></div>
 
             <div class="clinic_info">
                 <div class="wrapper">
