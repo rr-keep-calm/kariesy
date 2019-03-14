@@ -67,7 +67,7 @@ $(document).ready(function () {
 
         // Если есть контейнеры с данными для формирования карт, то передаём работу в генератор
         if (Object.keys(mapsData).length > 0) {
-            ymaps.ready(generateYaMaps(mapsData));
+            checkYamapsReady(mapsData);
         }
     }
 });
@@ -82,6 +82,16 @@ var jivo_onLoadCallback = function () {
     }
     jivo_api.setUserToken(setTokenForJivo);
 };
+
+function checkYamapsReady(mapsData) {
+    if (typeof ymaps !== typeof undefined) {
+        ymaps.ready(generateYaMaps(mapsData));
+    } else {
+        window.setTimeout(function () {
+            checkYamapsReady(mapsData);
+        }, 100);
+    }
+}
 
 function generateYaMaps(mapsData) {
     return function () {
