@@ -86,6 +86,7 @@
 .grecaptcha-badge {
     display: none !important;
 }
+.footer_bottom .recaptcha {font-size: 11px;}
 /* // reCaptcha */
 
 .header_mobile-tel {
@@ -131,6 +132,36 @@
     color: #303234;
     margin-bottom: 10px;
 }
+
+/* Политика конфиденциальности */
+.policy ol li {list-style: none;}
+.policy ol li:before {content:none;}
+.policy ol>li>ol {margin: 10px 0 0 15px;}
+.policy h2 {margin:25px 0 15px;font-size:24px;}
+.policy p {margin:20px 0;}
+/* // Политика конфиденциальности */
+
+.license_items {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 0 -0.54%;
+    padding-bottom: 30px;
+}
+.license_item {
+    width: 32.25%;
+    background: #fcfcfe;
+    border: 1px solid #eaf0f4;
+    border-radius: 5px;
+    margin: 0 .54% .54%;
+    padding: 20px 21px 17px 24px;
+    -webkit-box-shadow: 0 5px 10px rgba(43,56,63,.05);
+    box-shadow: 0 5px 10px rgba(43,56,63,.05);
+    text-decoration: none;
+}
+.license_item p {text-align:center;}
 
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
