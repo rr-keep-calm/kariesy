@@ -86,6 +86,7 @@
 .grecaptcha-badge {
     display: none !important;
 }
+.footer_bottom .recaptcha {font-size: 11px;}
 /* // reCaptcha */
 
 .header_mobile-tel {
