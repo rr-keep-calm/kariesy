@@ -19,6 +19,7 @@ global-js:
    js/app.js: {}
    js/custom.js: {attributes: { defer: true }}
    https://maps.googleapis.com/maps/api/js?key=AIzaSyB3tlWbCcY4vawcqAwJgbWjP3DqboRywNY&callback=initMap: { type: external, attributes: { async: true, defer: true } }
+   https://api-maps.yandex.ru/2.1/?apikey=a5b6a791-3575-42c5-b911-0f997bc78232&lang=ru_RU: { type: external, attributes: { async: true, defer: true } }
   dependencies:
     - core/drupalSettings
 jquery-ui:
