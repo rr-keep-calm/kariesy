@@ -132,6 +132,14 @@
     margin-bottom: 10px;
 }
 
+/* Политика конфиденциальности */
+.policy ol li {list-style: none;}
+.policy ol li:before {content:none;}
+.policy ol>li>ol {margin: 10px 0 0 15px;}
+.policy h2 {margin:25px 0 15px;font-size:24px;}
+.policy p {margin:20px 0;}
+/* // Политика конфиденциальности */
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;
