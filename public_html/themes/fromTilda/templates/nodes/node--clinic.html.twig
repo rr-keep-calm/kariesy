@@ -84,7 +84,7 @@
                                     {% for key, sliderItem in node.field_slider %}
                                         <div>
                                             <div class="clinic_slider-item">
-                                                <img src="{{ content.field_slider[key] }}" alt="">
+                                                <a data-fancybox="gallery"  href="{{ content.field_slider[key] }}"><img src="{{ content.field_slider[key] }}" alt=""></a>
                                             </div>
                                         </div>
                                     {% endfor %}
