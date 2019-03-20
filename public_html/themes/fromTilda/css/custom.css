@@ -59,7 +59,7 @@
     margin-bottom: 0;
 }
 
-.service-detail_step ul li {
+.service-detail_step ul:not(.no-bullet) li {
     font: 14px/25px 'OpenSansLight';
     color: #524f50;
     margin-bottom: 11px;
@@ -68,7 +68,7 @@
     display: flex;
 }
 
-.service-detail_step ul li:before {
+.service-detail_step ul:not(.no-bullet) li:before {
     content: '';
     width: 10px;
     height: 10px;
