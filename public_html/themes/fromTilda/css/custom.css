@@ -163,6 +163,8 @@
 }
 .license_item p {text-align:center;}
 
+.clinic_text p strong {font-family:'OpenSansSemiBold';}
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;
