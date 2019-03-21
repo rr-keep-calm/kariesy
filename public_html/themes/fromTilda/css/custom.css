@@ -165,6 +165,27 @@
 
 .clinic_text p strong {font-family:'OpenSansSemiBold';}
 
+.clinic_text ol {
+    counter-reset: item;
+    padding: 10px 0;
+}
+
+.clinic_text ol li {
+    font: 14px/20px 'OpenSansLight';
+    margin-bottom: 10px;
+}
+
+.clinic_text ol li:last-child {
+    margin-bottom: 0;
+}
+
+.clinic_text ol li:before {
+    content: counter(item) ". ";
+    counter-increment: item;
+    font: 14px 'RobotoRegular';
+    color: #2299d2;
+}
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;
