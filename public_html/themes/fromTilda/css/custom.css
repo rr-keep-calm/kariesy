@@ -186,6 +186,14 @@
     color: #2299d2;
 }
 
+.answer_data p:last-of-type {
+    display: inline;
+}
+
+.more-answer-link {
+    line-height: 23px;
+}
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;

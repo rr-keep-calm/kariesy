@@ -1,0 +1,54 @@
+{% extends  "page.html.twig" %}
+
+{% block content %}
+    <div class="content_main">
+        <div class="wrapper">
+            <div class="answer __no-margin">
+                {{ page.content }}
+                <aside id="question-form-wrapper" class="answer_aside">
+                    <form id="question-form" action="/keep-calm-custom-form-handler" data-success_form="#form-qa-send" class="answer_form">
+                        <input type="hidden" name="token" class="token">
+                        <input type="hidden" name="action" class="captcha-action">
+                        <input type="hidden" name="formName" value="answer">
+                        <div class="answer_form-title">Задайте вопрос <br>нашим докторам</div>
+
+                        <div class="answer_item">
+                            <label class="answer_label">Фамилия И. О.</label>
+                            <div class="answer_form-data">
+                                <input class="answer_input" type="text" name="fio" placeholder="Иванов И. И." required />
+                            </div>
+                        </div>
+
+                        <div class="answer_item">
+                            <label class="answer_label">Тема вопроса</label>
+                            <div class="answer_form-data">
+                                <input name="title" type="text" class="answer_input" required >
+                            </div>
+                        </div>
+
+                        <div class="answer_item">
+                            <label class="answer_label">Ваш вопрос</label>
+                            <div class="answer_form-data">
+                                <textarea name="question" class="answer_area" required ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="answer_button">
+                            <button type="submit" class="button answer_btn">отправить вопрос</button>
+                        </div>
+                    </form>
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block afterFooterAdd %}
+<div class="forms __normal mfp-hide" id="form-qa-send">
+    <div class="form">
+        <div class="form_normal">Ваш вопрос получен!</div>
+    </div>
+
+    <button type="button" class="forms_close popup-close"></button>
+</div>
+{% endblock %}
