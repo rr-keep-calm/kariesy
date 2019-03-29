@@ -239,7 +239,6 @@ class FormHandlerHelper {
       }
 
       // Создаём отзыв по переданным данным
-      // Create node object and save it.
       $nodeCreate = [
         'type'        => 'review',
         'title'       => $this->formData['fio'] . ' - ' . date('d.m.Y'),
@@ -264,6 +263,49 @@ class FormHandlerHelper {
       $this->message = "Ссылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
 
       $this->subject = 'Новый отзыв на сайте "' . $origin . '"';
+
+      $this->headers = 'From: robot@kariesy.net';
+      $this->headers .= "\r\nReply-To: robot@kariesy.net";
+      $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
+      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+      $this->response = 'OK';
+      $this->valid = true;
+    }
+  }
+
+  protected function answerHandle()
+  {
+    // Проверяем что были переданы все праметры
+    if (!isset($this->formData['fio'], $this->formData['title'], $this->formData['question']) ||
+      empty($this->formData['fio']) ||
+      empty($this->formData['title']) ||
+      empty($this->formData['question'])
+    ) {
+      $this->response = 'Пожалуйста заполните все поля';
+    }
+    else {
+
+      // Создаём элемент сущности "Вопрос-ответ" по переданным данным
+      $nodeCreate = [
+        'type'        => 'vopros_otvet',
+        'title'       => $this->formData['title'],
+        'field_fio' => [$this->formData['fio']],
+        'field_question' => [$this->formData['question']]
+      ];
+      $node = Node::create($nodeCreate);
+      $node->setPublished(false);
+      $node->save();
+      $nid = $node->id();
+      $request = \Drupal::request();
+      $origin = $request->headers->get('origin');
+
+      // Формируем тело письма
+      $this->message = "\"{$this->formData['fio']}\" задал(а) вопрос с заголовком \"{$this->formData['title']}\"";
+      $this->message .= "\n\nТекст вопроса:\n{$this->formData['question']}\n\n";
+      $this->message .= "Ссылка для ответа на вопрос - {$origin}/node/{$nid}/edit";
+
+      $this->subject = 'Новый вопрос на сайте "' . $origin . '"';
 
       $this->headers = 'From: robot@kariesy.net';
       $this->headers .= "\r\nReply-To: robot@kariesy.net";
