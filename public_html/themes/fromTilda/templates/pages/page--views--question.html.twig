@@ -1,0 +1,36 @@
+{% extends  "page.html.twig" %}
+
+{% block content %}
+    <div class="content_main">
+        <div class="wrapper">
+            <div class="answer __no-margin">
+                {{ page.content }}
+                <aside class="answer_aside">
+                    <form action="" class="answer_form">
+                        <div class="answer_form-title">Задайте вопрос <br>нашим докторам</div>
+
+                        <div class="answer_item">
+                            <label class="answer_label">Тема вопроса</label>
+
+                            <div class="answer_form-data">
+                                <input type="text" class="answer_input">
+                            </div>
+                        </div>
+
+                        <div class="answer_item">
+                            <label class="answer_label">Ваш вопрос</label>
+
+                            <div class="answer_form-data">
+                                <textarea required="" class="answer_area"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="answer_button">
+                            <button type="submit" class="button answer_btn">отправить вопрос</button>
+                        </div>
+                    </form>
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock %}

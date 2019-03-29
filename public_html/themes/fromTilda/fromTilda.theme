@@ -79,6 +79,10 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
   if ($node = \Drupal::routeMatch()->getParameter('node')) {
     $suggestions[] = 'page__' . $node->bundle();
   }
+  // Определяем отдельный шаблон для страницы списка вопросов-ответов
+  if (\Drupal::routeMatch()->getRouteName() == 'view.vopros_otvet.page_1') {
+    $suggestions[] = 'page__views__question';
+  }
 }
 
 function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, $hook) {
@@ -453,5 +457,25 @@ function fromTilda_preprocess_taxonomy_term(&$variables) {
       }
       $variables['child'][] = $subContent;
     }
+  }
+}
+
+/**
+ * Preprocess function for paragraph*.html.twig.
+ */
+function fromTilda_preprocess_paragraph(&$variables) {
+  if (isset($variables['content']['field_doctor'])) {
+    $doctorId = $variables['paragraph']->get('field_doctor')
+      ->getValue()[0]['target_id'];
+    $node = \Drupal\node\Entity\Node::load($doctorId);
+    $specializations = $node->get('field_specialization')->getValue();
+    $specializations = array_map(function ($v) {
+      return $v['value'];
+    }, $specializations);
+    $variables['specializations'] = implode(', ', $specializations);
+  }
+
+  if (isset($variables['content']['field_answer'])) {
+    $variables['q_a_url'] = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $variables['paragraph']->getParentEntity()->id()]);
   }
 }
