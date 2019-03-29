@@ -90,29 +90,20 @@
         {{ content.field_answer_to_question }}
     </div>
 {% else %}
-  <article{{ attributes }}>
+    <div class="answer_main">
+        <div class="answer_block">
+            <div class="answer_human">
+                <div class="answer_human-info">
+                    <div class="answer_name">{{ node.field_fio.value|raw }}</div>
+                    {% set createdDate = node.getCreatedTime|format_date('rus') %}
+                    <div class="answer_info">{{ createdDate }}</div>
+                </div>
+            </div>
 
-      {{ title_prefix }}
-      {% if not page %}
-        <h2{{ title_attributes }}>
-          <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-        </h2>
-      {% endif %}
-      {{ title_suffix }}
-
-      {% if display_submitted %}
-        <footer>
-            {{ author_picture }}
-          <div{{ author_attributes }}>
-              {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-              {{ metadata }}
-          </div>
-        </footer>
-      {% endif %}
-
-    <div{{ content_attributes }}>
-        {{ content }}
+            <div class="answer_data">
+                {{ node.field_question.value|raw }}
+            </div>
+        </div>
+        {{ content.field_answer_to_question }}
     </div>
-
-  </article>
 {% endif %}
