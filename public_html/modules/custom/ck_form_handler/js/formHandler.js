@@ -65,7 +65,7 @@ $(document).ready(function() {
     }
 
     // Отправка форм
-    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review, #recall-form-on-service-page, #form-order-doctor-page-popup').on('submit', 'form', function (e) {
+    $('#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, #form-review, #recall-form-on-service-page, #form-order-doctor-page-popup, #question-form-wrapper').on('submit', 'form', function (e) {
         e.preventDefault();
 
         // Собираем информацию для отправки
