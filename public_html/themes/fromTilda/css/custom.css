@@ -196,8 +196,20 @@
 
 .footer_bottom {padding: 19px 0 40px;}
 
-.price_num .price-from {
+.price_cnt.flex-custom {
+    justify-content: flex-end;
+    flex-flow: row wrap;
+    align-content: space-between;
+}
+
+.price_cnt .flex-line-break {
+    width: 100%;
+}
+
+.price_num .price-from, .price_num .price-to {
     font-size: 36px;
+    width: 45px;
+    display: inline-block;
 }
 
 @media screen and (max-width: 1230px) {
