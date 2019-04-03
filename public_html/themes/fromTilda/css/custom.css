@@ -207,8 +207,8 @@
 }
 
 .price_num .price-from, .price_num .price-to {
-    font-size: 36px;
-    width: 45px;
+    font-size: 20px;
+    width: 25px;
     display: inline-block;
 }
 
