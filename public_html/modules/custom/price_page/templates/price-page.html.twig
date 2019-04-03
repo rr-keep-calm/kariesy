@@ -26,12 +26,21 @@
                                     <div class="price_data">{{ price.description|raw }}</div>
                                 </div>
 
-                                <div class="price_cnt">
+                                <div class="price_cnt flex-custom">
                                     {% if price.price_old %}
                                         <span class="price_old">{{ price.price_old }}</span>
                                     {% endif %}
-                                    <span class="price_num">{{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price }}</span>
+                                    <span class="price_num">
+                                        {{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price|raw|trim }}
+                                    </span>
                                     <span class="price_sign">руб</span>
+                                    {% if price.price_to is defined %}
+                                        <div class="flex-line-break"></div>
+                                        <span class="price_num">
+                                            <span class="price-to">до</span> {{ price.price_to }}
+                                        </span>
+                                        <span class="price_sign">руб</span>
+                                    {% endif %}
                                 </div>
                             </div>
                             {% endfor %}
@@ -43,12 +52,21 @@
                                     <div class="price_data">{{ price.description|raw }}</div>
                                 </div>
 
-                                <div class="price_cnt">
+                                <div class="price_cnt flex-custom">
                                     {% if price.price_old %}
                                         <span class="price_old">{{ price.price_old }}</span>
                                     {% endif %}
-                                    <span class="price_num">{{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price }}</span>
+                                    <span class="price_num">
+                                        {{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price|raw|trim }}
+                                    </span>
                                     <span class="price_sign">руб</span>
+                                    {% if price.price_to is defined %}
+                                        <div class="flex-line-break"></div>
+                                        <span class="price_num">
+                                            <span class="price-to">до</span> {{ price.price_to }}
+                                        </span>
+                                        <span class="price_sign">руб</span>
+                                    {% endif %}
                                 </div>
                             </div>
                             {% endfor %}

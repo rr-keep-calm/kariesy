@@ -79,16 +79,26 @@
             <div class="price_data">{{ content.body }}</div>
         </div>
 
-        <div class="price_cnt __min">
+        <div class="price_cnt __min flex-custom">
             {% if content.field_old_price|render %}
                 <span class="price_old">
                     {{ content.field_old_price.0['#markup'] }}
                 </span>
             {% endif %}
             <span class="price_num">
-                {{ content.field_price_from.0['#markup'] == 'Вкл' ? 'от ' : '' }}{{ content.field_cena.0['#markup'] }}
+                {% if content.field_price_from.0['#markup'] == 'Вкл' or (content.field_price_to.0['#markup'] != '' and content.field_price_to.0['#markup'] != 0) %}
+                    <span class="price-from">от</span>
+                {% endif %}
+                {{ content.field_cena.0['#markup'] }}
             </span>
             <span class="price_sign">руб</span>
+            {% if content.field_price_to.0['#markup'] != '' and content.field_price_to.0['#markup'] != 0 %}
+                <div class="flex-line-break"></div>
+                <span class="price_num">
+                    <span class="price-to">до</span> {{ content.field_price_to.0['#markup'] }}
+                </span>
+                <span class="price_sign">руб</span>
+            {% endif %}
         </div>
 
         <div class="price_button">

@@ -48,7 +48,13 @@ class PricePageRepository {
         'price' => $node->field_cena->value,
         'price_old' => $node->field_old_price->value,
       ];
-      if ((bool)$node->field_price_from->value) {
+
+      $price_to = $node->field_price_to->value;
+      if ($price_to) {
+        $node_variables['price_to'] = $price_to;
+      }
+
+      if ((bool)$node->field_price_from->value || $price_to) {
         $node_variables['price_from'] = true;
       }
       $result[$service_type_tid]['types'][$service_type2_tid]['prices'][] = $node_variables;
