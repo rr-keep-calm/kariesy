@@ -30,7 +30,7 @@
                                     {% if price.price_old %}
                                         <span class="price_old">{{ price.price_old }}</span>
                                     {% endif %}
-                                    <span class="price_num">{{ price.price }}</span>
+                                    <span class="price_num">{{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price }}</span>
                                     <span class="price_sign">руб</span>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                     {% if price.price_old %}
                                         <span class="price_old">{{ price.price_old }}</span>
                                     {% endif %}
-                                    <span class="price_num">{{ price.price }}</span>
+                                    <span class="price_num">{{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price }}</span>
                                     <span class="price_sign">руб</span>
                                 </div>
                             </div>

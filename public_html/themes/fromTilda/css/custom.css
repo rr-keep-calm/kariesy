@@ -196,6 +196,10 @@
 
 .footer_bottom {padding: 19px 0 40px;}
 
+.price_num .price-from {
+    font-size: 36px;
+}
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;

@@ -49,7 +49,7 @@ class PricePageRepository {
         'price_old' => $node->field_old_price->value,
       ];
       if ((bool)$node->field_price_from->value) {
-        $node_variables['price'] = 'от ' . $node_variables['price'];
+        $node_variables['price_from'] = true;
       }
       $result[$service_type_tid]['types'][$service_type2_tid]['prices'][] = $node_variables;
     }
