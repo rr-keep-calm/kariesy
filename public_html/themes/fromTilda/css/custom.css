@@ -199,7 +199,7 @@
 .price_cnt.flex-custom {
     justify-content: flex-end;
     flex-flow: row wrap;
-    align-content: space-between;
+    align-content: flex-start;
 }
 
 .price_cnt .flex-line-break {
