@@ -199,7 +199,8 @@
 .price_cnt.flex-custom {
     justify-content: flex-end;
     flex-flow: row wrap;
-    align-content: space-between;
+    align-content: flex-start;
+    max-width: 440px;
 }
 
 .price_cnt .flex-line-break {
@@ -207,8 +208,8 @@
 }
 
 .price_num .price-from, .price_num .price-to {
-    font-size: 36px;
-    width: 45px;
+    font-size: 20px;
+    width: 25px;
     display: inline-block;
 }
 
