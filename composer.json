@@ -24,6 +24,7 @@
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.6.13",
         "drupal/devel": "^2.0",
+        "drupal/draggableviews": "^1.2",
         "drupal/metatag": "^1.7",
         "drupal/paragraphs": "^1.5",
         "drupal/pathauto": "^1.3",
