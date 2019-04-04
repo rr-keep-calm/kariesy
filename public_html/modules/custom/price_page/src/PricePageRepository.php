@@ -14,11 +14,36 @@ class PricePageRepository {
 
   public function getData() {
     $result = [];
+
+    // Получаем сортировку цен через админку
+    $connection = \Drupal::database();
+    $query = $connection->query("SELECT entity_id, weight FROM draggableviews_structure WHERE view_name = 'service_price_ordering' AND view_display = 'page_1'");
+    $weightsTmp = $query->fetchAll();
+    $weights = [];
+    foreach($weightsTmp as $weightFromDb) {
+      $weights[$weightFromDb->entity_id] = $weightFromDb->weight;
+    }
+
+    // Получаем все цены
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'service_price')
-      ->sort('field_cena')
       ->execute();
     $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
+
+    // Сортируем цены согласно настройкам в админке, а зетем по ценам
+    usort($nodes, static function($a, $b) use($weights) {
+      $a_id = $a->id();
+      $b_id = $b->id();
+      if (!isset($weights[$a_id], $weights[$b_id]) || (int)$weights[$a_id] === (int)$weights[$b_id]) {
+        if ((int)$a->field_cena->value === (int)$b->field_cena->value) {
+          return 0;
+        }
+        return ((int)$a->field_cena->value < (int)$b->field_cena->value) ? -1 : 1;
+      }
+      return ((int)$weights[$a_id] < (int)$weights[$b_id]) ? -1 : 1;
+    });
+
+
     foreach ($nodes as $node) {
       $service_type_tid = $node->field_service_type->target_id;
       $service_type2_tid = $node->field_service_type2->target_id;
