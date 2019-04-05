@@ -200,7 +200,13 @@
     justify-content: flex-end;
     flex-flow: row wrap;
     align-content: flex-start;
-    max-width: 450px;
+}
+
+@media screen and (min-width: 768px) {
+	.price_cnt.flex-custom {max-width: 265px;}
+}
+@media screen and (min-width: 1230px) {
+	.price_cnt.flex-custom {max-width: 460px;}
 }
 
 .price_cnt .flex-line-break {
