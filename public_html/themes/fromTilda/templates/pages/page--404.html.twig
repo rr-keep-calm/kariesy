@@ -1,0 +1,24 @@
+{% extends  "page.html.twig" %}
+
+{% block globalContent %}
+    <section class="fzf">
+        <div class="wrapper">
+            <div class="fzf_items">
+                <div class="fzf_items_title">
+                    <div class="fzf_items_title_image">
+                        <object data="/{{ directory }}/img/404-icon.svg"></object>
+                    </div>
+                    <div class="fzf_items_title_words">
+                        <p class="main">404</p>
+                        <p class="bottom">ошибка</p>
+                    </div>
+                </div>
+                <div class="fzf_items_description">
+                    <p class="title">К сожалению, мы не смогли найти то, что Вы искали</p>
+                    <p class="text">Неправильно набран адрес или такой страницы на сайте больше не существует.</p>
+                    <p class="text">Приносим свои извинения за доставленные неудобства и предлагаем перейти на <a href="/">главную страницу</a> или воспользоваться поиском по сайту.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

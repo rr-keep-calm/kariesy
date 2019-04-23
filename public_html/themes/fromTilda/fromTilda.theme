@@ -60,19 +60,21 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
 }
 
 function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
   // Определяем шаблоны для страниц терминов таксономии на основании названия
   // термина
-  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+  if ($route_name == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
     $vacabulary_id = $term->getVocabularyId();
     $suggestions[] = 'page__taxonomy__' . $vacabulary_id;
   }
   // Определяем шаблон для страницы цен
-  if (\Drupal::routeMatch()->getRouteName() == 'price_page.price_page') {
+  if ($route_name == 'price_page.price_page') {
     $suggestions[] = 'page__price_page';
   }
   // Определяем отдельный шаблон для страницы списка услуг
-  if (\Drupal::routeMatch()->getRouteName() == 'view.services_page.page_1') {
+  if ($route_name == 'view.services_page.page_1') {
     $suggestions[] = 'page__views__services_page';
   }
   // Определяем отдельные шаблон для страниц типов материалов
@@ -80,8 +82,16 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
     $suggestions[] = 'page__' . $node->bundle();
   }
   // Определяем отдельный шаблон для страницы списка вопросов-ответов
-  if (\Drupal::routeMatch()->getRouteName() == 'view.vopros_otvet.page_1') {
+  if ($route_name == 'view.vopros_otvet.page_1') {
     $suggestions[] = 'page__views__question';
+  }
+
+  $request = \Drupal::request();
+  if ($exception = $request->attributes->get('exception')) {
+    $status_code = $exception->getStatusCode();
+    if ($status_code == 404) {
+      $suggestions[] = 'page__404';
+    }
   }
 }
 
