@@ -121,7 +121,7 @@ class Crawler
     protected function stop($message, $sendNotification = true)
     {
         if ($sendNotification) {
-            $this->sendEmail($message, '', $this->host . ' sitemap error');
+//            $this->sendEmail($message, '', $this->host . ' sitemap error');
         }
         throw new \Exception($message);
     }
@@ -307,7 +307,7 @@ class Crawler
                 && time() - filemtime($xmlFile) > $existenceTimeFile
                 && time() - filemtime($tmpFile) > 43200) {
                 $msg = 'Карта сайта последний раз обновлялась более ' . $countHourForNotify . ' часов(а) назад.';
-                $this->sendEmail($msg);
+//                $this->sendEmail($msg);
             }
         }
     }
@@ -485,7 +485,7 @@ class Crawler
         }
 
         if (count($this->checked) < 2) {
-            $this->sendEmail("Попытка записи в sitemap вместо списка ссылок:\n" . print_r($this->checked, true));
+//            $this->sendEmail("Попытка записи в sitemap вместо списка ссылок:\n" . print_r($this->checked, true));
             $this->stop('В sitemap доступна только одна ссылка на запись');
         }
 
@@ -517,7 +517,7 @@ class Crawler
         $subject = (empty($subject)) ? $this->host . ' sitemap' : $subject;
 
         // Отправляем письма об изменениях
-        mail($to, $subject, $text, $header);
+//        mail($to, $subject, $text, $header);
     }
 
     /**
@@ -632,7 +632,7 @@ class Crawler
             }
         }
 
-        $this->sendEmail($text);
+//        $this->sendEmail($text);
         if ($modifications && !empty($this->config['email_json'])) {
             // Формируем json формат данных для отправки на почту, хранящую информацию о работе карт сайта
             $log = array(
@@ -642,7 +642,7 @@ class Crawler
                 'del_external' => $delExternal,
             );
             $log = json_encode($log);
-            $this->sendEmail($log, $this->config['email_json'], $this->host . ' sitemap result');
+//            $this->sendEmail($log, $this->config['email_json'], $this->host . ' sitemap result');
         }
 
         // Отправляем отчёт о перелинковке
@@ -716,14 +716,14 @@ class Crawler
                     if ($diffText) {
                         $radarLinksReport = "{$diffText}\n{$radarLinksReport}";
                     }
-                    $this->sendEmail($radarLinksReport, '', $this->host . ' - перелинковка');
+//                    $this->sendEmail($radarLinksReport, '', $this->host . ' - перелинковка');
                 }
             } else {
-                $this->sendEmail(
+                /*$this->sendEmail(
                     'Отчёт о перелинковке не может быть составлен, возможно не установлен радар.',
                     '',
                     $this->host . ' - перелинковка'
-                );
+                );*/
             }
             unlink($this->config['pageroot'] . $this->config['tmp_radar_file']);
         }

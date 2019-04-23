@@ -20,7 +20,7 @@ return array(
     'disallow_regexp' => "/\.(xml|inc|txt|js|zip|bmp|jpg|jpeg|png|gif|css)$/i", // Регулярные выражения для файлов, которые не надо включать в карту сайта
     'disallow_key' => "sid\nPHPSESSID", // GET параметры, отбрасываемые при составлении карты сайта
     'seo_urls' => "http://example.com/promoted-page.html = 0.9", // Приоритет для продвигаемых ссылок
-    'email_cron' => "nebudetvlom@gmail.com", // Электронная почта для cron-сообщений
+    'email_cron' => "", // Электронная почта для cron-сообщений
     'email_notify' => "nebudetvlom@gmail.com", // Электронная почта для уведомления о добавленных/удалённых ссылках
-    'email_json' => "nebudetvlom@gmail.com", // Электронная почта для уведомлений об изменениях в карте сайта (json-формат)
+    'email_json' => "", // Электронная почта для уведомлений об изменениях в карте сайта (json-формат)
 );
