@@ -40,7 +40,7 @@
                                 <div class="services_base-text">
                                     <div class="h4">{{ name }}</div>
                                     {% if content.field_price.0 > 0 %}
-                                        <p>Лечение от <span>{{ content.field_price.0 }}</span> руб</p>
+                                        <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} <span>{{ content.field_price.0 }}</span> руб</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                         <div class="services_base-text">
                             <div class="h4">{{ name }}</div>
                             {% if content.field_price.0 > 0 %}
-                                <p>Лечение от <span>{{ content.field_price.0 }}</span> руб</p>
+                                <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} <span>{{ content.field_price.0 }}</span> руб</p>
                             {% endif %}
                         </div>
                     </div>
