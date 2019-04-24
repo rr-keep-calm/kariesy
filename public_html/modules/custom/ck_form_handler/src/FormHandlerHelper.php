@@ -260,7 +260,10 @@ class FormHandlerHelper {
       $origin = $request->headers->get('origin');
 
       // Формируем тело письма
-      $this->message = "Ссылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
+      $this->message = "{$this->formData['fio']} оставил(а) отзыв на сайте {$origin}.\n\n";
+      $this->message .= "Текст отзыва:\n";
+      $this->message .= $this->formData['review-text'];
+      $this->message .= "\n\nСсылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
 
       $this->subject = 'Новый отзыв на сайте "' . $origin . '"';
 
