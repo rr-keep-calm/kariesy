@@ -4,7 +4,7 @@ $(document).ready(function() {
     window.data = false;
     window.dataIsReady = false;
     window.photoIsReady = false;
-    window.formProcessPool = {}
+    window.formProcessPool = {};
 
     // Скрыть ссылку на загрузку файлов если технология не поддерживается
     if (!window.File || !window.FileList || !window.FileReader) {
