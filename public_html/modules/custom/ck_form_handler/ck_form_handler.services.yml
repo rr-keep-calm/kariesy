@@ -1,0 +1,5 @@
+services:
+  http_middleware.ck_form_handler_get_source:
+    class: Drupal\ck_form_handler\StackMiddleware\CkFormHandlerGetSource
+    tags:
+      - { name: http_middleware, priority: 210, responder: true }

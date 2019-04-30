@@ -13,9 +13,18 @@ class FormHandlerHelper {
   protected $headers = '';
   protected $valid = false;
   protected $formData = [];
+  protected $source = '';
+  protected $gaCid = '';
 
   public function __construct($formData) {
     $this->formData = $formData;
+    $this->source = isset($_COOKIE['ck_source']) && trim($_COOKIE['ck_source']) !== '' ? $_COOKIE['ck_source'] : 'Не удалось определить источник перехода';
+    $this->gaCid = 'Не удалось определить client ID';
+    if (isset($_COOKIE['_ga'])) {
+      list($version, $domainDepth, $cid1, $cid2) = explode('.', $_COOKIE["_ga"], 4);
+      $contents = array('version' => $version, 'domainDepth' => $domainDepth, 'cid' => $cid1 . '.' . $cid2);
+      $this->gaCid = $contents['cid'];
+    }
   }
 
   public function sendEmail() {
@@ -57,6 +66,8 @@ class FormHandlerHelper {
           }
           $this->$formHandlerMethod();
           if ($this->valid) {
+            // Добавляем в уведомление информацию по источнику и client ID
+            $this->message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
             mail($this->to, $this->subject, $this->message, $this->headers);
           }
         }
