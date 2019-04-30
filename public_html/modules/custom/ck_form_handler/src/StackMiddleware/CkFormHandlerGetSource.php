@@ -37,7 +37,7 @@ class CkFormHandlerGetSource implements HttpKernelInterface {
       if (trim($_GET['utm_source']) !== '') {
         switch ($_GET['utm_source']) {
           case 'yandex.search':
-            $source = 'Яндекс.Директ';
+            $source = 'Яндекс.Директ [Поиск]';
             break;
           case 'yandex.context':
             $source = 'Яндекс.Директ [РСЯ]';
