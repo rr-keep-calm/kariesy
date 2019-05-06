@@ -66,8 +66,12 @@ class FormHandlerHelper {
           }
           $this->$formHandlerMethod();
           if ($this->valid) {
+            $n = "\n";
+            if (strpos($this->headers, 'text/html') !== false) {
+              $n = '<br />';
+            }
             // Добавляем в уведомление информацию по источнику и client ID
-            $this->message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
+            $this->message .= "{$n}{$n}{$n}Источник — {$this->source}{$n}client ID: {$this->gaCid}";
             mail($this->to, $this->subject, $this->message, $this->headers);
           }
         }
