@@ -51,15 +51,17 @@
 
     <div class="services_types">
         <div class="services_type-items">
-            {% for row in rows|batch(4, '<div class="services_type-item stub"></div>') %}
-                {% for item in row %}
-                    {% if item.content %}
-                        {{- item.content -}}
-                    {% else %}
-                        {{ item |raw}}
-                    {% endif %}
+            {% if rows %}
+                {% for row in rows|batch(4, '<div class="services_type-item stub"></div>') %}
+                    {% for item in row %}
+                        {% if item.content %}
+                            {{- item.content -}}
+                        {% else %}
+                            {{ item |raw }}
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>
