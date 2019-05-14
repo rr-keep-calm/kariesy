@@ -213,6 +213,10 @@
     display: inline-block;
 }
 
+#block-views-block-recommended-services-block-1 {
+    margin-top: 50px;
+}
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;

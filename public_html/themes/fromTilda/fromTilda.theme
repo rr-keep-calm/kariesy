@@ -431,6 +431,11 @@ function fromTilda_preprocess_views_view(&$variables){
     $variables['allClinics'] = $allClinics;
     $variables['getVars'] = $_GET;
   }
+
+  // Отменяем кэширование на странице где расположен блок ""Рекомендуемые услуги
+  if ($view->storage->id() === 'recommended_services' && $view->current_display == 'block_1') {
+    \Drupal::service('page_cache_kill_switch')->trigger();
+  }
 }
 
 /**

@@ -1,0 +1,25 @@
+{#{% block content %}
+    {% if content|render|striptags|trim %}
+        <div class="doctors-more">
+            <div class="wrapper">
+                {% if label %}
+                    <h2 class="doctor_clinics-title">{{ label }}</h2>
+                {% endif %}
+                {{ content }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}#}
+
+<div{{ attributes }}>
+    <div class="wrapper">
+        {{ title_prefix }}
+        {% if label %}
+            <h2{{ title_attributes }}>{{ label }}</h2>
+        {% endif %}
+        {{ title_suffix }}
+        {% block content %}
+            {{ content }}
+        {% endblock %}
+    </div>
+</div>
