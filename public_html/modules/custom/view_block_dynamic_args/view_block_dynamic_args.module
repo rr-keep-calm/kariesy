@@ -1,0 +1,55 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Вмешиваемся в работу отображения блоков на вьюсах для передачи аргументов
+ *
+ * Implements hook_views_pre_view()
+ */
+function view_block_dynamic_args_views_pre_view(&$view, &$display_id, &$args) {
+  // Представление (блок доктора) на странице клиники
+  if (strpos($display_id, 'block') !== 0) {
+    return;
+  }
+
+  switch ($view->id()) {
+    case 'recommended_services':
+      if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+        $term = Term::load($tid);
+        $vacabulary_id = $term->getVocabularyId();
+        if ($vacabulary_id == 'service') {
+          $args[0] = $tid;
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Наверняка исключает из случайных услуг просматриваемую
+ * фильтрацию докторов по клинике на основе поля "График работы"
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ * @param \Drupal\views\Plugin\views\query\QueryPluginBase $query
+ */
+function view_block_dynamic_args_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+
+  // Представление (блок доктора) на странице клиники
+  if ($view->id() == 'recommended_services' && $view->current_display == 'block_1') {
+    if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = Term::load($tid);
+      $vacabulary_id = $term->getVocabularyId();
+      if ($vacabulary_id == 'service') {
+        $query->addWhere(
+          count($query->where),
+          'taxonomy_term_field_data.tid',
+          $tid,
+          '!='
+        );
+      }
+    }
+  }
+}
