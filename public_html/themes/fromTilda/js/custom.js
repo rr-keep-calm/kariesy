@@ -148,3 +148,12 @@ function generateYaMaps(mapsData) {
         }
     }
 }
+
+$.fn.once = function(processed_class)
+{
+    if (typeof processed_class == 'undefined')
+    {
+        processed_class = 'processed';
+    }
+    return this.not('.' + processed_class).addClass(processed_class);
+};

@@ -1,22 +1,14 @@
-{#{{ dump(rows.0['#rows']) }}#}
-
-{% for row in items|batch(3, 'No item') %}
-    <tr>
-        {% for column in row %}
-            <td>{{ column }}</td>
-        {% endfor %}
-    </tr>
-{% endfor %}
-
 {% set hideItem = "style=\"display: none;\"" %}
 
-{% for doctors in rows.0['#rows']|batch(3, '') %}
+{% if rows.0['#rows']|length > 0 %}
+    {% for doctors in rows.0['#rows']|batch(3, '') %}
         <div class="doctors-more_items" {{ loop.index != 1 ? hideItem|raw : '' }}>
             {% for doctor in doctors %}
                 {{ doctor|render }}
             {% endfor %}
         </div>
-{% endfor %}
+    {% endfor %}
+{% endif %}
 {% if rows.0['#rows']|length > 3 %}
     <span class="doctors-more_btn">+ показать еще</span>
 {% endif %}
