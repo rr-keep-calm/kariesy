@@ -1,0 +1,5 @@
+name: 'View block dynamic args'
+description: 'Динамические аргументы для блоков на views'
+type: module
+core: 8.x
+version: 1.x
