@@ -67,7 +67,6 @@ class KCCSearchProcess {
     $field_tables = ['taxonomy_term_field_data' => []];
 
     $this->collectFieldTables('taxonomy_term', $items, 'tid', $field_tables);
-    $this->collectFieldTables('node', $items, 'nid', $field_tables);
     $condition_and = new Condition('AND');
     $condition_and->condition('taxonomy_term_field_data.vid', 'service_type2', '!=');
     $this->searchInBase($field_tables, $condition_and);
@@ -127,14 +126,14 @@ class KCCSearchProcess {
 
     $condition_or = new Condition('OR');
     foreach ($first_table_fields as $first_table_field) {
-      $condition_or->condition($first_table . '.' . $first_table_field['search'], '[[:<:]]' . $connection->escapeLike($this->search_string) . '[[:>:]]', 'RLIKE');
+      $condition_or->condition($first_table . '.' . $first_table_field['search'], '%' . $connection->escapeLike($this->search_string) . '%', 'LIKE');
     }
 
     foreach ($field_tables as $field_table => $field_table_fields) {
       foreach ($field_table_fields as $field_table_field_parts) {
         $query->leftJoin($field_table, NULL, $first_table . '.' . array_values($first_table_fields)[0]['id'] . ' = ' . $field_table . '.' . $field_table_field_parts['id']);
         $query->fields($field_table, [$field_table_field_parts['search']]);
-        $condition_or->condition($field_table . '.' . $field_table_field_parts['search'], '[[:<:]]' . $connection->escapeLike($this->search_string) . '[[:>:]]', 'RLIKE');
+        $condition_or->condition($field_table . '.' . $field_table_field_parts['search'], '%' . $connection->escapeLike($this->search_string) . '%', 'LIKE');
       }
     }
 
