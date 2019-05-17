@@ -20,13 +20,13 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
     // Получаем тип услуги для вставик его в хлебные крошки
     if ($vacabulary_id == 'service') {
       $serviceTypesUrl = [
-        3 => '/service/medication',
-        4 => '/service/implantation',
-        8 => '/service/prosthesis',
-        9 => '/service/surgery',
-        10 => '/service/orthodontia',
-        11 => '/service/aesthetics',
-        12 => '/service/paedodontia',
+        3 => '/uslugi/lechenie-zubov',
+        4 => '/uslugi/implantatsiya-zubov',
+        8 => '/uslugi/protezirovanie-zubov',
+        9 => '/uslugi/hirurgiya',
+        10 => '/uslugi/orthodontia',
+        11 => '/uslugi/gigiena',
+        12 => '/uslugi/detskaya-stomatologiya',
       ];
       $serviceType = $term->get('field_service_type')->getValue();
       if ($serviceType) {
@@ -40,7 +40,7 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
     if ($is_service_term) {
       $variables['breadcrumb'] = array_merge(
         array_slice($variables['breadcrumb'], 0, 1),
-        [['text' => 'Услуги', 'url' => '/service']],
+        [['text' => 'Услуги', 'url' => '/uslugi']],
         $serviceTypeBread,
         array_slice($variables['breadcrumb'], 1)
       );
@@ -72,6 +72,10 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
   // Определяем шаблон для страницы цен
   if ($route_name == 'price_page.price_page') {
     $suggestions[] = 'page__price_page';
+  }
+  // Определяем шаблон для страницы поиска
+  if ($route_name == 'custom_yandex_search.search') {
+    $suggestions[] = 'page__search';
   }
   // Определяем отдельный шаблон для страницы списка услуг
   if ($route_name == 'view.services_page.page_1') {

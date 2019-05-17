@@ -1,0 +1,8 @@
+<?php
+function kcc_search_theme($existing, $type, $theme, $path) {
+  return [
+    'kcc_search' => [
+      'variables' => ['data' => NULL],
+    ],
+  ];
+}

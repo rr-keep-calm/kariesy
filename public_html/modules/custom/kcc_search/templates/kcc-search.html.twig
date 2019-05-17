@@ -1,0 +1,87 @@
+<form action="" class="search_form">
+    <input name="keys" class="search_input" type="text" placeholder="Поиск..." value="{{ data.keys }}">
+    <button type="submit" class="search_btn">найти</button>
+</form>
+
+<div class="search_items">
+    {% if data.items %}
+        {% set start = data.page > 0 ? (data.page - 1) * 10 : 0 %}
+        {% for search_item in data.items|slice(start,10) %}
+            {% if search_item.nid is defined %}
+                {% set url = path('entity.node.canonical', {'node': search_item.nid}) %}
+            {% elseif search_item.tid is defined %}
+                {% set url = path('entity.taxonomy_term.canonical', {'taxonomy_term': search_item.tid}) %}
+            {% endif %}
+            <div class="search_item">
+                <a href="{{ url }}" class="search_title">{{ search_item.title|raw }}</a>
+                <p>
+                    {{ search_item.search_description|raw }}
+                    {% if search_item.search_description|raw ends with '...' %}
+                        <a href="{{ url }}">Подробнее</a>
+                    {% endif %}
+                </p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="search_item">
+            {% if data.keys != '' %}
+                <p>По запросу "{{ data.keys }}" не найдено ни одного материала</p>
+            {% else %}
+                <p>Пожалуйста укажите что требуется найти</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% if data.items and data.items|length > 10 %}
+    {# Получаем номер последней страницы #}
+    {% set lastPageNumber = (data.items|length / 10)|round %}
+    {% set currentPage = 1 %}
+    {% if data.page > 0 %}
+        {% set currentPage = data.page %}
+    {% endif %}
+    <div class="pagination-block_right __full">
+        <div class="pagination __center">
+            {% if currentPage > 1 %}
+                <a href="/search?keys={{ data.keys }}&page={{ currentPage - 1 }}" class="pagination_prev"></a>
+                <a href="/search?keys={{ data.keys }}">1</a>
+            {% endif %}
+
+            {% if currentPage >= 4 %}
+                <a href="">...</a>
+            {% endif %}
+
+            {# выводим вторую предыдущую страницу от текущей #}
+            {% if currentPage == lastPageNumber and currentPage - 2 > 2 %}
+                <a href="/search?keys={{ data.keys }}&page={{ currentPage - 1 }}">{{ currentPage - 2 }}</a>
+            {% endif %}
+
+            {# выводим предыдущую страницу от текущей #}
+            {% if currentPage > 2 %}
+                <a href="/search?keys={{ data.keys }}&page={{ currentPage - 1 }}">{{ currentPage - 1 }}</a>
+            {% endif %}
+
+            {# выводим текущую страницу #}
+            <a class="active" href="">{{ currentPage }}</a>
+
+            {# выводим следующую за текущей страницу #}
+            {% if currentPage + 1 < lastPageNumber %}
+                <a href="/search?keys={{ data.keys }}&page={{ currentPage + 1 }}">{{ currentPage + 1 }}</a>
+            {% endif %}
+
+            {# выводим вторую следующую за текущей страницу если находимся на первой странице #}
+            {% if currentPage == 1 and currentPage + 2 <= lastPageNumber %}
+                <a href="/search?keys={{ data.keys }}&page={{ currentPage + 2 }}">{{ currentPage + 2 }}</a>
+            {% endif %}
+
+            {% if currentPage + 2 < lastPageNumber %}
+                <a href="">...</a>
+            {% endif %}
+
+            {% if currentPage != lastPageNumber %}
+                <a href="/search?keys={{ data.keys }}&page={{ lastPageNumber }}">{{ lastPageNumber }}</a>
+                <a href="/search?keys={{ data.keys }}&page={{ currentPage + 1 }}" class="pagination_next"></a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

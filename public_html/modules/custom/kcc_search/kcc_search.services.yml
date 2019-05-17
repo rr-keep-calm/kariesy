@@ -1,0 +1,3 @@
+services:
+  kcc_search.process:
+    class: Drupal\kcc_search\KCCSearchProcess

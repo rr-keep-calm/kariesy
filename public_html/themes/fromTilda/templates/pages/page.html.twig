@@ -53,13 +53,12 @@
         <div class="nav_content">
             {{ page.main_menu }}
             {{ page.second_menu }}
-            <div class="nav_search" id="nav-search"></div>
-            {#<form class="nav_search" action="" id="nav-search">
+            <form class="nav_search" action="/search" id="nav-search">
                 <div class="nav_search-inner">
-                    <input class="nav_input" type="text" placeholder="Поиск по сайту">
+                    <input name="keys" class="nav_input" type="text" placeholder="Поиск по сайту">
                     <button class="nav_btn"></button>
                 </div>
-            </form>#}
+            </form>
         </div>
     </div>
 </nav>

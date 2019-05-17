@@ -1,0 +1,5 @@
+name: Custom search by keep calm coding
+description: 'Поиск по нодам всех типов и всем терминам таксономии'
+type: module
+core: 8.x
+version: 0.1
