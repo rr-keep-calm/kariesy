@@ -21,8 +21,8 @@ class KCCSearchProcess {
       return [];
     }
 
-    $this->searchByNodes();
     $this->searchByTerms();
+    $this->searchByNodes();
     // TODO организовать поиск по данным параграфов
 
     $this->handleSearchResult();
@@ -54,7 +54,11 @@ class KCCSearchProcess {
     $field_tables = ['node_field_data' => []];
 
     $this->collectFieldTables('node', $items, 'nid', $field_tables);
-    $this->searchInBase($field_tables);
+    $condition_and = new Condition('AND');
+    $condition_and->condition('node_field_data.type', 'review', '!=');
+    $condition_and->condition('node_field_data.type', 'vopros_otvet', '!=');
+    $condition_and->condition('node_field_data.type', 'service_price', '!=');
+    $this->searchInBase($field_tables, $condition_and);
   }
 
   private function searchByTerms() {
@@ -62,7 +66,10 @@ class KCCSearchProcess {
     $field_tables = ['taxonomy_term_field_data' => []];
 
     $this->collectFieldTables('taxonomy_term', $items, 'tid', $field_tables);
-    $this->searchInBase($field_tables);
+    $this->collectFieldTables('node', $items, 'nid', $field_tables);
+    $condition_and = new Condition('AND');
+    $condition_and->condition('taxonomy_term_field_data.vid', 'service_type2', '!=');
+    $this->searchInBase($field_tables, $condition_and);
   }
 
   private function collectFieldTables($type, $item_list_of_type, $primary_key, &$field_tables = []) {
@@ -99,7 +106,7 @@ class KCCSearchProcess {
     }
   }
 
-  private function searchInBase($field_tables) {
+  private function searchInBase($field_tables, $additionalCondition = null) {
     //TODO сделать возможным поиск по части запроса (разбивка на слова)
     reset($field_tables);
     $first_table = key($field_tables);
@@ -131,6 +138,10 @@ class KCCSearchProcess {
     }
 
     $query->condition($condition_or);
+
+    if ($additionalCondition !== null) {
+      $query->condition($additionalCondition);
+    }
     $query->groupBy($first_table . '.' . array_values($first_table_fields)[0]['id']);
 
     $results = $query->execute();
@@ -149,7 +160,7 @@ class KCCSearchProcess {
         if ($pos !== FALSE) {
           $text = $this->truncateSearchResult($text, $pos);
           $search_result_item['search_description'] = $this->highlightingSearchResult($text);
-          $title = $search_result_item['title'] ?? $search_result_item['name'];
+          $title = $search_result_item['name'] ?? $search_result_item['title'];
           $search_result_item['title'] = $this->highlightingSearchResult($title);
         }
       }
