@@ -24,6 +24,7 @@ class KCCSearchProcess {
     $this->searchByTerms();
     $this->searchByNodes();
     // TODO организовать поиск по данным параграфов
+    // TODO организовать поиск по глобальным полям вьюсов в типах услуг
 
     $this->handleSearchResult();
     // TODO сортировка данных по релевантности
@@ -162,6 +163,7 @@ class KCCSearchProcess {
           $search_result_item['search_description'] = $this->highlightingSearchResult($text);
           $title = $search_result_item['name'] ?? $search_result_item['title'];
           $search_result_item['title'] = $this->highlightingSearchResult($title);
+          $search_result_item['link'] = $search_result_item['field_link_in_list_value'] ?? '';
         }
       }
     }
