@@ -208,6 +208,10 @@
     align-content: flex-start;
 }
 
+.nav_search.active .nav_input {
+    min-width: 385px;
+}
+
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
 }

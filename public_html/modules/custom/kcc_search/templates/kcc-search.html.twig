@@ -7,7 +7,9 @@
     {% if data.items %}
         {% set start = data.page > 0 ? (data.page - 1) * 10 : 0 %}
         {% for search_item in data.items|slice(start,10) %}
-            {% if search_item.nid is defined %}
+            {% if search_item.link is defined and search_item.link != '' %}
+                {% set url = search_item.link %}
+            {% elseif search_item.nid is defined %}
                 {% set url = path('entity.node.canonical', {'node': search_item.nid}) %}
             {% elseif search_item.tid is defined %}
                 {% set url = path('entity.taxonomy_term.canonical', {'taxonomy_term': search_item.tid}) %}
