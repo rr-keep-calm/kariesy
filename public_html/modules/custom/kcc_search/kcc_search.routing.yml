@@ -1,0 +1,7 @@
+kcc_search.search:
+  path: '/search'
+  defaults:
+    _controller: '\Drupal\kcc_search\Controller\KCCSearchController::search'
+    _title: 'Поиск'
+  requirements:
+    _permission: 'access content'
