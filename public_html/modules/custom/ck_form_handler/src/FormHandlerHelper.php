@@ -3,11 +3,13 @@ namespace Drupal\ck_form_handler;
 
 use \Drupal\node\Entity\Node;
 use \Drupal\file\Entity\File;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class FormHandlerHelper {
 
   protected $response = 'Произошла ошибка, пожалуйста повторите попытку позже.';
-  protected $to = 'kxz-stom@yandex.ru, dentkariesynet@gmail.com, shok20@kariesy.net, rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
+  protected $to = 'dentkariesynet@gmail.com, kxz-stom@yandex.ru, shok20@kariesy.net, rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
   protected $subject = 'Запись на приём';
   protected $message = '';
   protected $headers = '';
@@ -66,13 +68,37 @@ class FormHandlerHelper {
           }
           $this->$formHandlerMethod();
           if ($this->valid) {
-            $n = "\n";
-            if (strpos($this->headers, 'text/html') !== false) {
-              $n = '<br />';
+            $mail = new PHPMailer(TRUE);
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+            $mail->isHTML(TRUE);
+            $this->message = nl2br($this->message);
+            $this->message .= "<br /><br /><br />Источник — {$this->source}<br />client ID: {$this->gaCid}";
+
+
+            $mail->isSMTP();
+            $mail->Host = 'smtp.yandex.ru';
+            $mail->SMTPAuth = TRUE;
+            $mail->Username = 'www-kariesy-net@yandex.ru';
+            $mail->Password = '4SpnoC3WqQer';
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port = 465;
+
+            $recipients = explode(',', $this->to);
+            $recipients = array_map('trim', $recipients);
+            $first_recipient = array_shift($recipients);
+            $mail->setFrom('www-kariesy-net@yandex.ru', 'kariesy.net');
+            $mail->addAddress($first_recipient);
+            foreach ($recipients as $recipient) {
+              $mail->addBCC($recipient);
             }
-            // Добавляем в уведомление информацию по источнику и client ID
-            $this->message .= "{$n}{$n}{$n}Источник — {$this->source}{$n}client ID: {$this->gaCid}";
-            mail($this->to, $this->subject, $this->message, $this->headers);
+            $mail->addReplyTo($first_recipient);
+
+            $mail->Subject = $this->subject;
+            $mail->Body = $this->message;
+            $mail->AltBody = strip_tags($this->message);
+
+            $mail->send();
           }
         }
       }
