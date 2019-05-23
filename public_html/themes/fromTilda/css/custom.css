@@ -9,6 +9,7 @@
     display: inline-block;
     cursor: pointer;
 }
+.home-text h1 {padding-bottom:15px}
 .header_item:nth-child(3) {
     min-width: 200px;
     margin-right: 70px;
