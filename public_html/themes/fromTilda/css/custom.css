@@ -135,9 +135,6 @@
     margin-bottom: 10px;
 }
 
-.service-detail_about{width:680px;padding:40px 50px}
-.service-detail_top{padding:70px 0 24px}
-
 /* Политика конфиденциальности */
 .policy ol li {list-style: none;}
 .policy ol li:before {content:none;}
@@ -219,6 +216,8 @@
 
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
+	.service-detail_about{width:680px;padding:40px 50px}
+	.service-detail_top{padding:70px 0 24px}
 }
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}
