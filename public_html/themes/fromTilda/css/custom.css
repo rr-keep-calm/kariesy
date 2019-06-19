@@ -2,13 +2,14 @@
     margin-top: 80px;
     padding: 0 15px;
 }
-.home-text.page .wrapper > *:not(:first-child) {
+.home-text.page .wrapper > *:not(:nth-child(1)):not(:nth-child(2)):not(:last-child) {
     display: none;
 }
 .home-text.page .wrapper .pagination-block_more {
     display: inline-block;
     cursor: pointer;
 }
+.home-text h1 {padding-bottom:15px}
 .header_item:nth-child(3) {
     min-width: 200px;
     margin-right: 70px;
@@ -81,6 +82,7 @@
     position: relative;
     top: 8px;
 }
+.clinics_item {padding:19px 28px}
 
 /* Скрываем reCAPTCHA от Google*/
 .grecaptcha-badge {
@@ -214,6 +216,8 @@
 
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
+	.service-detail_about{width:680px;padding:40px 50px}
+	.service-detail_top{padding:70px 0 24px}
 }
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}

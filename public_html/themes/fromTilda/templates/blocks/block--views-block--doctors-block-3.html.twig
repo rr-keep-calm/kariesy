@@ -1,0 +1,9 @@
+{% block content %}
+    {% if content|render|striptags|trim %}
+        <div class="doctors-more">
+            <div class="wrapper">
+                {{ content }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
