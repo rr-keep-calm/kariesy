@@ -3,6 +3,7 @@
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Вмешиваемся в работу отображения блоков на вьюсах для передачи аргументов
@@ -22,6 +23,15 @@ function view_block_dynamic_args_views_pre_view(&$view, &$display_id, &$args) {
         $vacabulary_id = $term->getVocabularyId();
         if ($vacabulary_id == 'service') {
           $args[0] = $tid;
+        }
+      }
+      break;
+    case 'doctors':
+      if ($display_id === 'block_3' && \Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+        $term = Term::load($tid);
+        $vacabulary_id = $term->getVocabularyId();
+        if ($vacabulary_id == 'service') {
+          $args[0] = $term->get('field_service_type')->getValue()[0]['target_id'];
         }
       }
       break;

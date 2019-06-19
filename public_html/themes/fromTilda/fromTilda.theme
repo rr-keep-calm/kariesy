@@ -78,7 +78,7 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
     $suggestions[] = 'page__search';
   }
   // Определяем отдельный шаблон для страницы списка услуг
-  if ($route_name == 'view.services_page.page_1') {
+  if (strpos($route_name, 'view.services_page') === 0) {
     $suggestions[] = 'page__views__services_page';
   }
   // Определяем отдельные шаблон для страниц типов материалов

@@ -9,7 +9,7 @@ $(document).ready(function () {
     }
 
     // Если мы на главной странице и есть текст больше одного абзаца
-    if ($('.home-text.page .wrapper').length && $('.home-text.page .wrapper').children().length <= 1) {
+    if ($('.home-text.page .wrapper').length && $('.home-text.page .wrapper').children().length <= 2) {
         $('.home-text.page .wrapper .pagination-block_more').hide();
     }
     $('.home-text.page .wrapper').on('click', '.pagination-block_more.open', function () {
@@ -28,7 +28,7 @@ $(document).ready(function () {
         $(this).text('Развернуть');
         var i = 0;
         $.each($('.home-text.page .wrapper').children(), function () {
-            if (!$(this).hasClass('pagination-block_more') && i != 0) {
+            if (!$(this).hasClass('pagination-block_more') && i != 0 && i != 1) {
                 $(this).hide('slow');
             }
             i++;
