@@ -34,7 +34,7 @@ class CkFormHandlerGetSource implements HttpKernelInterface {
     if (!isset($_COOKIE['ck_source'])) {
       $source = 'Прямой заход';
       // Определение источника по переходу с контекстной рекламы
-      if (trim($_GET['utm_source']) !== '') {
+      if (isset($_GET['utm_source']) && trim($_GET['utm_source']) !== '') {
         switch ($_GET['utm_source']) {
           case 'yandex.search':
             $source = 'Яндекс.Директ [Поиск]';
@@ -59,7 +59,7 @@ class CkFormHandlerGetSource implements HttpKernelInterface {
             break;
         }
       }
-      elseif (trim($_SERVER['HTTP_REFERER']) !== '') {
+      elseif (isset($_SERVER['HTTP_REFERER']) && trim($_SERVER['HTTP_REFERER']) !== '') {
         if (preg_match('/yandex.ru\/clck/', $_SERVER['HTTP_REFERER'])) {
           $source = 'Поиск Яндекса';
         }

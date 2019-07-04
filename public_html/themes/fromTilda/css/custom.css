@@ -135,6 +135,28 @@
     margin-bottom: 10px;
 }
 
+.price_data ul li {
+    font: 14px/25px 'OpenSansLight';
+    color: #524f50;
+    margin-bottom: 3px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.price_data ul li:before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #38b4ef;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    position: relative;
+    top: 10px;
+}
+
 /* Политика конфиденциальности */
 .policy ol li {list-style: none;}
 .policy ol li:before {content:none;}
@@ -244,6 +266,39 @@
     .services_item.__full.__main .services_types .services_type-items:after {
         content: '';
         flex: 0 1 32.7%;
+    }
+    .reviews_block {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -moz-box-orient: vertical;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-align: start;
+        -moz-box-align: start;
+        -ms-flex-align: start;
+        -webkit-align-items: flex-start;
+        align-items: flex-start;
+    }
+    .reviews_left {
+        -webkit-box-ordinal-group: 2;
+        -moz-box-ordinal-group: 2;
+        -ms-flex-order: 2;
+        -webkit-order: 2;
+        order: 2;
+    }
+    .reviews_right {
+        margin-left: 0;
+        -webkit-box-ordinal-group: 1;
+        -moz-box-ordinal-group: 1;
+        -ms-flex-order: 1;
+        -webkit-order: 1;
+        order: 1;
+        margin-bottom: 40px;
     }
 }
 @media screen and (max-width: 900px) {

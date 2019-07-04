@@ -131,7 +131,7 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
       $view->setDisplay('block_1');
       $view->setArguments(array($childTerms));
       $render = $view->render();
-      if (count($render['#rows']) > 0) {
+      if ($render['#rows'] && count($render['#rows']) > 0) {
         $vars['sub_services'] = \Drupal::service('renderer')->render($render);
       }
 

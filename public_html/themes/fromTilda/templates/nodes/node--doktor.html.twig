@@ -12,16 +12,16 @@
                 {% endfor %}
             </div>
             <div class="doctors-more_text">
-                {%- for specialization in node.field_specialization.getvalue -%}
+                {% for specialization in node.field_specialization.getvalue %}
                     {%- if loop.first == true -%}
                         {{- specialization.value|capitalize -}}
                     {%- else -%}
                         {{- specialization.value -}}
                     {%- endif -%}
                     {%- if not loop.last -%}
-                        ,&nbsp;
-                    {%- endif -%}
-                {%- endfor -%}
+                        ,
+                    {% endif %}
+                {% endfor %}
             </div>
             <a href="{{ path('entity.node.canonical', {'node': node.id}) }}" class="doctors-more_link">О враче</a>
         </div>
