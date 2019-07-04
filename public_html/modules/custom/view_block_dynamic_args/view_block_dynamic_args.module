@@ -10,7 +10,7 @@ use Drupal\views\Views;
  *
  * Implements hook_views_pre_view()
  */
-function view_block_dynamic_args_views_pre_view(&$view, &$display_id, &$args) {
+function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
   // Представление (блок доктора) на странице клиники
   if (strpos($display_id, 'block') !== 0) {
     return;
