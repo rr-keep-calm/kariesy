@@ -81,6 +81,7 @@ class PricePageRepository {
           $node_variables = [
             'name' => $node->getTitle(),
             'description' => $node->body->value,
+            'price_code' => $node->field_service_code->value,
             'price' => $node->field_cena->value,
             'price_old' => $node->field_old_price->value,
           ];

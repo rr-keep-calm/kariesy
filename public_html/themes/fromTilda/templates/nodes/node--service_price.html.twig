@@ -76,6 +76,9 @@
     <div class="price_item __align-center{{ content.field_old_price|render ? ' with_old' : '' }}">
         <div class="price_text">
             <div class="price_what">{{ node.label }}</div>
+            {% if content.field_service_code|render %}
+                <div class="price_code">Код услуги: {{ content.field_service_code.0['#context']['value'] }}</div>
+            {% endif %}
             <div class="price_data">{{ content.body }}</div>
         </div>
 
