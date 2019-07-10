@@ -23,6 +23,9 @@
                             <div class="price_item with_old">
                                 <div class="price_text">
                                     <div class="price_what">{{ price.name }}</div>
+                                    {% if price.price_code %}
+                                        <div class="price_code">Код услуги: {{ price.price_code }}</div>
+                                    {% endif %}
                                     <div class="price_data">{{ price.description|raw }}</div>
                                 </div>
 
@@ -49,6 +52,9 @@
                             <div class="price_item">
                                 <div class="price_text">
                                     <div class="price_what">{{ price.name }}</div>
+                                    {% if price.price_code %}
+                                        <div class="price_code">Код услуги: {{ price.price_code }}</div>
+                                    {% endif %}
                                     <div class="price_data">{{ price.description|raw }}</div>
                                 </div>
 
