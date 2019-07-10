@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="services_base-text">
                                     <div class="h4">{{ name }}</div>
-                                    <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0 > 0 %}<span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
+                                    <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}<span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
                                 </div>
                             </div>
 
@@ -77,7 +77,7 @@
 
                         <div class="services_base-text">
                             <div class="h4">{{ name }}</div>
-                            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0 > 0 %}<span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
+                            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}<span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
                         </div>
                     </div>
                     <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
