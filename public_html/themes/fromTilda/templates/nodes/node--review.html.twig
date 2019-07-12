@@ -29,6 +29,25 @@
         <div class="reviews_text">{{ content.field_review_text }}</div>
 
         {{ content.field_photos_of_review }}
+
+        {% if content.field_answer_text|render|striptags|trim %}
+            <div class="answer_block __offset-left">
+                <div class="answer_human">
+                    <div class="answer_human-info">
+                        {% if content.field_answer_name|render|trim %}
+                            <div class="answer_name">{{ content.field_answer_name }}</div>
+                        {% endif %}
+                        {% if content.field_answer_info|render|trim %}
+                            <div class="answer_info">{{ content.field_answer_info }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="answer_data">
+                    {{ content.field_answer_text }}
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% else %}
     {%
