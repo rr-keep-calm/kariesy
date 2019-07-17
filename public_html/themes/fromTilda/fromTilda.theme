@@ -312,6 +312,15 @@ function fromTilda_preprocess_page(&$variables) {
       }
     }
   }
+
+  // Для главной страницы получаем реульное количество опубликованных отзывов
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type','review')
+      ->condition('status', 1)
+      ->execute();
+    $variables['reviews_count'] = count($nids);
+  }
 }
 
 function fromTilda_preprocess_node(&$variables){
