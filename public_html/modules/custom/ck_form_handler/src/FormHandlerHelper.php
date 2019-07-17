@@ -306,9 +306,15 @@ class FormHandlerHelper {
       $origin = $request->headers->get('origin');
 
       // Формируем тело письма
+      $bot_message = "{$this->formData['fio']} оставил(а) отзыв на сайте.\n\n";
       $this->message = "{$this->formData['fio']} оставил(а) отзыв на сайте {$origin}.\n\n";
+
+      $bot_message .= "Текст отзыва:\n";
       $this->message .= "Текст отзыва:\n";
+
+      $bot_message .= $this->formData['review-text'];
       $this->message .= $this->formData['review-text'];
+
       $this->message .= "\n\nСсылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
 
       $this->subject = 'Новый отзыв на сайте "' . $origin . '"';
@@ -320,6 +326,11 @@ class FormHandlerHelper {
 
       $this->response = 'OK';
       $this->valid = true;
+
+      // Отправляем данные отзыва в телеграм канал
+      $bot_message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
+      $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
+      $telegram_bot->wrapperSendOrderMessage($bot_message);
     }
   }
 
