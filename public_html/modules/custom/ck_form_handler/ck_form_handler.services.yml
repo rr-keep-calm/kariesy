@@ -3,3 +3,5 @@ services:
     class: Drupal\ck_form_handler\StackMiddleware\CkFormHandlerGetSource
     tags:
       - { name: http_middleware, priority: 210, responder: true }
+  ck_form_handler.telegram_bot:
+    class: Drupal\ck_form_handler\Telegram\TelegramBot
