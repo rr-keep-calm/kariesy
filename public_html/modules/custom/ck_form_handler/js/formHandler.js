@@ -76,8 +76,11 @@ $(document).ready(function() {
         if (typeof window.formProcessPool.id === typeof undefined || window.formProcessPool.id === false) {
             window.formProcessPool.id = true;
 
-            // Если есть экран блокирующий форму пока она не отвветила, то активируем его
+            // Если есть экран блокирующий форму пока она не ответила, то активируем его
             var wait = $(form).siblings('.wait-form');
+            if (!$(wait).length) {
+                wait = $(form).find('.wait-form');
+            }
             if ($(wait).length) {
                 $(wait).show();
             }
@@ -248,6 +251,9 @@ $(document).ready(function() {
 
                         // Если есть экран блокирующий форму скрываем его
                         var wait = $(form).siblings('.wait-form');
+                        if (!$(wait).length) {
+                            wait = $(form).find('.wait-form');
+                        }
                         if ($(wait).length) {
                             $(wait).hide();
                         }

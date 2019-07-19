@@ -202,6 +202,10 @@ ul {
     z-index: 1000;
     display: none;
 }
+.feedback-page-wait-form {
+    margin-top: -50px;
+    margin-left: -45px;
+}
 
 a:hover,
 a:active {
@@ -7452,6 +7456,11 @@ ul.price_types, .price_types li {
         padding: 20px;
     }
 
+    .feedback-page-wait-form {
+        margin-top: -20px;
+        margin-left: -20px;
+    }
+
     .reviews_form-title {
         font-size: 28px;
     }
@@ -8661,6 +8670,10 @@ ul.price_types, .price_types li {
     .reviews_form {
         border-radius: 10px;
         padding: 30px 18px 20px 18px;
+    }
+    .feedback-page-wait-form {
+        margin-top: -30px;
+        margin-left: -18px;
     }
 
     .reviews_form-title {

@@ -237,6 +237,20 @@
     margin-top: 50px;
 }
 
+/* Длаем для форм position:relative чтобы корректно отображалась заглушка */
+#form-recall-form,
+#form-order-form,
+#question-form-wrapper,
+#form-order-doctor-page,
+#question-for-doctor-form,
+#form-order-doctor-page-popup-form,
+#review-form-on-doctor-page,
+#recall-form-on-price-page,
+#recall-form-on-service-page-form {
+    position: relative;
+}
+
+
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
         width: 32.7%;
