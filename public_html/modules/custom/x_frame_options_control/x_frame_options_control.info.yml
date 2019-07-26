@@ -1,0 +1,5 @@
+name: Контроль заголовка X-Frame-Options
+description: 'X-Frame-Options header control'
+type: module
+core: 8.x
+version: Headers
