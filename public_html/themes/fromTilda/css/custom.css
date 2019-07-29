@@ -273,6 +273,10 @@
     position: relative;
 }
 
+.roll-up {
+  display: none;
+}
+
 
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {

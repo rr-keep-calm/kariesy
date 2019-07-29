@@ -23,13 +23,25 @@ app.addModule('clinic', function () {
 			adaptiveHeight: true
 		});
 		$('.doctors-more').on('click', '.doctors-more_btn', function(e){
-			// Проходим по всем скрытым строкам и открываем одну
-			$('.doctors-more .doctors-more_items:hidden:first').show();
+		  if ($(this).hasClass('roll-up')) {
+        // Проходим по всем открытым строкам и скрываем все кроме первой
+        $('.doctors-more .doctors-more_items').not(':first').hide();
 
-			// Убираем кнопку открытия дополнительных элементов, если скрытых больше не осталось.
-			if ($('.doctors-more .doctors-more_items:hidden').length < 1) {
-				$('.doctors-more .doctors-more_btn').hide();
-			}
+        if ($('.doctors-more .doctors-more_items:hidden').length > 0) {
+          $('.doctors-more .doctors-more_btn:not(.roll-up)').show();
+          $('.doctors-more .roll-up').hide();
+        }
+      } else {
+        // Проходим по всем скрытым строкам и открываем одну
+        $('.doctors-more .doctors-more_items:hidden:first').show();
+
+        // Убираем кнопку открытия дополнительных элементов, если скрытых больше не осталось.
+        // Показываем кнопку "Свернуть"
+        if ($('.doctors-more .doctors-more_items:hidden').length < 1) {
+          $('.doctors-more .doctors-more_btn:not(.roll-up)').hide();
+          $('.doctors-more .roll-up').css('display', 'block');
+        }
+      }
 		});
 	};
 });
@@ -37,18 +49,18 @@ app.addModule('clinics', function () {
 	var city = $('.js-city');
 	var cities = $('.js-cities');
 	var maps = $('.js-map');
-	
+
 	this.init = function () {
 		openCitiesEvent();
 		changeMapEvent();
 	};
-	
+
 	function openCitiesEvent() {
 		city.click(function () {
 			cities.toggleClass('active');
 		});
 	}
-	
+
 	function changeMapEvent() {
 		$('.clinics_cities a').click(function (e) {
 			e.preventDefault();
@@ -57,22 +69,22 @@ app.addModule('clinics', function () {
 			changeMap( $( $(this).attr('href') ) );
 			reloadMaps();
 		});
-		
+
 		$(document).click(function (e) {
 			if ($(e.target).closest(city).length) {
 				return;
 			}
-			
+
 			if (!$(e.target).closest(cities).length) {
 				closeCities();
 			}
 		});
 	}
-	
+
 	function closeCities() {
 		cities.removeClass('active');
 	}
-	
+
 	function changeMap(map) {
 		maps.removeClass('active');
 		map.addClass('active');
@@ -83,7 +95,7 @@ app.addModule('doctor', function () {
 	var plan = $('.doctor_plan:not(.weekends)');
 	var planWeekends = $('.doctor_plan.weekends');
 	var slickCreated = false;
-	
+
 	this.init = function () {
 		plan.append(
 			plan.clone().addClass('__cloned')
@@ -91,29 +103,29 @@ app.addModule('doctor', function () {
 		planWeekends.append(
 			planWeekends.clone().addClass('__cloned')
 		);
-		
+
 		$('.doctor_more').click(function () {
 			$('.doctor_list li').addClass('__mobile-visible');
 			$(this).remove();
 		});
-		
+
 		doSlick();
-		
+
 		$(window).on('resize', function () {
 			doSlick();
 		});
 	};
-	
-	
+
+
 	function createSlick() {
 		if (slickCreated) {
 			return false;
 		}
-		
+
 		images.slick({
 			slidesToShow: 3,
 			slidesToScroll: 1,
-			
+
 			responsive: [
 				{
 					breakpoint: 767,
@@ -131,17 +143,17 @@ app.addModule('doctor', function () {
 		});
 		slickCreated = true;
 	}
-	
+
 	function removeSlick() {
 		if (!slickCreated) {
 			return false;
 		}
-		
+
 		images.slick('unslick');
-		
+
 		slickCreated = false;
 	}
-	
+
 	function doSlick() {
 		if ($(window).width() < 1220) {
 			createSlick();
@@ -163,11 +175,11 @@ app.addModule('form', function () {
 	this.init = function () {
 		if ($.fn.datepicker) {
 			var day = new Date();
-			
+
 			if (day.getDay() === 0) {
 				day = tomorrow(day);
 			}
-			
+
 			$('.date').datepicker({
 				language: "ru",
 				autoclose:true,
@@ -176,7 +188,7 @@ app.addModule('form', function () {
 			}).datepicker('setDate', day);
 		}
 	};
-	
+
 	function tomorrow(date) {
 		return new Date(date.getTime() + 24 * 60 * 60 * 1000);
 	}
@@ -227,7 +239,7 @@ var map6 = {
 	markers: [
 		{
 			placeholder: $('#map-6').attr('data-placeholder'),
-			content: 
+			content:
 			'<div class="map_content">' +
 				'<h4>Адрес</h4>' +
 				'<p>' + $('#map-6').attr('data-address') + '</p>' +
@@ -248,13 +260,13 @@ var maps = [];
 function initMap() {
 	mapsData.forEach(function (map) {
 		var domElement = document.getElementById(map.id);
-		
+
 		if (!domElement) {
 			return false;
 		}
-		
+
 		var center;
-		
+
 		if (map.center) {
 			if (typeof map.center == 'string') {
 				center = getPlaceholderFromString(map.center);
@@ -283,20 +295,20 @@ function initMap() {
 			gestureHandling: 'greedy',
 			scrollwheel: false
 		});
-		
+
 		maps.push(currentMap);
 
 		google.maps.event.addListenerOnce(currentMap, 'idle', function () {
 			afterMapsInitialized();
 		});
-		
+
 		map.markers.forEach(function (marker) {
 			if (marker.placeholder) {
 				var position = getPlaceholderFromString(marker.placeholder);
 				marker.lat = position.lat;
 				marker.lng = position.lng;
 			}
-			
+
 			var currentMarker = new google.maps.Marker({
 				map: currentMap,
 				position: {
@@ -308,7 +320,7 @@ function initMap() {
 					size: new google.maps.Size(50, 53)
 				}
 			});
-			
+
 			if (marker.content) {
 				var infowindow = new google.maps.InfoWindow({
 					content: getContent(marker.content)
@@ -319,7 +331,7 @@ function initMap() {
 					var iwBackground = iwOuter.prev();
 					iwBackground.children(':nth-child(2)').css({'display': 'none'});
 					iwBackground.children(':nth-child(4)').css({'display': 'none'});
-					
+
 					iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'none', 'z-index' : '1'});
 
 					var iwCloseBtn = iwOuter.next();
@@ -330,7 +342,7 @@ function initMap() {
 				});
 
 				currentMarker.addListener('click', function () {
-					
+
 					if (isInfoWindowOpen(infowindow)) {
 						infowindow.close(map, currentMarker);
 					} else {
@@ -351,8 +363,8 @@ function getContent(content) {
 	return '<div class="map">' + content + '</div>';
 }
 
-function afterMapsInitialized() {	
-	hooks['maps'].forEach(function (hook) { 
+function afterMapsInitialized() {
+	hooks['maps'].forEach(function (hook) {
 		hook();
 	});
 }
@@ -363,7 +375,7 @@ function reloadMaps() {
 }
 function getPlaceholderFromString(placeholder) {
 	var arr = placeholder.split(',');
-	
+
 	return {
 		lat: parseFloat(arr[0]),
 		lng: parseFloat(arr[1])
@@ -373,12 +385,12 @@ app.addModule('main', function () {
 	this.init = function () {
 		createSlider();
 	};
-	
+
 	function createSlider() {
 		if (!$.fn.slick) {
 			return;
 		}
-		
+
 		$('.main_slider').slick({
 			slidesToScroll: 1,
 			slidesToShow: 1,
@@ -396,29 +408,29 @@ app.addModule('mask', function () {
 app.addModule('menu', function () {
 	var menu = $('.menu');
 	var isActive = false;
-	
+
 	this.init = function () {
 		fillMenu();
 		toggleMenuEvent();
 	};
-	
+
 	function fillMenu() {
 		$('[data-menu-id]').each(function () {
 			var element = $($(this).attr('data-menu-id'));
-			
+
 			if (element.length) {
 				$(this).append(element.clone(true, true));
 			}
 		});
 	}
-	
+
 	function toggleMenuEvent() {
 		$('.header_mobile-nav').click(function (e) {
 			e.preventDefault();
 			menu.addClass('active');
 			isActive = true;
 		});
-		
+
 		$('.menu_close').click(function (e) {
 			e.preventDefault();
 			menu.removeClass('active');
@@ -428,25 +440,25 @@ app.addModule('menu', function () {
 });
 app.addModule('nav', function () {
 	var navSearch  = $('.nav_search');
-	
+
 	this.init = function () {
 		navSearchSubmitEvent();
 	};
-	
+
 	function navSearchSubmitEvent() {
 		var active = false;
-		
+
 		navSearch.on('submit', function (e) {
 			if (!active) {
 				e.preventDefault();
 				$(this).find('.nav_input').get(0).focus();
 			}
-			
+
 			$(this).toggleClass('active');
-			
+
 			active = !active;
 		});
-		
+
 		$(document).click(function (e) {
 			if ( !$(e.target).closest(navSearch).length ) {
 				navSearch.removeClass('active');
@@ -466,7 +478,7 @@ app.addModule('popup', function () {
 	this.init = function () {
 		initPopups();
 	};
-	
+
 	function initPopups() {
 		try {
 			$('.popup').magnificPopup({
@@ -504,7 +516,7 @@ app.addModule('popup', function () {
 			});
 		}
 		catch(e) {}
-		
+
 		$('.popup-close').click(function (e) {
 			closeForm();
 		});
@@ -513,33 +525,33 @@ app.addModule('popup', function () {
 app.addModule('price', function () {
 	this.init = function () {
 		if (!$('.price').length) return false;
-		
+
 		createTypesSelect();
-		
+
 		$('.price_header').click(function () {
 			$(this).closest('.price_block').toggleClass('active');
 		});
 	};
-	
+
 	function createTypesSelect() {
 		var select = $('<select />');
-		
+
 		$('.price_types a').each(function () {
 			var option = $('<option />');
 			option.val($(this).attr('href'));
 			option.html($(this).html());
-			
+
 			if ($(this).hasClass('active')) {
 				option.attr('selected', 'selected');
 			}
-			
+
 			select.append(option);
 		});
-		
+
 		select.on('change', function () {
 			location.href = this.value;
 		});
-		
+
 		$('.price_select').append(select);
 	}
 });
@@ -577,7 +589,7 @@ app.addModule('service-detail', function () {
 	this.init = function () {
 		$('.service-detail_read-more').click(function (e) {
 			e.preventDefault();
-			
+
 			$('.service-detail_mobile').removeClass('service-detail_mobile');
 			$(this).remove();
 		})
@@ -590,18 +602,18 @@ app.addModule('service', function () {
 			$(this).detach();
 			$('.service_item').addClass('__mobile-visible');
 		});
-		
+
 		$('.service_item').hover(mouseenter, mouseleave);
-		
+
 		function mouseenter() {
 			var object = $(this).find('object').get(0);
-			
+
 			addSvgClass(object, '.st0', 'active');
 		}
-		
+
 		function mouseleave() {
 			var object = $(this).find('object').get(0);
-			
+
 			removeSvgClass(object, '.st0', 'active');
 		}
 	};
@@ -612,7 +624,7 @@ var hooks = {
 
 jQuery(function () {
 	app.modulesInit();
-	
+
 	var modules = app.getModules();
 
 	for (var module in modules) {
