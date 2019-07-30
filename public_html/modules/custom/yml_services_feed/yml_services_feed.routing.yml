@@ -1,0 +1,7 @@
+yml_services_feed.services_feed:
+  path: '/services_feed'
+  defaults:
+    _controller: '\Drupal\yml_services_feed\Controller\YmlServicesFeedController::servicesFeed'
+    _title: 'Цены ну услуги'
+  requirements:
+    _permission: 'access content'
