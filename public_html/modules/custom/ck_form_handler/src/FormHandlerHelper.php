@@ -287,7 +287,7 @@ class FormHandlerHelper {
       // Создаём отзыв по переданным данным
       $nodeCreate = [
         'type'        => 'review',
-        'title'       => $this->formData['fio'] . ' - ' . date('d.m.Y'),
+        'title'       => $this->formData['fio'],
         'field_doctor' => [$this->formData['doctor']],
         'field_clinic' => [$this->formData['clinic']],
         'field_review_text' => $this->formData['review-text']
