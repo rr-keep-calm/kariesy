@@ -1,0 +1,6 @@
+name: Фид цен на услуги (для Яндекса)
+description: 'Фид цен на услуги (для Яндекса)'
+type: module
+core: 8.x
+version: 0.1
+package: Feeds

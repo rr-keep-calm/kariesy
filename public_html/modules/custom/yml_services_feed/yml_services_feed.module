@@ -1,0 +1,35 @@
+<?php
+function yml_services_feed_theme($existing, $type, $theme, $path) {
+  return [
+    'feed_page' => [
+      'variables' => ['data' => NULL],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_cron().
+ */
+function yml_services_feed_cron() {
+  $last_run = \Drupal::state()->get('yml_services_feed.last_run', 0);
+
+  // If 23 hours passed since last time.
+  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 82800) {
+    $file_creator = \Drupal::service('yml_services_feed.feed_file_creator');
+    $result = $file_creator->create();
+
+    $build = [
+      'page' => [
+        '#theme' => 'feed_page',
+        '#data' => $result,
+      ],
+    ];
+
+    $xml = (string) \Drupal::service('renderer')->renderRoot($build);
+    file_put_contents(__DIR__ . '/feed/feed.xml', $xml);
+
+    // Update last run.
+    \Drupal::state()
+      ->set('yml_services_feed.last_run', $_SERVER['REQUEST_TIME']);
+  }
+}

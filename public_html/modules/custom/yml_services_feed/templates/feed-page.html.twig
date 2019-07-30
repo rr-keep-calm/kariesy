@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="{{ "now"|date("Y-m-d H:i") }}">
+  <shop>
+    <name>Кариесу.нет</name>
+    <company>ООО «КХЗ»</company>
+    <url>https://kariesy.net</url>
+
+    <currencies>
+      <currency id="RUR" rate="1"/>
+    </currencies>
+
+    <categories>
+      <category id="1">Услуги</category>
+      {% for id, category in data.categories %}
+        <category id="{{ id }}" parentId="1">{{ category }}</category>
+      {% endfor %}
+    </categories>
+
+    <offers>
+      {% for id, service in data.services %}
+        <offer id="{{ id }}" available="true">
+          <name>{{ service.name }}</name>
+          <url>{{ service.url }}</url>
+          <price from="true">{{ service.price }}</price>
+          <currencyId>RUR</currencyId>
+          <categoryId>{{ service.category_id }}</categoryId>
+          {% if service.image_url is defined %}
+            <picture>{{ service.image_url }}</picture>
+          {% endif %}
+          {% if service.description %}
+            <description>
+              <![CDATA[
+              {{ service.description }}
+              ]]>
+            </description>
+          {% endif %}
+        </offer>
+      {% endfor %}
+    </offers>
+  </shop>
+</yml_catalog>

@@ -16,40 +16,9 @@
                     {% for type in dataItem.types %}
                     <div class="price_block">
                         <header class="price_header">{{ type.name }}</header>
-
                         <div class="price_items">
-                            {# вначале выводим список цен со старыми ценами #}
-                            {% for price in type.prices if price.price_old %}
-                            <div class="price_item with_old">
-                                <div class="price_text">
-                                    <div class="price_what">{{ price.name }}</div>
-                                    {% if price.price_code %}
-                                        <div class="price_code">Код услуги: {{ price.price_code }}</div>
-                                    {% endif %}
-                                    <div class="price_data">{{ price.description|raw }}</div>
-                                </div>
-
-                                <div class="price_cnt flex-custom">
-                                    {% if price.price_old %}
-                                        <span class="price_old">{{ price.price_old }}</span>
-                                    {% endif %}
-                                    <span class="price_num">
-                                        {{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price|raw|trim }}
-                                    </span>
-                                    <span class="price_sign">руб</span>
-                                    {% if price.price_to is defined %}
-                                        <div class="flex-line-break"></div>
-                                        <span class="price_num">
-                                            <span class="price-to">до</span> {{ price.price_to }}
-                                        </span>
-                                        <span class="price_sign">руб</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {# вначале выводим список оставшихся цен #}
-                            {% for price in type.prices if not price.price_old %}
-                            <div class="price_item">
+                            {% for price in type.prices %}
+                            <div class="price_item{% if price.price_old %} with_old{% endif %}">
                                 <div class="price_text">
                                     <div class="price_what">{{ price.name }}</div>
                                     {% if price.price_code %}
