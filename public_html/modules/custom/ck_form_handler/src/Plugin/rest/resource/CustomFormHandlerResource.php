@@ -83,9 +83,11 @@ class CustomFormHandlerResource extends ResourceBase {
     if (!$this->currentUser->hasPermission('restful post custom_form_handler')) {
       throw new AccessDeniedHttpException();
     }
-    $formHandlerHelper = new FormHandlerHelper($entityData);
-    $formHandlerHelper->sendEmail();
-    $response['text'] = $formHandlerHelper->getResponse();
+
+    $form_handler_helper = \Drupal::service('ck_form_handler.form_handler_helper');
+    $form_handler_helper->setFormData($entityData);
+    $form_handler_helper->sendEmail();
+    $response['text'] = $form_handler_helper->getResponse();
 
     return new ModifiedResourceResponse(json_encode($response), 200);
   }

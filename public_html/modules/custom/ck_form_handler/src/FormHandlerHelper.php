@@ -18,8 +18,7 @@ class FormHandlerHelper {
   protected $source = '';
   protected $gaCid = '';
 
-  public function __construct($formData) {
-    $this->formData = $formData;
+  public function __construct() {
     $this->source = isset($_COOKIE['ck_source']) && trim($_COOKIE['ck_source']) !== '' ? $_COOKIE['ck_source'] : 'Не удалось определить источник перехода';
     $this->gaCid = 'Не удалось определить client ID';
     if (isset($_COOKIE['_ga'])) {
@@ -111,6 +110,13 @@ class FormHandlerHelper {
 
   public function getResponse() {
     return $this->response;
+  }
+
+  /**
+   * @param array $formData
+   */
+  public function setFormData(array $formData) {
+    $this->formData = $formData;
   }
 
   protected function defaultHandle()
@@ -277,7 +283,10 @@ class FormHandlerHelper {
       $path = 'review/' . date('Y-m');
       foreach ($this->formData as $key => $value) {
         if (preg_match('/files(\d)+base/', $key, $matches)) {
-          $img = new Base64Image($value, $this->formData['files'.$matches[1].'name']);
+          $img = \Drupal::service('ck_form_handler.base64_image_handler');
+          $img->setBase64Image($value);
+          $img->setFileName($this->formData['files'.$matches[1].'name']);
+          $img->decodeBase64Image();
           $img->setFileDirectory($path);
           $file = file_save_data($img->getFileData(), 'public://' . $path . '/' . $img->getFileName() , FILE_EXISTS_REPLACE);
           $files[] = $file->id();
