@@ -157,6 +157,33 @@ class FormHandlerHelper {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
     }
     else {
+      $node_create = [
+        'type'  => 'form_order',
+        'title' => 'Запись на приём к врачу: ' . $this->formData['doctor'],
+        'field_form_name' => 'Форма записи на приём',
+        'field_phone' => $this->formData['phone'],
+        'field_form_order_fio' => $this->formData['name'],
+        'field_misc_data' => json_encode([
+          'UtmSource' => $_GET['utm_source'] ?? '',
+          'UtmMedium' => $_GET['utm_medium'] ?? '',
+          'UtmCampaign' => $_GET['utm_campaign'] ?? '',
+          'UtmTerm' => $_GET['utm_term'] ?? '',
+          'UtmContent' => $_GET['utm_content'] ?? '',
+          'HttpReferer' => $this->source,
+        ])
+      ];
+
+      $doctor_id = null;
+      // Ищем идентификатор доктора по его имени
+      if ($this->formData['doctor'] !== 'Любой') {
+        $query = \Drupal::entityQuery('node')
+          ->condition('status', 1)
+          ->condition('type', 'doktor')
+          ->condition('title', $this->formData['doctor'], 'LIKE');
+        $nids = $query->execute();
+        $doctor_id = reset($nids);
+      }
+
       // Формируем тело письма
       $this->message = "Запись на приём к врачу: {$this->formData['doctor']}\n\n";
       $this->message .= "Выбранная услуга: {$this->formData['service']}\n\n";
@@ -167,6 +194,7 @@ class FormHandlerHelper {
       $this->message .= "Телефон: {$this->formData['phone']}\n";
       if (isset($this->formData['comment']) && !empty($this->formData['comment'])) {
         $this->message .= "Комментарий\n {$this->formData['comment']}";
+        $node_create['field_comment'] = $this->formData['comment'];
       }
 
       $this->headers = 'From: robot@kariesy.net';
@@ -176,6 +204,13 @@ class FormHandlerHelper {
 
       $this->response = 'OK';
       $this->valid = true;
+
+
+      $node = Node::create($node_create);
+      if ($doctor_id) {
+        $node->field_form_order_doctor->target_id = $doctor_id;
+      }
+      $node->save();
     }
   }
 
@@ -277,6 +312,7 @@ class FormHandlerHelper {
     ) {
       $this->response = 'Пожалуйста заполните все поля';
     }
+
     else {
       // Проверяем были ли переданы фотографии и обрабатываем их при наличии
       $files = [];
