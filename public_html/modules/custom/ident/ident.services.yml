@@ -1,0 +1,3 @@
+#services:
+#  yml_services_feed.feed_file_creator:
+#    class: Drupal\yml_services_feed\FeedFileCreator
