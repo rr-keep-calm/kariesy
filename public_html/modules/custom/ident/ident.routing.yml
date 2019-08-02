@@ -1,0 +1,6 @@
+ident.post_time_table:
+  path: '/PostTimeTable'
+  defaults:
+    _controller: '\Drupal\ident\Controller\IdentPostTimeTableController::execute'
+  requirements:
+    _permission: 'access content'
