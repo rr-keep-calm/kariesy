@@ -52,7 +52,28 @@ class IdentPostTimeTableController extends ControllerBase {
       return $response;
     }
 
-    // Проверить что присутствует заголовок для авторизации
+    // Пытаемся разобрать тело запроса, должен быть валидный json
+    if (
+      !is_string($content)
+      || !is_array(json_decode($content, TRUE))
+      || !(json_last_error() == JSON_ERROR_NONE))
+    {
+      $response->setStatusCode(452);
+      $response->setContent('Был принят невалидный json');
+      return $response;
+    }
+
+    // Отправляем принятые данные дальше на сохранение
+    /** @var $doctors \Drupal\ident\Doctors */
+    $doctors = \Drupal::service('ident.doctors');
+    $handlerResponse = $doctors->updateTime($content);
+
+    if ($handlerResponse != 'OK') {
+      $response->setStatusCode(500);
+      $response->setContent($handlerResponse);
+      return $response;
+    }
+
     $response->setStatusCode(200);
     $response->setContent('OK');
 
