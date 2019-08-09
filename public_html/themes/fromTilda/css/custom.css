@@ -236,6 +236,8 @@
     min-width: 390px;
 }
 
+a.about-num_item {text-decoration:none}
+
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
 	.service-detail_about{width:680px;padding:40px 50px}
