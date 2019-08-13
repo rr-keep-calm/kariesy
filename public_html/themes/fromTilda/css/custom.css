@@ -134,6 +134,12 @@
     color: #303234;
     margin-bottom: 10px;
 }
+.services_base-text .h4 a {
+  font: inherit;
+  color: inherit;
+  text-decoration: inherit;
+  margin: inherit;
+}
 
 .price_data ul li {
     font: 14px/25px 'OpenSansLight';
@@ -235,6 +241,8 @@
 .nav_search.active .nav_input {
     min-width: 390px;
 }
+
+a.about-num_item {text-decoration:none}
 
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
