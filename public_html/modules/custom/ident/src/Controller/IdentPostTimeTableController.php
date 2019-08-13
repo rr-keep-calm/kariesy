@@ -1,6 +1,7 @@
 <?php
 namespace Drupal\ident\Controller;
 
+use Drupal\Console\Bootstrap\Drupal;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +15,6 @@ class IdentPostTimeTableController extends ControllerBase {
     $response = new Response();
     $response->headers->set('Content-Type', 'text/plain');
 
-    // Запишем все заголовки в лог
-    $headers = $request->headers->all();
-    \Drupal::logger('ident')->info(json_encode($headers));
-
-    // Запишем в лог всё тело запроса
-    $content = $request->getContent();
-    \Drupal::logger('ident')->info($content);
-
     if ($request->getMethod() !== 'POST') {
       $response->setStatusCode(405);
       $response->headers->set('Allow', 'POST');
@@ -29,6 +22,7 @@ class IdentPostTimeTableController extends ControllerBase {
       return $response;
     }
 
+    $headers = $request->headers->all();
     // Меняем регистр ключей массива заголовков
     $headers = array_change_key_case($headers, CASE_LOWER);
 
@@ -46,13 +40,15 @@ class IdentPostTimeTableController extends ControllerBase {
       $ident_integration_key = $headers['ident-integration-key'];
     }
 
-    if ($ident_integration_key !== 'ident-integration-key-value') {
+    if ($ident_integration_key !== 'q3MfBqjTAYrk') {
       $response->setStatusCode(401);
       $response->setContent('Неправильный ключ доступа');
       return $response;
     }
 
+    \Drupal::logger('ident')->info('have contact');
     // Пытаемся разобрать тело запроса, должен быть валидный json
+    $content = $request->getContent();
     if (
       !is_string($content)
       || !is_array(json_decode($content, TRUE))
@@ -68,7 +64,7 @@ class IdentPostTimeTableController extends ControllerBase {
     $doctors = \Drupal::service('ident.doctors');
     $handlerResponse = $doctors->updateTime($content);
 
-    if ($handlerResponse != 'OK') {
+    if ($handlerResponse !== 'OK') {
       $response->setStatusCode(500);
       $response->setContent($handlerResponse);
       return $response;
