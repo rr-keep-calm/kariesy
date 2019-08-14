@@ -70,6 +70,23 @@ $(document).ready(function () {
             checkYamapsReady(mapsData);
         }
     }
+
+    // Работа с формой записи на приём в части даты и времени
+    // Фильтруем доступные на старте временные рамки для записи
+    if ($('.time_intervals').length > 0) {
+      const today = new Date();
+      const nowHour = today.getUTCHours() + 3;
+      const nowMinutes =  today.getUTCMinutes();
+      $('.time_intervals option').each(function() {
+        let timeMark = $(this).text().split(':');
+        if (parseInt(timeMark[0]) < nowHour) {
+          $(this).remove();
+        }
+        if (parseInt(timeMark[1]) < nowMinutes) {
+          $(this).remove();
+        }
+      });
+    }
 });
 
 var jivo_onLoadCallback = function () {
