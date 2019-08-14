@@ -221,9 +221,9 @@
                 <select class="service-type" name="service">
                     {% for serviceType in serviceTypesAll %}
                         {# Формируем строку со списком докторов для каждой услуги #}
-                        {% set doctorsList = 'Любой|' %}
+                        {% set doctorsList = 'Любой:::no_matter|' %}
                         {% for doctor in serviceType.doctors %}
-                            {% set doctorsList = doctorsList ~ doctor.name %}
+                            {% set doctorsList = doctorsList ~ doctor.name ~ ':::' ~ doctor.nid %}
                             {% if not loop.last %}
                                 {% set doctorsList = doctorsList ~ '|' %}
                             {% endif %}
@@ -248,7 +248,7 @@
                     {% set firstServiceType = serviceTypesAll|first %}
                     <option value="Любой" data-doctor-nid="no_matter">Любой</option>
                     {% for doctor in firstServiceType.doctors %}
-                        <option value="{{ doctor.name }}" data-doctor-nid="{{ nid }}">{{ doctor.name }}</option>
+                        <option value="{{ doctor.name }}" data-doctor-nid="{{ doctor.nid }}">{{ doctor.name }}</option>
                     {% endfor %}
                 </select>
             </div>
