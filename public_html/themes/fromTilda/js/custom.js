@@ -77,12 +77,18 @@ $(document).ready(function () {
       const today = new Date();
       const nowHour = today.getUTCHours() + 3;
       const nowMinutes =  today.getUTCMinutes();
+      const nowDay = today.getDay();
       $('.time_intervals option').each(function() {
         let timeMark = $(this).text().split(':');
         if (parseInt(timeMark[0]) < nowHour) {
           $(this).remove();
+          return true;
         }
         if (parseInt(timeMark[1]) < nowMinutes) {
+          $(this).remove();
+          return true;
+        }
+        if ((nowDay === 0 || nowDay === 6) && (parseInt(timeMark[0]) < 10 || parseInt(timeMark[0]) > 17)) {
           $(this).remove();
         }
       });
