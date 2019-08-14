@@ -25,11 +25,6 @@ class Doctors {
     $doctors_slots = [];
     $content = json_decode($content, true);
     foreach ($content['Intervals'] as $interval) {
-      // Не храним интервалы которые уже заняты
-      if ($interval['IsBusy']) {
-        continue;
-      }
-
       if (!isset($doctors[$interval['DoctorId']])) {
         $name = $this->searchDoctor($content['Doctors'], $interval['DoctorId']);
         \Drupal::logger('ident')->warning('Доктор "' . $name . '" не представлен(а) на сайте');
@@ -38,15 +33,16 @@ class Doctors {
         \Drupal::logger('ident')->warning('Доктор "' . $name . '" не активен');
       } else {
         $doctors_slots[$interval['DoctorId']][] = [
-          $interval['StartDateTime'],
-          $interval['LengthInMinutes'],
+          'StartDateTime' => $interval['StartDateTime'],
+          'LengthInMinutes' => $interval['LengthInMinutes'],
+          'IsBusy' => $interval['IsBusy']
         ];
       }
     }
 
     // Записываем данные слотов по каждому доктору
     foreach ($doctors_slots as $doctor_id => $doctor_slots) {
-      $doctors[$doctor_id]->field_unbusy_slots->value = json_encode($doctor_slots);
+      $doctors[$doctor_id]->field_ident_slots->value = json_encode($doctor_slots);
       $doctors[$doctor_id]->save();
     }
 
