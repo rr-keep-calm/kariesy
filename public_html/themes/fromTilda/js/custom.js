@@ -92,6 +92,96 @@ $(document).ready(function () {
           $(this).remove();
         }
       });
+
+      // Если после фильтрации временных интервалов не осталось, то переставляем дату на слудующую и заполняем временные
+      // интервалы заново
+      if (!$('.time_intervals option').length) {
+        const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+        let dateInput = $('.time_intervals').closest('.form_row');
+        dateInput = $(dateInput).find('.date');
+        $(dateInput).datepicker('setDate', tomorrow);
+        $(dateInput).datepicker('setStartDate', tomorrow);
+        const allDaysIntervals = '<option value="10:00">10:00</option>\n' +
+          '<option value="10:10">10:10</option>\n' +
+          '<option value="10:20">10:20</option>\n' +
+          '<option value="10:30">10:30</option>\n' +
+          '<option value="10:40">10:40</option>\n' +
+          '<option value="10:50">10:50</option>\n' +
+          '<option value="10:00">10:00</option>\n' +
+          '<option value="11:10">11:10</option>\n' +
+          '<option value="11:20">11:20</option>\n' +
+          '<option value="11:30">11:30</option>\n' +
+          '<option value="11:40">11:40</option>\n' +
+          '<option value="11:50">11:50</option>\n' +
+          '<option value="12:00">12:00</option>\n' +
+          '<option value="12:10">12:10</option>\n' +
+          '<option value="12:20">12:20</option>\n' +
+          '<option value="12:30">12:30</option>\n' +
+          '<option value="12:40">12:40</option>\n' +
+          '<option value="12:50">12:50</option>\n' +
+          '<option value="13:00">13:00</option>\n' +
+          '<option value="13:10">13:10</option>\n' +
+          '<option value="13:20">13:20</option>\n' +
+          '<option value="13:30">13:30</option>\n' +
+          '<option value="13:40">13:40</option>\n' +
+          '<option value="13:50">13:50</option>\n' +
+          '<option value="14:00">14:00</option>\n' +
+          '<option value="14:10">14:10</option>\n' +
+          '<option value="14:20">14:20</option>\n' +
+          '<option value="14:30">14:30</option>\n' +
+          '<option value="14:40">14:40</option>\n' +
+          '<option value="14:50">14:50</option>\n' +
+          '<option value="15:00">15:00</option>\n' +
+          '<option value="15:10">15:10</option>\n' +
+          '<option value="15:20">15:20</option>\n' +
+          '<option value="15:30">15:30</option>\n' +
+          '<option value="15:40">15:40</option>\n' +
+          '<option value="15:50">15:50</option>\n' +
+          '<option value="16:00">16:00</option>\n' +
+          '<option value="16:10">16:10</option>\n' +
+          '<option value="16:20">16:20</option>\n' +
+          '<option value="16:30">16:30</option>\n' +
+          '<option value="16:40">16:40</option>\n' +
+          '<option value="16:50">16:50</option>\n' +
+          '<option value="17:00">17:00</option>\n' +
+          '<option value="17:10">17:10</option>\n' +
+          '<option value="17:20">17:20</option>\n' +
+          '<option value="17:30">17:30</option>\n' +
+          '<option value="17:40">17:40</option>\n' +
+          '<option value="17:50">17:50</option>';
+        const weekdaysDaysIntervalsBefore = '<option value="09:00">09:00</option>\n' +
+          '<option value="09:10">09:10</option>\n' +
+          '<option value="09:20">09:20</option>\n' +
+          '<option value="09:30">09:30</option>\n' +
+          '<option value="09:40">09:40</option>\n' +
+          '<option value="09:50">09:50</option>';
+        const weekdaysDaysIntervalsAfter = '<option value="18:00">18:00</option>' +
+          '<option value="18:10">18:10</option>\n' +
+          '<option value="18:20">18:20</option>\n' +
+          '<option value="18:30">18:30</option>\n' +
+          '<option value="18:40">18:40</option>\n' +
+          '<option value="18:50">18:50</option>\n' +
+          '<option value="19:00">19:00</option>\n' +
+          '<option value="19:10">19:10</option>\n' +
+          '<option value="19:20">19:20</option>\n' +
+          '<option value="19:30">19:30</option>\n' +
+          '<option value="19:40">19:40</option>\n' +
+          '<option value="19:50">19:50</option>\n' +
+          '<option value="20:00">20:00</option>\n' +
+          '<option value="20:10">20:10</option>\n' +
+          '<option value="20:20">20:20</option>\n' +
+          '<option value="20:30">20:30</option>\n' +
+          '<option value="20:40">20:40</option>\n' +
+          '<option value="20:50">20:50</option>';
+        $('.time_intervals').append(allDaysIntervals);
+        const tomorrowDay = tomorrow.getDay();
+        $('.time_intervals').val('10:00');
+        if (tomorrowDay !== 0 && tomorrowDay !== 6) {
+          $('.time_intervals').prepend(weekdaysDaysIntervalsBefore);
+          $('.time_intervals').append(weekdaysDaysIntervalsAfter);
+          $('.time_intervals').val('09:00');
+        }
+      }
     }
 });
 
