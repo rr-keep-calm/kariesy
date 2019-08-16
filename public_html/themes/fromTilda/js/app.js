@@ -179,7 +179,7 @@ app.addModule('form', function () {
 			$('.date').datepicker({
 				language: "ru",
 				autoclose:true,
-				startDate: new Date()
+				startDate: day
 			}).datepicker('setDate', day);
 		}
 	};

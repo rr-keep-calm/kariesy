@@ -301,119 +301,26 @@ $(document).ready(function () {
   // Работа с формой записи на приём в части даты и времени
   // Фильтруем доступные на старте временные рамки для записи
   if ($('.time_intervals').length > 0) {
-    const today = new Date();
-    const nowHour = today.getUTCHours() + 3;
-    const nowMinutes = today.getUTCMinutes();
-    const nowDay = today.getDay();
-    $('.time_intervals option').each(function () {
-      let timeMark = $(this).text().split(':');
-      if (parseInt(timeMark[0]) < nowHour) {
-        $(this).remove();
-        return true;
-      }
-      if (parseInt(timeMark[1]) < nowMinutes) {
-        $(this).remove();
-        return true;
-      }
-      if ((nowDay === 0 || nowDay === 6) && (parseInt(timeMark[0]) < 10 || parseInt(timeMark[0]) > 17)) {
-        $(this).remove();
+    $('.time_intervals').each(function () {
+      filterTimeIntervals(this);
+
+      // Если после фильтрации временных интервалов не осталось, то переставляем дату на следующую и заполняем временные
+      // интервалы заново
+      if (!$(this).find('option').length) {
+        let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+        let dateInput = $(this).closest('form');
+        dateInput = $(dateInput).find('.date');
+        $(dateInput).datepicker('setDate', tomorrow);
+        $(dateInput).datepicker('setStartDate', tomorrow);
+        updateTimeIntervals(tomorrow, this);
       }
     });
 
-    // Если после фильтрации временных интервалов не осталось, то переставляем дату на слудующую и заполняем временные
-    // интервалы заново
-    if (!$('.time_intervals option').length) {
-      const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-      let dateInput = $('.time_intervals').closest('.form_row');
-      dateInput = $(dateInput).find('.date');
-      $(dateInput).datepicker('setDate', tomorrow);
-      $(dateInput).datepicker('setStartDate', tomorrow);
-      const allDaysIntervals = '<option value="10:00">10:00</option>\n' +
-        '<option value="10:10">10:10</option>\n' +
-        '<option value="10:20">10:20</option>\n' +
-        '<option value="10:30">10:30</option>\n' +
-        '<option value="10:40">10:40</option>\n' +
-        '<option value="10:50">10:50</option>\n' +
-        '<option value="10:00">10:00</option>\n' +
-        '<option value="11:10">11:10</option>\n' +
-        '<option value="11:20">11:20</option>\n' +
-        '<option value="11:30">11:30</option>\n' +
-        '<option value="11:40">11:40</option>\n' +
-        '<option value="11:50">11:50</option>\n' +
-        '<option value="12:00">12:00</option>\n' +
-        '<option value="12:10">12:10</option>\n' +
-        '<option value="12:20">12:20</option>\n' +
-        '<option value="12:30">12:30</option>\n' +
-        '<option value="12:40">12:40</option>\n' +
-        '<option value="12:50">12:50</option>\n' +
-        '<option value="13:00">13:00</option>\n' +
-        '<option value="13:10">13:10</option>\n' +
-        '<option value="13:20">13:20</option>\n' +
-        '<option value="13:30">13:30</option>\n' +
-        '<option value="13:40">13:40</option>\n' +
-        '<option value="13:50">13:50</option>\n' +
-        '<option value="14:00">14:00</option>\n' +
-        '<option value="14:10">14:10</option>\n' +
-        '<option value="14:20">14:20</option>\n' +
-        '<option value="14:30">14:30</option>\n' +
-        '<option value="14:40">14:40</option>\n' +
-        '<option value="14:50">14:50</option>\n' +
-        '<option value="15:00">15:00</option>\n' +
-        '<option value="15:10">15:10</option>\n' +
-        '<option value="15:20">15:20</option>\n' +
-        '<option value="15:30">15:30</option>\n' +
-        '<option value="15:40">15:40</option>\n' +
-        '<option value="15:50">15:50</option>\n' +
-        '<option value="16:00">16:00</option>\n' +
-        '<option value="16:10">16:10</option>\n' +
-        '<option value="16:20">16:20</option>\n' +
-        '<option value="16:30">16:30</option>\n' +
-        '<option value="16:40">16:40</option>\n' +
-        '<option value="16:50">16:50</option>\n' +
-        '<option value="17:00">17:00</option>\n' +
-        '<option value="17:10">17:10</option>\n' +
-        '<option value="17:20">17:20</option>\n' +
-        '<option value="17:30">17:30</option>\n' +
-        '<option value="17:40">17:40</option>\n' +
-        '<option value="17:50">17:50</option>';
-      const weekdaysDaysIntervalsBefore = '<option value="09:00">09:00</option>\n' +
-        '<option value="09:10">09:10</option>\n' +
-        '<option value="09:20">09:20</option>\n' +
-        '<option value="09:30">09:30</option>\n' +
-        '<option value="09:40">09:40</option>\n' +
-        '<option value="09:50">09:50</option>';
-      const weekdaysDaysIntervalsAfter = '<option value="18:00">18:00</option>' +
-        '<option value="18:10">18:10</option>\n' +
-        '<option value="18:20">18:20</option>\n' +
-        '<option value="18:30">18:30</option>\n' +
-        '<option value="18:40">18:40</option>\n' +
-        '<option value="18:50">18:50</option>\n' +
-        '<option value="19:00">19:00</option>\n' +
-        '<option value="19:10">19:10</option>\n' +
-        '<option value="19:20">19:20</option>\n' +
-        '<option value="19:30">19:30</option>\n' +
-        '<option value="19:40">19:40</option>\n' +
-        '<option value="19:50">19:50</option>\n' +
-        '<option value="20:00">20:00</option>\n' +
-        '<option value="20:10">20:10</option>\n' +
-        '<option value="20:20">20:20</option>\n' +
-        '<option value="20:30">20:30</option>\n' +
-        '<option value="20:40">20:40</option>\n' +
-        '<option value="20:50">20:50</option>';
-      $('.time_intervals').append(allDaysIntervals);
-      const tomorrowDay = tomorrow.getDay();
-      $('.time_intervals').val('10:00');
-      if (tomorrowDay !== 0 && tomorrowDay !== 6) {
-        $('.time_intervals').prepend(weekdaysDaysIntervalsBefore);
-        $('.time_intervals').append(weekdaysDaysIntervalsAfter);
-        $('.time_intervals').val('09:00');
-      }
-    }
-
     // При смене специалиста получаем его слоты из IDENT
     $('#form-order-doctor-page-form, #form-order-doctor-page-popup-form, #form-order-form').on('change', '.doctors-select', function () {
-      let self = this;
       var doctorNid = $("option:selected", this).attr('data-doctor-nid');
+      let dateInput = $(this).closest('form');
+      dateInput = $(dateInput).find('.date');
       if (doctorNid === 'no_matter') {
         // выставляем значения по умолчанию как для всех специалистов
         window.unbusy_slots = {};
@@ -489,15 +396,21 @@ $(document).ready(function () {
               }
 
               // инициализируем datepicker заново
-              let dateInput = $(self).closest('form');
-              dateInput = $(dateInput).find('.date');
               $(dateInput).datepicker('destroy');
               datepickerConf['language'] = 'ru';
               datepickerConf['autoclose'] = 'true';
               $(dateInput).datepicker(datepickerConf).datepicker('setDate', first_date);
             } else {
-              // Если у доктора нет слотов, то выставляем значения по умолчанию как для всех специалистов
+              // Если у доктора нет слотов, то выставляем значения по умолчанию как для любого специалиста
               window.unbusy_slots = {};
+
+              $(dateInput).datepicker('destroy');
+              let day = new Date();
+              $(dateInput).datepicker({
+                language: "ru",
+                autoclose:true,
+                startDate: day
+              }).datepicker('setDate', day);
             }
           },
           error: response => {
@@ -513,24 +426,170 @@ $(document).ready(function () {
       let property = ('0' + selectedDate.getDate()).slice(-2) + '.'
         + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '.'
         + selectedDate.getFullYear();
+      let now = new Date();
+      let nowProperty = ('0' + now.getDate()).slice(-2) + '.'
+        + ('0' + (now.getMonth() + 1)).slice(-2) + '.'
+        + now.getFullYear();
 
       // Актуализируем время
+      let timeSelect = $(this).closest('form');
+      timeSelect = $(timeSelect).find('.time_intervals');
       if (
         typeof window.unbusy_slots !== typeof undefined
         && typeof window.unbusy_slots[property] !== typeof undefined
       ) {
         let options_and_value_for_select = create_time_options_and_value_for_select(window.unbusy_slots[property]);
-        let timeSelect = $(this).closest('form');
-        timeSelect = $(timeSelect).find('.time_intervals');
         $(timeSelect).html(options_and_value_for_select[0]);
         $(timeSelect).val(options_and_value_for_select[1]);
+        if (property === nowProperty) {
+          filterTimeIntervals(timeSelect);
+          if (!$(timeSelect).find('option').length) {
+            let endDate = $(this).datepicker('getEndDate');
+            for (var d = new Date(selectedDate.getTime()); d <= endDate; d.setDate(d.getDate() + 1)) {
+              let propertyForCheck = ('0' + d.getDate()).slice(-2) + '.'
+                + ('0' + (d.getMonth() + 1)).slice(-2) + '.'
+                + d.getFullYear();
+              if (unbusy_slots.hasOwnProperty(propertyForCheck)) {
+                $(this).datepicker('setDate', d);
+                $(this).datepicker('setStartDate', d);
+                break;
+              }
+            }
+          }
+        }
       } else {
         // иначе выставляем доступные временные интервалы по умолчанию согласно текущему дню
+        $(timeSelect).html('');
+        updateTimeIntervals(selectedDate, timeSelect);
+        if (property === nowProperty) {
+          filterTimeIntervals(timeSelect);
+          if (!$(timeSelect).find('option').length) {
+            let tomorrow = new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000);
+            updateTimeIntervals(tomorrow, timeSelect);
+            $(this).datepicker('setDate', tomorrow);
+            $(this).datepicker('setStartDate', tomorrow);
+          }
+        }
       }
     });
-
   }
 });
+
+function updateTimeIntervals(date, timeIntervalSelect) {
+  const dateIntervals = getDateIntervals();
+  $(timeIntervalSelect).append(dateIntervals['allDaysIntervals']);
+  const day = date.getDay();
+  $(timeIntervalSelect).val('10:00');
+  if (day !== 0 && day !== 6) {
+    $(timeIntervalSelect).prepend(dateIntervals['weekdaysDaysIntervalsBefore']);
+    $(timeIntervalSelect).append(dateIntervals['weekdaysDaysIntervalsAfter']);
+    $(timeIntervalSelect).val('09:00');
+  }
+}
+
+function getDateIntervals() {
+  return {
+    allDaysIntervals: '<option value="10:00">10:00</option>\n' +
+      '<option value="10:10">10:10</option>\n' +
+      '<option value="10:20">10:20</option>\n' +
+      '<option value="10:30">10:30</option>\n' +
+      '<option value="10:40">10:40</option>\n' +
+      '<option value="10:50">10:50</option>\n' +
+      '<option value="11:00">11:00</option>\n' +
+      '<option value="11:10">11:10</option>\n' +
+      '<option value="11:20">11:20</option>\n' +
+      '<option value="11:30">11:30</option>\n' +
+      '<option value="11:40">11:40</option>\n' +
+      '<option value="11:50">11:50</option>\n' +
+      '<option value="12:00">12:00</option>\n' +
+      '<option value="12:10">12:10</option>\n' +
+      '<option value="12:20">12:20</option>\n' +
+      '<option value="12:30">12:30</option>\n' +
+      '<option value="12:40">12:40</option>\n' +
+      '<option value="12:50">12:50</option>\n' +
+      '<option value="13:00">13:00</option>\n' +
+      '<option value="13:10">13:10</option>\n' +
+      '<option value="13:20">13:20</option>\n' +
+      '<option value="13:30">13:30</option>\n' +
+      '<option value="13:40">13:40</option>\n' +
+      '<option value="13:50">13:50</option>\n' +
+      '<option value="14:00">14:00</option>\n' +
+      '<option value="14:10">14:10</option>\n' +
+      '<option value="14:20">14:20</option>\n' +
+      '<option value="14:30">14:30</option>\n' +
+      '<option value="14:40">14:40</option>\n' +
+      '<option value="14:50">14:50</option>\n' +
+      '<option value="15:00">15:00</option>\n' +
+      '<option value="15:10">15:10</option>\n' +
+      '<option value="15:20">15:20</option>\n' +
+      '<option value="15:30">15:30</option>\n' +
+      '<option value="15:40">15:40</option>\n' +
+      '<option value="15:50">15:50</option>\n' +
+      '<option value="16:00">16:00</option>\n' +
+      '<option value="16:10">16:10</option>\n' +
+      '<option value="16:20">16:20</option>\n' +
+      '<option value="16:30">16:30</option>\n' +
+      '<option value="16:40">16:40</option>\n' +
+      '<option value="16:50">16:50</option>\n' +
+      '<option value="17:00">17:00</option>\n' +
+      '<option value="17:10">17:10</option>\n' +
+      '<option value="17:20">17:20</option>\n' +
+      '<option value="17:30">17:30</option>\n' +
+      '<option value="17:40">17:40</option>\n' +
+      '<option value="17:50">17:50</option>',
+    weekdaysDaysIntervalsBefore: '<option value="09:00">09:00</option>\n' +
+      '<option value="09:10">09:10</option>\n' +
+      '<option value="09:20">09:20</option>\n' +
+      '<option value="09:30">09:30</option>\n' +
+      '<option value="09:40">09:40</option>\n' +
+      '<option value="09:50">09:50</option>',
+    weekdaysDaysIntervalsAfter: '<option value="18:00">18:00</option>' +
+      '<option value="18:10">18:10</option>\n' +
+      '<option value="18:20">18:20</option>\n' +
+      '<option value="18:30">18:30</option>\n' +
+      '<option value="18:40">18:40</option>\n' +
+      '<option value="18:50">18:50</option>\n' +
+      '<option value="19:00">19:00</option>\n' +
+      '<option value="19:10">19:10</option>\n' +
+      '<option value="19:20">19:20</option>\n' +
+      '<option value="19:30">19:30</option>\n' +
+      '<option value="19:40">19:40</option>\n' +
+      '<option value="19:50">19:50</option>\n' +
+      '<option value="20:00">20:00</option>\n' +
+      '<option value="20:10">20:10</option>\n' +
+      '<option value="20:20">20:20</option>\n' +
+      '<option value="20:30">20:30</option>\n' +
+      '<option value="20:40">20:40</option>\n' +
+      '<option value="20:50">20:50</option>'
+  }
+}
+
+function filterTimeIntervals(timeIntervalSelect) {
+  const today = new Date();
+  const nowHour = today.getUTCHours() + 3;
+  const nowMinutes = today.getUTCMinutes();
+  const nowDay = today.getDay();
+  $(timeIntervalSelect).find('option').each(function () {
+    let timeMark = $(this).text().split(':');
+    if ((nowDay === 0 || nowDay === 6) && (parseInt(timeMark[0]) < 10 || parseInt(timeMark[0]) > 17)) {
+      $(this).remove();
+    }
+    if (parseInt(timeMark[0]) > nowHour) {
+      return true;
+    }
+    if (parseInt(timeMark[0]) < nowHour) {
+      $(this).remove();
+      return true;
+    }
+    if (parseInt(timeMark[1]) > nowMinutes) {
+      return true;
+    }
+    if (parseInt(timeMark[1]) < nowMinutes) {
+      $(this).remove();
+      return true;
+    }
+  });
+}
 
 function create_time_options_and_value_for_select(time_object) {
   let time_marks = [];

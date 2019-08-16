@@ -74,8 +74,8 @@ class IdentDoctorsInfoGetterResource extends ResourceBase {
    * Responds to GET requests.
    */
   public function get() {
+    \Drupal::service('page_cache_kill_switch')->trigger();
     $query = \Drupal::request()->query;
-    $response = [];
     if ($query->has('nid')) {
       /** @var $doctors \Drupal\ident\Doctors */
       $doctors = \Drupal::service('ident.doctors');
