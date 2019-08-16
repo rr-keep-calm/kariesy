@@ -318,12 +318,33 @@ $(document).ready(function () {
 
     // При смене специалиста получаем его слоты из IDENT
     $('#form-order-doctor-page-form, #form-order-doctor-page-popup-form, #form-order-form').on('change', '.doctors-select', function () {
+      // показываем заглушку
+      let stub = $(this).closest('form');
+      stub = $(stub).find('.data_time_stub');
+      $(stub).each(function () {
+        $(this).width($(this).parent('div').width());
+        $(this).height($(this).parent('div').height());
+        $(this).show();
+      });
+
       var doctorNid = $("option:selected", this).attr('data-doctor-nid');
       let dateInput = $(this).closest('form');
       dateInput = $(dateInput).find('.date');
       if (doctorNid === 'no_matter') {
         // выставляем значения по умолчанию как для всех специалистов
         window.unbusy_slots = {};
+
+        $(dateInput).datepicker('destroy');
+        let day = new Date();
+        $(dateInput).datepicker({
+          language: "ru",
+          autoclose:true,
+          startDate: day
+        }).datepicker('setDate', day);
+
+        $(stub).each(function () {
+          $(this).hide();
+        });
       } else {
         $.ajax({
           url: '/get/doctor-slots',
@@ -400,6 +421,10 @@ $(document).ready(function () {
               datepickerConf['language'] = 'ru';
               datepickerConf['autoclose'] = 'true';
               $(dateInput).datepicker(datepickerConf).datepicker('setDate', first_date);
+
+              $(stub).each(function () {
+                $(this).hide();
+              });
             } else {
               // Если у доктора нет слотов, то выставляем значения по умолчанию как для любого специалиста
               window.unbusy_slots = {};
@@ -411,6 +436,10 @@ $(document).ready(function () {
                 autoclose:true,
                 startDate: day
               }).datepicker('setDate', day);
+
+              $(stub).each(function () {
+                $(this).hide();
+              });
             }
           },
           error: response => {
@@ -422,6 +451,15 @@ $(document).ready(function () {
 
     // ловим событие изменения даты и актуализируем временные интервалы
     $('.date').datepicker().on('changeDate', function () {
+      let timeSelect = $(this).closest('form');
+      timeSelect = $(timeSelect).find('.time_intervals');
+      // показываем заглушку для времени
+      let stub = $(timeSelect).parent('div.form_col');
+      stub = $(stub).find('.data_time_stub');
+      $(stub).width($(this).parent('div').width());
+      $(stub).height($(this).parent('div').height());
+      $(stub).show();
+
       let selectedDate = $(this).datepicker('getDate');
       let property = ('0' + selectedDate.getDate()).slice(-2) + '.'
         + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '.'
@@ -432,8 +470,6 @@ $(document).ready(function () {
         + now.getFullYear();
 
       // Актуализируем время
-      let timeSelect = $(this).closest('form');
-      timeSelect = $(timeSelect).find('.time_intervals');
       if (
         typeof window.unbusy_slots !== typeof undefined
         && typeof window.unbusy_slots[property] !== typeof undefined
@@ -457,6 +493,7 @@ $(document).ready(function () {
             }
           }
         }
+        $(stub).hide();
       } else {
         // иначе выставляем доступные временные интервалы по умолчанию согласно текущему дню
         $(timeSelect).html('');
@@ -470,6 +507,7 @@ $(document).ready(function () {
             $(this).datepicker('setStartDate', tomorrow);
           }
         }
+        $(stub).hide();
       }
     });
   }
