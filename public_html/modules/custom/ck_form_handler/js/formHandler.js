@@ -116,19 +116,7 @@ $(document).ready(function () {
   });
 
   function sendForm(action, form) {
-    let sessionToken = new Promise((resolve, reject) => {
-      $.ajax({
-        url: '/rest/session/token',
-        dataType: 'text',
-        type: 'GET',
-        success: response => {
-          resolve(response);
-        },
-        error: response => {
-          reject(response);
-        },
-      });
-    });
+    let sessionToken = getToken();
 
     sessionToken.then(
       token => {
@@ -261,6 +249,23 @@ $(document).ready(function () {
         });
       },
     );
+  }
+
+  // Функция получения токена от Drupal на Promise
+  function getToken() {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: '/rest/session/token',
+        dataType: 'text',
+        type: 'GET',
+        success: response => {
+          resolve(response);
+        },
+        error: response => {
+          reject(response);
+        },
+      });
+    });
   }
 
   $('#form-order, #form-order-doctor-page, #form-order-doctor-page-popup-form').on('change', 'select.service-type', function () {
@@ -407,11 +412,159 @@ $(document).ready(function () {
 
     // При смене специалиста получаем его слоты из IDENT
     $('#form-order-doctor-page-form, #form-order-doctor-page-popup-form, #form-order-form').on('change', '.doctors-select', function () {
-      console.log($(this).val());
-    })
+      let self = this;
+      var doctorNid = $("option:selected", this).attr('data-doctor-nid');
+      if (doctorNid === 'no_matter') {
+        // выставляем значения по умолчанию как для всех специалистов
+      } else {
+        $.ajax({
+          url: '/get/doctor-slots',
+          dataType: 'json',
+          type: 'GET',
+          data: {
+            '_format': 'json',
+            'nid': doctorNid,
+          },
+          success: response => {
+            if (response !== '') {
+              // Парсим json слотов
+              let slots = JSON.parse(response);
+              let unbusy_slots = {};
+
+              // собираем свободные слоты
+              $.each(slots, function (index, value) {
+                if (value.IsBusy === false) {
+                  let splited_date = value.StartDateTime.split('T');
+                  let time_without_date = splited_date[1].split(':');
+                  let date_without_time = splited_date[0].split('-');
+                  if (typeof undefined === typeof unbusy_slots[date_without_time[2] + '.' + date_without_time[1] + '.' + date_without_time[0]]) {
+                    unbusy_slots[date_without_time[2] + '.' + date_without_time[1] + '.' + date_without_time[0]] = {};
+                  }
+                  unbusy_slots[date_without_time[2] + '.' + date_without_time[1] + '.' + date_without_time[0]][time_without_date[0] + ':' + time_without_date[1]] = value.LengthInMinutes;
+                }
+              });
+
+              // записываем свободные слоты для каждой даты по выбранному доктору
+              window.unbusy_slots = unbusy_slots;
+
+              // ищем первую и последнюю дату
+              let first_loop_element = true;
+              let first_date = new Date();
+              let last_date = new Date();
+              let current_times = {};
+              $.each(unbusy_slots, function(index, value) {
+                let construct_data_for_date = index.toString().split('.');
+                let date_from_index = new Date(construct_data_for_date[2], parseInt(construct_data_for_date[1]) - 1, construct_data_for_date[0]);
+                if (first_loop_element === true) {
+                  first_date = date_from_index;
+                  current_times = value;
+                  first_loop_element = false;
+                }
+                if (first_date > date_from_index) {
+                  first_date = date_from_index;
+                  current_times = value;
+                }
+                if (last_date < date_from_index) {
+                  last_date = date_from_index;
+                }
+              });
+
+              let datepickerConf = {};
+              // Устанавливаем начальную дату
+              datepickerConf['startDate'] =  first_date;
+
+              // Актуализируем время
+              let options_and_value_for_select = create_time_options_and_value_for_select(current_times);
+              let timeSelect = $(self).closest('form');
+              timeSelect = $(timeSelect).find('.time_intervals');
+              $(timeSelect).html(options_and_value_for_select[0]);
+              $('.time_intervals').val(options_and_value_for_select[1]);
+
+              // Устанавливаем конечную дату
+              datepickerConf['endDate'] = last_date;
+
+              // Исключаем дни без свободных слотов
+              let disabledDate = [];
+              for (var d = new Date(first_date.getTime()); d <= last_date; d.setDate(d.getDate() + 1)) {
+                let property = ('0' + d.getDate()).slice(-2) + '.'
+                  + ('0' + (d.getMonth() + 1)).slice(-2) + '.'
+                  + d.getFullYear();
+                if (!unbusy_slots.hasOwnProperty(property)) {
+                  disabledDate.push(property);
+                }
+              }
+              if (disabledDate.length > 0) {
+                datepickerConf['datesDisabled'] = disabledDate;
+              }
+
+              // инициализируем datepicker заново
+              let dateInput = $(self).closest('form');
+              dateInput = $(dateInput).find('.date');
+              $(dateInput).datepicker('destroy');
+              datepickerConf['language'] = 'ru';
+              datepickerConf['autoclose'] = 'true';
+              $(dateInput).datepicker(datepickerConf).datepicker('setDate', first_date);
+            } else {
+              // Если у доктора нет слотов, то выставляем значения по умолчанию как для всех специалистов
+              window.unbusy_slots = {};
+            }
+          },
+          error: response => {
+            alert('Не удалось получить расписание доктора, пожалуйста повторите попытку.');
+          },
+        });
+      }
+    });
   }
 });
 
+function create_time_options_and_value_for_select(time_object) {
+  let time_marks = [];
+  $.each(time_object, function(index, value) {
+    let splited_time = index.toString().split(':');
+    let hour = parseInt(splited_time[0]);
+    let hour_mark = splited_time[0].toString();
+
+    let min = parseInt(splited_time[1]);
+    let min_mark = splited_time[1].toString();
+
+    for (let i = 0; i < value/10; i++) {
+      if (i !== 0) {
+        min += 10;
+        min_mark = min.toString();
+      }
+
+      if (min === 60) {
+        hour++;
+        hour_mark = hour.toString();
+        if (hour < 10) {
+          hour_mark = '0' + hour_mark;
+        }
+
+        min = 0;
+        min_mark = '00';
+      }
+      time_marks.push(hour_mark + ':' + min_mark);
+    }
+  });
+
+  time_marks.sort(function (a, b) {
+    let splited_a = a.toString().split(':');
+    let splited_b = b.toString().split(':');
+    if (parseInt(splited_a[0]) > parseInt(splited_b[0])) return 1;
+    if (parseInt(splited_a[0]) < parseInt(splited_b[0])) return -1;
+    if (parseInt(splited_a[1]) > parseInt(splited_b[1])) return 1;
+    if (parseInt(splited_a[1]) < parseInt(splited_b[1])) return -1;
+    if (parseInt(splited_a[1]) === parseInt(splited_b[1])) return 0;
+  });
+
+  let options = '';
+  $.each(time_marks, function(index, value) {
+    options += '<option value="' + value + '">' + value + '</option>\n';
+  });
+
+  return [options, time_marks[0]];
+}
 
 function redyRecaptcha() {
   let captchaAction = 'kariesy_net_forms';

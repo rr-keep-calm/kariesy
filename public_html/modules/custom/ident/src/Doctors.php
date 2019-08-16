@@ -49,6 +49,20 @@ class Doctors {
     return 'OK';
   }
 
+  /**
+   * Получаем слоты доктора
+   *
+   * @param int $nid Идентификатор ноды доктора
+   *
+   * @return string ответ на попытку получения слотов доктора
+   */
+  public function getSlots(int $nid): string
+  {
+    $doctor = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    $ident_slots = $doctor->get('field_ident_slots')->value;
+    return $ident_slots ?? '';
+  }
+
   protected function searchDoctor($doctors, $ident_id)
   {
     foreach ($doctors as $request_data_doctors) {
