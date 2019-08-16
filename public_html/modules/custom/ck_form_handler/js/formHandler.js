@@ -416,6 +416,7 @@ $(document).ready(function () {
       var doctorNid = $("option:selected", this).attr('data-doctor-nid');
       if (doctorNid === 'no_matter') {
         // выставляем значения по умолчанию как для всех специалистов
+        window.unbusy_slots = {};
       } else {
         $.ajax({
           url: '/get/doctor-slots',
@@ -451,18 +452,15 @@ $(document).ready(function () {
               let first_loop_element = true;
               let first_date = new Date();
               let last_date = new Date();
-              let current_times = {};
               $.each(unbusy_slots, function(index, value) {
                 let construct_data_for_date = index.toString().split('.');
                 let date_from_index = new Date(construct_data_for_date[2], parseInt(construct_data_for_date[1]) - 1, construct_data_for_date[0]);
                 if (first_loop_element === true) {
                   first_date = date_from_index;
-                  current_times = value;
                   first_loop_element = false;
                 }
                 if (first_date > date_from_index) {
                   first_date = date_from_index;
-                  current_times = value;
                 }
                 if (last_date < date_from_index) {
                   last_date = date_from_index;
@@ -472,13 +470,6 @@ $(document).ready(function () {
               let datepickerConf = {};
               // Устанавливаем начальную дату
               datepickerConf['startDate'] =  first_date;
-
-              // Актуализируем время
-              let options_and_value_for_select = create_time_options_and_value_for_select(current_times);
-              let timeSelect = $(self).closest('form');
-              timeSelect = $(timeSelect).find('.time_intervals');
-              $(timeSelect).html(options_and_value_for_select[0]);
-              $('.time_intervals').val(options_and_value_for_select[1]);
 
               // Устанавливаем конечную дату
               datepickerConf['endDate'] = last_date;
@@ -515,6 +506,29 @@ $(document).ready(function () {
         });
       }
     });
+
+    // ловим событие изменения даты и актуализируем временные интервалы
+    $('.date').datepicker().on('changeDate', function () {
+      let selectedDate = $(this).datepicker('getDate');
+      let property = ('0' + selectedDate.getDate()).slice(-2) + '.'
+        + ('0' + (selectedDate.getMonth() + 1)).slice(-2) + '.'
+        + selectedDate.getFullYear();
+
+      // Актуализируем время
+      if (
+        typeof window.unbusy_slots !== typeof undefined
+        && typeof window.unbusy_slots[property] !== typeof undefined
+      ) {
+        let options_and_value_for_select = create_time_options_and_value_for_select(window.unbusy_slots[property]);
+        let timeSelect = $(this).closest('form');
+        timeSelect = $(timeSelect).find('.time_intervals');
+        $(timeSelect).html(options_and_value_for_select[0]);
+        $(timeSelect).val(options_and_value_for_select[1]);
+      } else {
+        // иначе выставляем доступные временные интервалы по умолчанию согласно текущему дню
+      }
+    });
+
   }
 });
 
