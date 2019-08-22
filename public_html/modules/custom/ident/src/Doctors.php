@@ -6,7 +6,7 @@ class Doctors {
   /**
    * Интервал выремени в минутах при записи на приём с формы
    */
-  const MINIMUM_SLOT_TIME_INTERVAL = 10;
+  const MINIMUM_SLOT_TIME_INTERVAL = 5;
 
   /**
    * @param string $content JSON данные по расписанию для каждого доктора
@@ -121,29 +121,41 @@ class Doctors {
       ) {
         $key--;
       }
-      $hour = (int)$slot_time[0];
-      $hour_mark = $slot_time[0];
+      $handle_slot_date_time = explode('T', $ident_slots[$key]['StartDateTime']);
+      $handle_slot_time = explode(':', $handle_slot_date_time[1]);
+      $hour = (int)$handle_slot_time[0];
+      $hour_mark = $handle_slot_time[0];
 
-      $min = (int)$slot_time[1];
-      $min_mark = $slot_time[1];
-      for ($i = 0; $i < $ident_slot['LengthInMinutes']/self::MINIMUM_SLOT_TIME_INTERVAL; $i++) {
+      $min = (int)$handle_slot_time[1];
+      $min_mark = $handle_slot_time[1];
+      for ($i = 0; $i < $ident_slots[$key]['LengthInMinutes']/self::MINIMUM_SLOT_TIME_INTERVAL; $i++) {
         if ($i !== 0) {
           $min += self::MINIMUM_SLOT_TIME_INTERVAL;
           $min_mark = (string)$min;
         }
+        if ($min < 10 && $min_mark !== '00' && $min_mark !== '05') {
+          $min_mark = '0' . $min_mark;
+        }
 
         if ($min === 60) {
           $hour++;
+          $hour_mark = (string)$hour;
           if ($hour < 10) {
-            $hour_mark = '0' + $hour_mark;
+            $hour_mark = '0' . $hour_mark;
           }
           $min = 0;
           $min_mark = '00';
         }
         $ident_slots[] = [
-          'StartDateTime' => $slot_date_time[0] . 'T' . $hour_mark . ':' . $min_mark . ':00+03',
+          'StartDateTime' => $handle_slot_date_time[0] . 'T' . $hour_mark . ':' . $min_mark . ':00+03',
           'LengthInMinutes' => self::MINIMUM_SLOT_TIME_INTERVAL,
-          'IsBusy' => (int)$hour === (int)$slot_time[0] &&  (int)$min === (int)$slot_time[1]
+          'IsBusy' => $this->checkBusy(
+            $hour,
+            $min,
+            (int) $busy_time_from_form_parts[0],
+            (int) $busy_time_from_form_parts[1],
+            (int) $busy_slot_from_form['LengthInMinutes']
+          ),
         ];
       }
       unset($ident_slots[$key]);
@@ -157,5 +169,17 @@ class Doctors {
     $date_a = new \DateTime($a['StartDateTime']);
     $date_b = new \DateTime($b['StartDateTime']);
     return $date_a <=> $date_b;
+  }
+
+  protected function checkBusy($slot_hour, $slot_min, $busy_hour, $busy_min, $busy_length_in_minutes)
+  {
+    return $slot_hour === $busy_hour
+      && (
+        $slot_min === $busy_min
+        || (
+          $slot_min > $busy_min
+          && $slot_min < $busy_min + $busy_length_in_minutes
+        )
+      );
   }
 }
