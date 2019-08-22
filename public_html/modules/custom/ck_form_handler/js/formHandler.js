@@ -223,6 +223,8 @@ $(document).ready(function () {
               } else {
                 closeForm();
               }
+              actualizationDoctorList(form);
+              resetDoctorDateTimeSelect(form);
             } else {
               alert(response.text);
             }
@@ -269,17 +271,8 @@ $(document).ready(function () {
   }
 
   $('#form-order, #form-order-doctor-page, #form-order-doctor-page-popup-form').on('change', 'select.service-type', function () {
-    // Получаем всех докторов, которые оказывают выбранную услугу
-    var doctors = $("option:selected", this).data('doctor_list').split('|');
-
-    // Актуализируем список докторов
-    let doctorsSelect = $(this).closest('form');
-    doctorsSelect = $(doctorsSelect).find('select.doctors-select');
-    $(doctorsSelect).html('');
-    $.each(doctors, function (index, value) {
-      let doctorData = value.split(':::');
-      $(doctorsSelect).append('<option value="' + doctorData[0] + '" data-doctor-nid="' + doctorData[1] + '">' + doctorData[0] + '</option>');
-    });
+    actualizationDoctorList($(this).closest('form'));
+    resetDoctorDateTimeSelect($(this).closest('form'));
   });
 
   function serializeFormJSON(form) {
@@ -296,7 +289,22 @@ $(document).ready(function () {
       }
     });
     return o;
-  };
+  }
+
+  function actualizationDoctorList(form)
+  {
+    let serviceTypeList = $(form).find('select.service-type');
+    // Получаем всех докторов, которые оказывают выбранную услугу
+    let doctors = $("option:selected", serviceTypeList).data('doctor_list').split('|');
+
+    // Актуализируем список докторов
+    let doctorsSelect = $(form).find('select.doctors-select');
+    $(doctorsSelect).html('');
+    $.each(doctors, function (index, value) {
+      let doctorData = value.split(':::');
+      $(doctorsSelect).append('<option value="' + doctorData[0] + '" data-doctor-nid="' + doctorData[1] + '">' + doctorData[0] + '</option>');
+    });
+  }
 
   // Работа с формой записи на приём в части даты и времени
   // Фильтруем доступные на старте временные рамки для записи
@@ -332,16 +340,7 @@ $(document).ready(function () {
       dateInput = $(dateInput).find('.date');
       if (doctorNid === 'no_matter') {
         // выставляем значения по умолчанию как для всех специалистов
-        window.unbusy_slots = {};
-
-        $(dateInput).datepicker('destroy');
-        let day = new Date();
-        $(dateInput).datepicker({
-          language: "ru",
-          autoclose:true,
-          startDate: day
-        }).datepicker('setDate', day);
-
+        resetDoctorDateTimeSelect($(dateInput).closest('form'));
         $(stub).each(function () {
           $(this).hide();
         });
@@ -427,16 +426,7 @@ $(document).ready(function () {
               });
             } else {
               // Если у доктора нет слотов, то выставляем значения по умолчанию как для любого специалиста
-              window.unbusy_slots = {};
-
-              $(dateInput).datepicker('destroy');
-              let day = new Date();
-              $(dateInput).datepicker({
-                language: "ru",
-                autoclose:true,
-                startDate: day
-              }).datepicker('setDate', day);
-
+              resetDoctorDateTimeSelect($(dateInput).closest('form'));
               $(stub).each(function () {
                 $(this).hide();
               });
@@ -764,4 +754,17 @@ function redyRecaptcha() {
         window.reToken = token;
       }
     });
+}
+
+function resetDoctorDateTimeSelect(form)
+{
+  window.unbusy_slots = {};
+  let dateInput = $(form).find('.date');
+  $(dateInput).datepicker('destroy');
+  let day = new Date();
+  $(dateInput).datepicker({
+    language: "ru",
+    autoclose:true,
+    startDate: day
+  }).datepicker('setDate', day);
 }
