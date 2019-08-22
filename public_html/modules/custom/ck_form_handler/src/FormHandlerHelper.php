@@ -1,6 +1,7 @@
 <?php
 namespace Drupal\ck_form_handler;
 
+use Drupal\ck_form_handler\Event\СkFormHandlerEvent;
 use \Drupal\node\Entity\Node;
 use \Drupal\file\Entity\File;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -209,8 +210,18 @@ class FormHandlerHelper {
       $node = Node::create($node_create);
       if ($doctor_id) {
         $node->field_form_order_doctor->target_id = $doctor_id;
+        $this->formData += ['doctor_nid' => $doctor_id];
       }
       $node->save();
+
+      /** @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher */
+      $dispatcher = \Drupal::service('event_dispatcher');
+
+      // Create event object passing arguments.
+      /** @var \Drupal\ck_form_handler\Event\СkFormHandlerEvent $event*/
+      $event = new СkFormHandlerEvent($this->formData);
+      // Call it.
+      $dispatcher->dispatch(СkFormHandlerEvent::APPOINTMENT_ORDER_SAVE, $event);
     }
   }
 

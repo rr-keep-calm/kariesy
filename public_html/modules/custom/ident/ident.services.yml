@@ -1,3 +1,7 @@
 services:
   ident.doctors:
     class: Drupal\ident\Doctors
+  ident.ident_subscriber:
+    class: Drupal\ident\EventSubscriber\IdentSubscriber
+    tags:
+      - { name: event_subscriber }

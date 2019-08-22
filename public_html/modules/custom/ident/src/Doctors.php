@@ -4,6 +4,11 @@ namespace Drupal\ident;
 class Doctors {
 
   /**
+   * Интервал выремени в минутах при записи на приём с формы
+   */
+  const MINIMUM_SLOT_TIME_INTERVAL = 10;
+
+  /**
    * @param string $content JSON данные по расписанию для каждого доктора
    *
    * @return string ответ на попытку обработки данных
@@ -55,11 +60,26 @@ class Doctors {
    * @param int $nid Идентификатор ноды доктора
    *
    * @return string ответ на попытку получения слотов доктора
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getSlots(int $nid): string
   {
     $doctor = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     $ident_slots = $doctor->get('field_ident_slots')->value;
+
+    // Получаем занятые слоты
+    $busy_slots_from_form = $doctor->get('field_busy_slots_from_form')->value;
+    if ($busy_slots_from_form) {
+      $busy_slots_from_form = json_decode($busy_slots_from_form, true);
+      // Если есть занятые слоты, то актуализируем слоты из IDENT
+      $ident_slots = json_decode($ident_slots, true);
+      usort($ident_slots, [get_class($this), 'sortByDate']);
+      foreach($busy_slots_from_form as $busy_slot_from_form) {
+        $this->actualizationSlots($ident_slots, $busy_slot_from_form);
+      }
+      $ident_slots = json_encode($ident_slots);
+    }
     return $ident_slots ?? '';
   }
 
@@ -70,5 +90,72 @@ class Doctors {
         return $request_data_doctors['Name'];
       }
     }
+  }
+
+  protected function actualizationSlots(&$ident_slots, $busy_slot_from_form)
+  {
+    list($busy_date_from_form, $busy_time_from_form) = explode('T', $busy_slot_from_form['StartDateTime']);
+    $busy_time_from_form_parts = explode(':', $busy_time_from_form);
+    foreach($ident_slots as $key => $ident_slot) {
+      if ($ident_slot['IsBusy'] === TRUE || $ident_slot['IsBusy'] === 'true') {
+        continue;
+      }
+      if (!preg_match('/^' . $busy_date_from_form . '/', $ident_slot['StartDateTime'])) {
+        continue;
+      }
+
+      $slot_date_time = explode('T', $ident_slot['StartDateTime']);
+      $slot_time = explode(':', $slot_date_time[1]);
+      if ((int)$slot_time[0] < (int)$busy_time_from_form_parts[0]) {
+        continue;
+      }
+      if (
+        (int)$slot_time[0] === (int)$busy_time_from_form_parts[0]
+        && (int)$slot_time[1] < (int)$busy_time_from_form_parts[1]
+      ) {
+        continue;
+      }
+      if (
+        (int)$slot_time[0] > (int)$busy_time_from_form_parts[0]
+        || (int)$slot_time[1] > (int)$busy_time_from_form_parts[1]
+      ) {
+        $key--;
+      }
+      $hour = (int)$slot_time[0];
+      $hour_mark = $slot_time[0];
+
+      $min = (int)$slot_time[1];
+      $min_mark = $slot_time[1];
+      for ($i = 0; $i < $ident_slot['LengthInMinutes']/self::MINIMUM_SLOT_TIME_INTERVAL; $i++) {
+        if ($i !== 0) {
+          $min += self::MINIMUM_SLOT_TIME_INTERVAL;
+          $min_mark = (string)$min;
+        }
+
+        if ($min === 60) {
+          $hour++;
+          if ($hour < 10) {
+            $hour_mark = '0' + $hour_mark;
+          }
+          $min = 0;
+          $min_mark = '00';
+        }
+        $ident_slots[] = [
+          'StartDateTime' => $slot_date_time[0] . 'T' . $hour_mark . ':' . $min_mark . ':00+03',
+          'LengthInMinutes' => self::MINIMUM_SLOT_TIME_INTERVAL,
+          'IsBusy' => (int)$hour === (int)$slot_time[0] &&  (int)$min === (int)$slot_time[1]
+        ];
+      }
+      unset($ident_slots[$key]);
+      usort($ident_slots, [get_class($this), 'sortByDate']);
+      break;
+    }
+  }
+
+  protected function sortByDate($a, $b)
+  {
+    $date_a = new \DateTime($a['StartDateTime']);
+    $date_b = new \DateTime($b['StartDateTime']);
+    return $date_a <=> $date_b;
   }
 }
