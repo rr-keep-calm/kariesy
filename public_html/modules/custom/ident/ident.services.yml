@@ -1,6 +1,8 @@
 services:
   ident.doctors:
     class: Drupal\ident\Doctors
+  ident.form_orders:
+    class: Drupal\ident\FormOrders
   ident.ident_subscriber:
     class: Drupal\ident\EventSubscriber\IdentSubscriber
     tags:

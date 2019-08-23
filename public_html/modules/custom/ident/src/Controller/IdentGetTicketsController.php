@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Diactoros\Request as ZendRequest;
 
-class IdentPostTimeTableController extends ControllerBase {
+class IdentGetTicketsController extends ControllerBase {
 
   public function execute(Request $request) {
     \Drupal::service('page_cache_kill_switch')->trigger();
@@ -15,10 +15,10 @@ class IdentPostTimeTableController extends ControllerBase {
     $response = new Response();
     $response->headers->set('Content-Type', 'text/plain');
 
-    if ($request->getMethod() !== 'POST') {
+    if ($request->getMethod() !== 'GET') {
       $response->setStatusCode(405);
-      $response->headers->set('Allow', 'POST');
-      $response->setContent('Разрешён только POST запрос');
+      $response->headers->set('Allow', 'GET');
+      $response->setContent('Разрешён только GET запрос');
       return $response;
     }
 
@@ -26,7 +26,7 @@ class IdentPostTimeTableController extends ControllerBase {
     // Меняем регистр ключей массива заголовков
     $headers = array_change_key_case($headers, CASE_LOWER);
 
-    if (!isset($headers['ident-integration-key'])) {
+    /*if (!isset($headers['ident-integration-key'])) {
       $response->setStatusCode(401);
       $response->setContent('Отсутствует заголовок ключа доступа');
       return $response;
@@ -44,33 +44,39 @@ class IdentPostTimeTableController extends ControllerBase {
       $response->setStatusCode(401);
       $response->setContent('Неправильный ключ доступа');
       return $response;
-    }
+    }*/
 
-    // Пытаемся разобрать тело запроса, должен быть валидный json
-    $content = $request->getContent();
-    if (
-      !is_string($content)
-      || !is_array(json_decode($content, TRUE))
-      || !(json_last_error() == JSON_ERROR_NONE))
-    {
-      $response->setStatusCode(452);
-      $response->setContent('Был принят невалидный json');
+    $params = [
+      'dateTimeFrom' => $request->get('dateTimeFrom'),
+      'dateTimeTo' => $request->get('dateTimeTo'),
+      'limit' => $request->get('limit'),
+      'offset' => $request->get('offset'),
+    ];
+
+    if (!$params['dateTimeFrom']) {
+      $response->setStatusCode(400);
+      $response->setContent('Не передан обязательный параметр "dateTimeFrom"');
       return $response;
     }
 
-    // Отправляем принятые данные дальше на сохранение
-    /** @var $doctors \Drupal\ident\Doctors */
-    $doctors = \Drupal::service('ident.doctors');
-    $handlerResponse = $doctors->updateTime($content);
+    if (!$params['dateTimeTo']) {
+      $response->setStatusCode(400);
+      $response->setContent('Не передан обязательный параметр "dateTimeTo"');
+      return $response;
+    }
 
-    if ($handlerResponse !== 'OK') {
+    /** @var $form_orders \Drupal\ident\FormOrders */
+    $form_orders = \Drupal::service('ident.form_orders');
+    $handlerResponse = $form_orders->getFormOrders($params);
+
+    if ($handlerResponse['status'] !== 'OK') {
       $response->setStatusCode(500);
-      $response->setContent($handlerResponse);
+      $response->setContent($handlerResponse['error']);
       return $response;
     }
 
     $response->setStatusCode(200);
-    $response->setContent('OK');
+    $response->setContent(json_encode($handlerResponse['form_orders']));
 
     return $response;
   }
