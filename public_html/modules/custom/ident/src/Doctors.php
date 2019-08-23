@@ -96,23 +96,43 @@ class Doctors {
   {
     list($busy_date_from_form, $busy_time_from_form) = explode('T', $busy_slot_from_form['StartDateTime']);
     $busy_time_from_form_parts = explode(':', $busy_time_from_form);
+    $only_minutes_diff = false;
     foreach($ident_slots as $key => $ident_slot) {
-      if ($ident_slot['IsBusy'] === TRUE || $ident_slot['IsBusy'] === 'true') {
+      if (
+        !$only_minutes_diff
+        && (
+          $ident_slot['IsBusy'] === TRUE
+          || $ident_slot['IsBusy'] === 'true'
+          )
+        ) {
         continue;
       }
       if (!preg_match('/^' . $busy_date_from_form . '/', $ident_slot['StartDateTime'])) {
+        if ($only_minutes_diff) {
+          $key--;
+          break;
+        }
         continue;
       }
 
       $slot_date_time = explode('T', $ident_slot['StartDateTime']);
       $slot_time = explode(':', $slot_date_time[1]);
       if ((int)$slot_time[0] < (int)$busy_time_from_form_parts[0]) {
+        if ($only_minutes_diff) {
+          $key--;
+          break;
+        }
         continue;
       }
       if (
         (int)$slot_time[0] === (int)$busy_time_from_form_parts[0]
         && (int)$slot_time[1] < (int)$busy_time_from_form_parts[1]
       ) {
+        if ($only_minutes_diff) {
+          $key--;
+          break;
+        }
+        $only_minutes_diff = true;
         continue;
       }
       if (
@@ -121,47 +141,48 @@ class Doctors {
       ) {
         $key--;
       }
-      $handle_slot_date_time = explode('T', $ident_slots[$key]['StartDateTime']);
-      $handle_slot_time = explode(':', $handle_slot_date_time[1]);
-      $hour = (int)$handle_slot_time[0];
-      $hour_mark = $handle_slot_time[0];
-
-      $min = (int)$handle_slot_time[1];
-      $min_mark = $handle_slot_time[1];
-      for ($i = 0; $i < $ident_slots[$key]['LengthInMinutes']/self::MINIMUM_SLOT_TIME_INTERVAL; $i++) {
-        if ($i !== 0) {
-          $min += self::MINIMUM_SLOT_TIME_INTERVAL;
-          $min_mark = (string)$min;
-        }
-        if ($min < 10 && $min_mark !== '00' && $min_mark !== '05') {
-          $min_mark = '0' . $min_mark;
-        }
-
-        if ($min === 60) {
-          $hour++;
-          $hour_mark = (string)$hour;
-          if ($hour < 10) {
-            $hour_mark = '0' . $hour_mark;
-          }
-          $min = 0;
-          $min_mark = '00';
-        }
-        $ident_slots[] = [
-          'StartDateTime' => $handle_slot_date_time[0] . 'T' . $hour_mark . ':' . $min_mark . ':00+03',
-          'LengthInMinutes' => self::MINIMUM_SLOT_TIME_INTERVAL,
-          'IsBusy' => $this->checkBusy(
-            $hour,
-            $min,
-            (int) $busy_time_from_form_parts[0],
-            (int) $busy_time_from_form_parts[1],
-            (int) $busy_slot_from_form['LengthInMinutes']
-          ),
-        ];
-      }
-      unset($ident_slots[$key]);
-      usort($ident_slots, [get_class($this), 'sortByDate']);
       break;
     }
+
+    $handle_slot_date_time = explode('T', $ident_slots[$key]['StartDateTime']);
+    $handle_slot_time = explode(':', $handle_slot_date_time[1]);
+    $hour = (int)$handle_slot_time[0];
+    $hour_mark = $handle_slot_time[0];
+
+    $min = (int)$handle_slot_time[1];
+    $min_mark = $handle_slot_time[1];
+    for ($i = 0; $i < $ident_slots[$key]['LengthInMinutes']/self::MINIMUM_SLOT_TIME_INTERVAL; $i++) {
+      if ($i !== 0) {
+        $min += self::MINIMUM_SLOT_TIME_INTERVAL;
+        $min_mark = (string)$min;
+      }
+      if ($min < 10 && $min_mark !== '00' && $min_mark !== '05') {
+        $min_mark = '0' . $min_mark;
+      }
+
+      if ($min === 60) {
+        $hour++;
+        $hour_mark = (string)$hour;
+        if ($hour < 10) {
+          $hour_mark = '0' . $hour_mark;
+        }
+        $min = 0;
+        $min_mark = '00';
+      }
+      $ident_slots[] = [
+        'StartDateTime' => $handle_slot_date_time[0] . 'T' . $hour_mark . ':' . $min_mark . ':00+03',
+        'LengthInMinutes' => self::MINIMUM_SLOT_TIME_INTERVAL,
+        'IsBusy' => $this->checkBusy(
+          $hour,
+          $min,
+          (int) $busy_time_from_form_parts[0],
+          (int) $busy_time_from_form_parts[1],
+          (int) $busy_slot_from_form['LengthInMinutes']
+        ),
+      ];
+    }
+    unset($ident_slots[$key]);
+    usort($ident_slots, [get_class($this), 'sortByDate']);
   }
 
   protected function sortByDate($a, $b)
