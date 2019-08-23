@@ -158,12 +158,16 @@ class FormHandlerHelper {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
     }
     else {
+      // Подготавливаем дату желаемой записи для сохранения заявки
+      $desired_date = explode('.', $this->formData['date']);
+      $desired_date = implode('-', array_reverse($desired_date));
       $node_create = [
         'type'  => 'form_order',
         'title' => 'Запись на приём к врачу: ' . $this->formData['doctor'],
         'field_form_name' => 'Форма записи на приём',
         'field_phone' => $this->formData['phone'],
         'field_form_order_fio' => $this->formData['name'],
+        'field_desired_date_and_time' => $desired_date . 'T' . $this->formData['time'] . ':00',
         'field_misc_data' => json_encode([
           'UtmSource' => $_GET['utm_source'] ?? '',
           'UtmMedium' => $_GET['utm_medium'] ?? '',
