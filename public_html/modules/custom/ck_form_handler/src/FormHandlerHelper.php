@@ -204,7 +204,7 @@ class FormHandlerHelper {
             $slot_date_time_end->add(new \DateInterval('PT' . $ident_slot['LengthInMinutes'] . 'M'));
             if (
               $slot_date_time_start <= $desired_date_time
-              && $slot_date_time_end >= $desired_date_time
+              && $slot_date_time_end > $desired_date_time
             ) {
               $slot_is_busy = $ident_slot['IsBusy'];
               break;
@@ -221,7 +221,7 @@ class FormHandlerHelper {
             $slot_date_time_end->add(new \DateInterval('PT' . $busy_slot['LengthInMinutes'] . 'M'));
             if (
               $slot_date_time_start <= $desired_date_time
-              && $slot_date_time_end >= $desired_date_time
+              && $slot_date_time_end > $desired_date_time
             ) {
               $slot_is_busy = $busy_slot['IsBusy'];
               break;
