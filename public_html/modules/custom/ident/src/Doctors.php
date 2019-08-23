@@ -48,6 +48,9 @@ class Doctors {
     // Записываем данные слотов по каждому доктору
     foreach ($doctors_slots as $doctor_id => $doctor_slots) {
       $doctors[$doctor_id]->field_ident_slots->value = json_encode($doctor_slots);
+
+      // Очищаем поле "Занятые слоты"
+      $doctors[$doctor_id]->field_busy_slots_from_form->value = '';
       $doctors[$doctor_id]->save();
     }
 
