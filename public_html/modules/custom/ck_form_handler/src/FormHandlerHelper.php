@@ -237,15 +237,15 @@ class FormHandlerHelper {
 
         // Формируем тело письма
         $this->message = "Запись на приём к врачу: {$this->formData['doctor']}\n\n";
-        $this->message .= "Выбранная услуга: {$this->formData['service']}\n\n";
-        /*$this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
-        $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";*/
+        $this->message .= $node_create['field_comment'] = "Выбранная услуга: {$this->formData['service']}\n\n";
+        $this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
+        $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";
         $this->message .= "Данные заказчика\n\n";
         $this->message .= "Имя: {$this->formData['name']}\n";
         $this->message .= "Телефон: {$this->formData['phone']}\n";
         if (isset($this->formData['comment']) && !empty($this->formData['comment'])) {
           $this->message .= "Комментарий\n {$this->formData['comment']}";
-          $node_create['field_comment'] = $this->formData['comment'];
+          $node_create['field_comment'] .= $this->formData['comment'];
         }
 
         $this->headers = 'From: robot@kariesy.net';
