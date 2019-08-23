@@ -26,7 +26,7 @@ class IdentGetTicketsController extends ControllerBase {
     // Меняем регистр ключей массива заголовков
     $headers = array_change_key_case($headers, CASE_LOWER);
 
-    /*if (!isset($headers['ident-integration-key'])) {
+    if (!isset($headers['ident-integration-key'])) {
       $response->setStatusCode(401);
       $response->setContent('Отсутствует заголовок ключа доступа');
       return $response;
@@ -44,7 +44,7 @@ class IdentGetTicketsController extends ControllerBase {
       $response->setStatusCode(401);
       $response->setContent('Неправильный ключ доступа');
       return $response;
-    }*/
+    }
 
     $params = [
       'dateTimeFrom' => $request->get('dateTimeFrom'),
@@ -77,6 +77,8 @@ class IdentGetTicketsController extends ControllerBase {
 
     $response->setStatusCode(200);
     $response->setContent(json_encode($handlerResponse['form_orders']));
+
+    $form_orders->setPublished($handlerResponse['form_order_nids']);
 
     return $response;
   }
