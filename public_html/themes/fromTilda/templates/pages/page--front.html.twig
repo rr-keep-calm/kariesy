@@ -32,12 +32,12 @@
             <div class="h2">О нас в цифрах</div>
 
             <div class="about-num_items">
-                <div class="about-num_item">
+                <a href="/clinics" class="about-num_item">
                     <div class="about-num_info">
                         <div class="about-num_cnt">3</div>
                         <p class="about-num_text">клиники в <br>Москве</p>
                     </div>
-                </div>
+                </a>
                 <div class="about-num_item">
                     <div class="about-num_info">
                         <div class="about-num_cnt">21</div>
@@ -50,12 +50,16 @@
                         <p class="about-num_text">пациентов <br>в год</p>
                     </div>
                 </div>
-                <div class="about-num_item">
+                <a href="/feedback" class="about-num_item">
                     <div class="about-num_info">
                         <div class="about-num_cnt">{{ reviews_count }}</div>
-                        <p class="about-num_text">отзывов <br>на сайте</p>
+                        {% set cases = [2,0,1,1,1,2] %}
+                        {% set cases_key = min(reviews_count|number_format(0) % 10, 5) %}
+                        {% set reviews_titles = ['отзыв', 'отзыва', 'отзывов'] %}
+                        {% set key = (reviews_count|number_format(0) % 100 > 4 and reviews_count|number_format(0) % 100 < 20) ? 2 : cases[cases_key] %}
+                        <p class="about-num_text">{{ reviews_titles[key] }} <br>на сайте</p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
