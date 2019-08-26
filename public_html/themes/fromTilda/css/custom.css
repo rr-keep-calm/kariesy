@@ -358,8 +358,11 @@ a.about-num_item {text-decoration:none}
     }
 }
 @media screen and (max-width: 480px) {
-    .doctor_col-2-3 {
-        width: 62.5%;
-        margin-left: 2%;
-    }
+  .doctor_col-2-3 {
+    width: 62.5%;
+    margin-left: 2%;
+  }
+  .doctor_plan.__cloned.column-merg {
+    display: none;
+  }
 }
