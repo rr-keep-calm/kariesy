@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\Exception;
 class FormHandlerHelper {
 
   protected $response = 'Произошла ошибка, пожалуйста повторите попытку позже.';
-  protected $to = 'dentkariesynet@gmail.com, kxz-stom@yandex.ru, shok20@kariesy.net, rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
+  protected $to = 'dentkariesynet@gmail.com, kxz-stom@yandex.ru, cc@kariesy.net, rr@keep-calm.ru, fm@keep-calm.ru, nebudetvlom@gmail.com';
   protected $subject = 'Запись на приём';
   protected $message = '';
   protected $headers = '';
