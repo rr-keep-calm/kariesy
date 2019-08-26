@@ -1,6 +1,7 @@
 <?php
 namespace Drupal\ck_form_handler;
 
+use Drupal\ck_form_handler\Event\СkFormHandlerEvent;
 use \Drupal\node\Entity\Node;
 use \Drupal\file\Entity\File;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -18,8 +19,7 @@ class FormHandlerHelper {
   protected $source = '';
   protected $gaCid = '';
 
-  public function __construct($formData) {
-    $this->formData = $formData;
+  public function __construct() {
     $this->source = isset($_COOKIE['ck_source']) && trim($_COOKIE['ck_source']) !== '' ? $_COOKIE['ck_source'] : 'Не удалось определить источник перехода';
     $this->gaCid = 'Не удалось определить client ID';
     if (isset($_COOKIE['_ga'])) {
@@ -113,6 +113,13 @@ class FormHandlerHelper {
     return $this->response;
   }
 
+  /**
+   * @param array $formData
+   */
+  public function setFormData(array $formData) {
+    $this->formData = $formData;
+  }
+
   protected function defaultHandle()
   {
     // Проверяем что были переданы все праметры
@@ -151,25 +158,121 @@ class FormHandlerHelper {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
     }
     else {
-      // Формируем тело письма
-      $this->message = "Запись на приём к врачу: {$this->formData['doctor']}\n\n";
-      $this->message .= "Выбранная услуга: {$this->formData['service']}\n\n";
-      /*$this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
-      $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";*/
-      $this->message .= "Данные заказчика\n\n";
-      $this->message .= "Имя: {$this->formData['name']}\n";
-      $this->message .= "Телефон: {$this->formData['phone']}\n";
-      if (isset($this->formData['comment']) && !empty($this->formData['comment'])) {
-        $this->message .= "Комментарий\n {$this->formData['comment']}";
+      // Подготавливаем дату желаемой записи для сохранения заявки
+      $desired_date = explode('.', $this->formData['date']);
+      $desired_date = implode('-', array_reverse($desired_date));
+      $desired_date_time = $desired_date . 'T' . $this->formData['time'] . ':00';
+      $node_create = [
+        'type' => 'form_order',
+        'title' => 'Запись на приём к врачу: ' . $this->formData['doctor'],
+        'field_form_name' => 'Форма записи на приём',
+        'field_phone' => $this->formData['phone'],
+        'field_form_order_fio' => $this->formData['name'],
+        'field_desired_date_and_time' => $desired_date_time,
+        'field_misc_data' => json_encode([
+          'UtmSource' => $_GET['utm_source'] ?? '',
+          'UtmMedium' => $_GET['utm_medium'] ?? '',
+          'UtmCampaign' => $_GET['utm_campaign'] ?? '',
+          'UtmTerm' => $_GET['utm_term'] ?? '',
+          'UtmContent' => $_GET['utm_content'] ?? '',
+          'HttpReferer' => $this->source,
+        ])
+      ];
+
+      $doctor_id = NULL;
+      $slot_is_busy = FALSE;
+      // Ищем идентификатор доктора по его имени
+      if ($this->formData['doctor'] !== 'Любой') {
+        $query = \Drupal::entityQuery('node')
+          ->condition('status', 1)
+          ->condition('type', 'doktor')
+          ->condition('title', $this->formData['doctor'], 'LIKE');
+        $nids = $query->execute();
+        $doctor_id = reset($nids);
+
+        // Делаем валидацию по времени записи, так как кто-то уже мог записаться
+        // на это жде время и дату пока другой пользователь заполнял форму
+        $desired_date_time = new \DateTime($desired_date_time);
+        $doctor_node = Node::load($doctor_id);
+        $ident_slots = $doctor_node->get('field_ident_slots')->value;
+        if ($ident_slots) {
+          $ident_slots = json_decode($ident_slots, TRUE);
+          foreach ($ident_slots as $ident_slot) {
+            $slot_date_time = explode('+', $ident_slot['StartDateTime']);
+            $slot_date_time_start = new \DateTime($slot_date_time[0]);
+            $slot_date_time_end = clone $slot_date_time_start;
+            $slot_date_time_end->add(new \DateInterval('PT' . $ident_slot['LengthInMinutes'] . 'M'));
+            if (
+              $slot_date_time_start <= $desired_date_time
+              && $slot_date_time_end > $desired_date_time
+            ) {
+              $slot_is_busy = $ident_slot['IsBusy'];
+              break;
+            }
+          }
+        }
+        $busy_slots = $doctor_node->get('field_busy_slots_from_form')->value;
+        if ($busy_slots) {
+          $busy_slots = json_decode($busy_slots, TRUE);
+          foreach ($busy_slots as $busy_slot) {
+            $slot_date_time = explode('+', $busy_slot['StartDateTime']);
+            $slot_date_time_start = new \DateTime($slot_date_time[0]);
+            $slot_date_time_end = clone $slot_date_time_start;
+            $slot_date_time_end->add(new \DateInterval('PT' . $busy_slot['LengthInMinutes'] . 'M'));
+            if (
+              $slot_date_time_start <= $desired_date_time
+              && $slot_date_time_end > $desired_date_time
+            ) {
+              $slot_is_busy = $busy_slot['IsBusy'];
+              break;
+            }
+          }
+        }
       }
 
-      $this->headers = 'From: robot@kariesy.net';
-      $this->headers .= "\r\nReply-To: robot@kariesy.net";
-      $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
-      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+      if ($slot_is_busy) {
+        $this->response = 'Выбранное вами время уже занял другой клиент, пожалуйста выберите другое время.';
+      }
+      else {
 
-      $this->response = 'OK';
-      $this->valid = true;
+        // Формируем тело письма
+        $this->message = "Запись на приём к врачу: {$this->formData['doctor']}\n\n";
+        $this->message .= $node_create['field_comment'] = "Выбранная услуга: {$this->formData['service']}\n\n";
+        $this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
+        $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";
+        $this->message .= "Данные заказчика\n\n";
+        $this->message .= "Имя: {$this->formData['name']}\n";
+        $this->message .= "Телефон: {$this->formData['phone']}\n";
+        if (isset($this->formData['comment']) && !empty($this->formData['comment'])) {
+          $this->message .= "Комментарий\n {$this->formData['comment']}";
+          $node_create['field_comment'] .= $this->formData['comment'];
+        }
+
+        $this->headers = 'From: robot@kariesy.net';
+        $this->headers .= "\r\nReply-To: robot@kariesy.net";
+        $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
+        $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+        $this->response = 'OK';
+        $this->valid = TRUE;
+
+
+        $node = Node::create($node_create);
+        if ($doctor_id) {
+          $node->field_form_order_doctor->target_id = $doctor_id;
+          $this->formData += ['doctor_nid' => $doctor_id];
+        }
+        $node->save();
+
+        /** @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher */
+        $dispatcher = \Drupal::service('event_dispatcher');
+
+        // Create event object passing arguments.
+        /** @var \Drupal\ck_form_handler\Event\СkFormHandlerEvent $event */
+        $event = new СkFormHandlerEvent($this->formData);
+        // Call it.
+        $dispatcher->dispatch(СkFormHandlerEvent::APPOINTMENT_ORDER_SAVE, $event);
+      }
     }
   }
 
@@ -271,13 +374,17 @@ class FormHandlerHelper {
     ) {
       $this->response = 'Пожалуйста заполните все поля';
     }
+
     else {
       // Проверяем были ли переданы фотографии и обрабатываем их при наличии
       $files = [];
       $path = 'review/' . date('Y-m');
       foreach ($this->formData as $key => $value) {
         if (preg_match('/files(\d)+base/', $key, $matches)) {
-          $img = new Base64Image($value, $this->formData['files'.$matches[1].'name']);
+          $img = \Drupal::service('ck_form_handler.base64_image_handler');
+          $img->setBase64Image($value);
+          $img->setFileName($this->formData['files'.$matches[1].'name']);
+          $img->decodeBase64Image();
           $img->setFileDirectory($path);
           $file = file_save_data($img->getFileData(), 'public://' . $path . '/' . $img->getFileName() , FILE_EXISTS_REPLACE);
           $files[] = $file->id();

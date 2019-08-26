@@ -1,0 +1,6 @@
+name: IDENT
+description: 'Модуль интеграции с IDENT'
+type: module
+core: 8.x
+version: 0.1
+package: KeepCalm

@@ -265,10 +265,10 @@ function fromTilda_preprocess_page(&$variables) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
       if (($defaultServiceForForm && $defaultServiceForForm == $serviceTypeTerm->name->value) || ($defaultDoctor && $defaultDoctor == $node->id())) {
         $defaulServiceType[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
-        $defaulServiceType[$serviceType['target_id']]['doctors'][]['name'] = $node->getTitle();
+        $defaulServiceType[$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
       } else {
         $serviceTypesAll[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
-        $serviceTypesAll[$serviceType['target_id']]['doctors'][]['name'] = $node->getTitle();
+        $serviceTypesAll[$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
       }
     }
     $variables['doctors'][$node->id()] = $node->getTitle();

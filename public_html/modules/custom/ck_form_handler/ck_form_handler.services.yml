@@ -5,3 +5,7 @@ services:
       - { name: http_middleware, priority: 210, responder: true }
   ck_form_handler.telegram_bot:
     class: Drupal\ck_form_handler\Telegram\TelegramBot
+  ck_form_handler.form_handler_helper:
+    class: Drupal\ck_form_handler\FormHandlerHelper
+  ck_form_handler.base64_image_handler:
+    class: Drupal\ck_form_handler\Base64Image

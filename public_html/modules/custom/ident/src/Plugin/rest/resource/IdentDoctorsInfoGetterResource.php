@@ -1,27 +1,25 @@
 <?php
 
-namespace Drupal\ck_form_handler\Plugin\rest\resource;
+namespace Drupal\ident\Plugin\rest\resource;
 
-use Drupal\ck_form_handler\FormHandlerHelper;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\rest\Plugin\ResourceBase;
-use Drupal\rest\ModifiedResourceResponse;
+use Drupal\rest\ResourceResponse;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Provides a resource to create new article.
  *
  * @RestResource(
- *   id = "custom_form_handler",
- *   label = @Translation("Custom form handler"),
+ *   id = "ident_doctors_info_getter",
+ *   label = @Translation("Ident doctors info getter"),
  *   uri_paths = {
- *     "create" = "/keep-calm-custom-form-handler",
+ *     "canonical" = "/get/doctor-slots",
  *   }
  * )
  */
-class CustomFormHandlerResource extends ResourceBase {
+class IdentDoctorsInfoGetterResource extends ResourceBase {
 
   /**
    * A current user instance.
@@ -73,22 +71,19 @@ class CustomFormHandlerResource extends ResourceBase {
   }
 
   /**
-   * Responds to POST requests.
-   *
-   * @param array $entityData Данные переданые на сервер
-   *
-   * @return \Drupal\rest\ModifiedResourceResponse
+   * Responds to GET requests.
    */
-  public function post($entityData) {
-    if (!$this->currentUser->hasPermission('restful post custom_form_handler')) {
-      throw new AccessDeniedHttpException();
+  public function get() {
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    $query = \Drupal::request()->query;
+    if ($query->has('nid')) {
+      /** @var $doctors \Drupal\ident\Doctors */
+      $doctors = \Drupal::service('ident.doctors');
+      $doctorSlotsResponse = $doctors->getSlots($query->get('nid'));
+      return new ResourceResponse($doctorSlotsResponse);
     }
-
-    $form_handler_helper = \Drupal::service('ck_form_handler.form_handler_helper');
-    $form_handler_helper->setFormData($entityData);
-    $form_handler_helper->sendEmail();
-    $response['text'] = $form_handler_helper->getResponse();
-
-    return new ModifiedResourceResponse(json_encode($response), 200);
+    else {
+      return new ResourceResponse('Required parameter nid is not set.', 400);
+    }
   }
 }
