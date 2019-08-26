@@ -23,12 +23,13 @@
 .price_old {
     text-decoration: line-through;
     color: #231f20;
-    font: 36px 'GothamProLight';
+    font: 26px 'GothamProLight';
     padding-right: 10px;
 }
 .with_old {
     border: 2px solid #2299d2;
 }
+.price_num {font:32px 'GothamProLight'}
 .services_item.__full.__main .services_types {
     padding-top: 30px;
 }
