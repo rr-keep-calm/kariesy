@@ -1,3 +1,9 @@
-#services:
-#  yml_services_feed.feed_file_creator:
-#    class: Drupal\yml_services_feed\FeedFileCreator
+services:
+  ident.doctors:
+    class: Drupal\ident\Doctors
+  ident.form_orders:
+    class: Drupal\ident\FormOrders
+  ident.ident_subscriber:
+    class: Drupal\ident\EventSubscriber\IdentSubscriber
+    tags:
+      - { name: event_subscriber }

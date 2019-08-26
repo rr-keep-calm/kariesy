@@ -176,22 +176,13 @@ app.addModule('form', function () {
 		if ($.fn.datepicker) {
 			var day = new Date();
 
-			if (day.getDay() === 0) {
-				day = tomorrow(day);
-			}
-
 			$('.date').datepicker({
 				language: "ru",
 				autoclose:true,
-				daysOfWeekDisabled: [0],
-				startDate: new Date()
+				startDate: day
 			}).datepicker('setDate', day);
 		}
 	};
-
-	function tomorrow(date) {
-		return new Date(date.getTime() + 24 * 60 * 60 * 1000);
-	}
 });
 var map2 = {
 	id: 'map-2',

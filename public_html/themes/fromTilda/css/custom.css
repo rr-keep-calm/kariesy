@@ -286,6 +286,17 @@ a.about-num_item {text-decoration:none}
   display: none;
 }
 
+.data_time_stub {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+  background-image: url(/themes/fromTilda/img/loading_spinner.gif);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgba(1, 1, 1, 0.32);
+  background-position: center;
+}
+
 
 @media screen and (max-width: 1230px) {
     .services_item.__full.__main .services_types .services_type-item {
