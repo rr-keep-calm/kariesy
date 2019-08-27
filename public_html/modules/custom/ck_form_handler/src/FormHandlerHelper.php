@@ -55,7 +55,7 @@ class FormHandlerHelper {
 
       $url = 'https://www.google.com/recaptcha/api/siteverify';
       $params = [
-        'secret' => '6LcDTI0UAAAAAKm6YzyjVHVeZXnBhzUmJa4TUYKg',
+        'secret' => '***',
         'response' => $captchaToken,
         'remoteip' => $_SERVER['REMOTE_ADDR'],
       ];
@@ -179,7 +179,7 @@ class FormHandlerHelper {
         'field_form_name' => 'Форма записи на приём',
         'field_phone' => $this->formData['phone'],
         'field_form_order_fio' => $this->formData['name'],
-        'field_desired_date_and_time' => $desired_date_time,
+        'field_desired_date_and_time' => !isset($this->formData['busy_order']) ? $desired_date_time : '',
         'field_misc_data' => json_encode([
           'UtmSource' => $_GET['utm_source'] ?? '',
           'UtmMedium' => $_GET['utm_medium'] ?? '',
@@ -241,7 +241,7 @@ class FormHandlerHelper {
         }
       }
 
-      if ($slot_is_busy) {
+      if ($slot_is_busy && !isset($this->formData['busy_order'])) {
         $this->response = 'Выбранное вами время уже занял другой клиент, пожалуйста выберите другое время.';
       }
       else {
@@ -249,8 +249,10 @@ class FormHandlerHelper {
         // Формируем тело письма
         $this->message = "Запись на приём к врачу: {$this->formData['doctor']}\n\n";
         $this->message .= $node_create['field_comment'] = "Выбранная услуга: {$this->formData['service']}\n\n";
-        $this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
-        $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";
+        if (!isset($this->formData['busy_order'])) {
+          $this->message .= "Желаемая дата приёма: {$this->formData['date']}\n\n";
+          $this->message .= "Желаемое время приёма: {$this->formData['time']}\n\n";
+        }
         $this->message .= "Данные заказчика\n\n";
         $this->message .= "Имя: {$this->formData['name']}\n";
         $this->message .= "Телефон: {$this->formData['phone']}\n";
@@ -258,7 +260,10 @@ class FormHandlerHelper {
           $this->message .= "Комментарий\n {$this->formData['comment']}";
           $node_create['field_comment'] .= $this->formData['comment'];
         }
-
+        if (isset($this->formData['busy_order'])) {
+          $node_create['field_comment'] .= "\n\nЗапись в \"Лист ожидания\"";
+          $this->message .= "\n\nЗапись в \"Лист ожидания\"";
+        }
         $this->headers = 'From: robot@kariesy.net';
         $this->headers .= "\r\nReply-To: robot@kariesy.net";
         $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
@@ -445,7 +450,7 @@ class FormHandlerHelper {
       // Отправляем данные отзыва в телеграм канал
       $bot_message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
       $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
-      //      $telegram_bot->wrapperSendOrderMessage($bot_message);
+      $telegram_bot->wrapperSendOrderMessage($bot_message);
     }
   }
 
