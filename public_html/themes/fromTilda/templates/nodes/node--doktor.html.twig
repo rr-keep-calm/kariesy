@@ -138,7 +138,7 @@
                     {% if
                         (schedule.firstShiftWeekends.start is not empty and schedule.firstShiftWeekends.end is not empty) or
                         (schedule.secondShiftWeekends.start is not empty and schedule.secondShiftWeekends.end is not empty) %}
-                        <div class="doctor_plan weekends">
+                        <div class="doctor_plan weekends{% if schedule.firstShiftWeekends.end is not empty and schedule.secondShiftWeekends.start is not empty and schedule.firstShiftWeekends.end == schedule.secondShiftWeekends.start %} column-merg{% endif %}">
                             <div class="doctor_plan-row">
                                 <div class="doctor_col-1"></div>
                                 {% if schedule.firstShiftWeekends.end is not empty and schedule.secondShiftWeekends.start is not empty and schedule.firstShiftWeekends.end == schedule.secondShiftWeekends.start %}

@@ -6,7 +6,7 @@ class Doctors {
   /**
    * Интервал выремени в минутах при записи на приём с формы
    */
-  const MINIMUM_SLOT_TIME_INTERVAL = 5;
+  const MINIMUM_SLOT_TIME_INTERVAL = 15;
 
   /**
    * @param string $content JSON данные по расписанию для каждого доктора
