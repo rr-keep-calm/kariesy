@@ -507,10 +507,6 @@ app.addModule('popup', function () {
 			});
 		}
 		catch(e) {}
-
-		$('.popup-close').click(function (e) {
-			closeForm();
-		});
 	}
 });
 app.addModule('price', function () {
