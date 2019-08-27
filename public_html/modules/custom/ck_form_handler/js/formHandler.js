@@ -184,11 +184,18 @@ $(document).ready(function () {
             $(this).show();
           });
 
+          let busyText = $(this).closest('form').find('.not_desired_date_time');
+          let dateTimeRow = $(this).closest('form').find('.desired_date_time');
           let doctorNid = $("option:selected", this).attr('data-doctor-nid');
           let dateInput = $(this).closest('form');
           dateInput = $(dateInput).find('.date');
           if (doctorNid === 'no_matter') {
             // выставляем значения по умолчанию как для всех специалистов
+            $(dateTimeRow).show();
+            $(busyText).hide();
+            if ($(dateInput).closest('form').find('.busy_order_input').length) {
+              $(dateInput).closest('form').find('.busy_order_input').remove();
+            }
             self.resetDoctorDateTimeSelect($(dateInput).closest('form'));
             $(stub).each(function () {
               $(this).hide();
@@ -221,62 +228,78 @@ $(document).ready(function () {
                     }
                   });
 
-                  //TODO учесть вариант с отсутствием свободных слотов у специалиста
-
-                  // записываем свободные слоты для каждой даты по выбранному доктору
-                  self.unbusy_slots = unbusy_slots;
-
-                  // ищем первую и последнюю дату
-                  let first_loop_element = true;
-                  let first_date = new Date();
-                  let last_date = new Date();
-                  $.each(unbusy_slots, function(index, value) {
-                    let construct_data_for_date = index.toString().split('.');
-                    let date_from_index = new Date(construct_data_for_date[2], parseInt(construct_data_for_date[1]) - 1, construct_data_for_date[0]);
-                    if (first_loop_element === true) {
-                      first_date = date_from_index;
-                      first_loop_element = false;
+                  if (unbusy_slots.length) {
+                    $(dateTimeRow).show();
+                    $(busyText).hide();
+                    if ($(dateInput).closest('form').find('.busy_order_input').length) {
+                      $(dateInput).closest('form').find('.busy_order_input').remove();
                     }
-                    if (first_date > date_from_index) {
-                      first_date = date_from_index;
-                    }
-                    if (last_date < date_from_index) {
-                      last_date = date_from_index;
-                    }
-                  });
 
-                  let datepickerConf = {};
-                  // Устанавливаем начальную дату
-                  datepickerConf['startDate'] =  first_date;
+                    // записываем свободные слоты для каждой даты по выбранному доктору
+                    self.unbusy_slots = unbusy_slots;
 
-                  // Устанавливаем конечную дату
-                  datepickerConf['endDate'] = last_date;
+                    // ищем первую и последнюю дату
+                    let first_loop_element = true;
+                    let first_date = new Date();
+                    let last_date = new Date();
+                    $.each(unbusy_slots, function (index, value) {
+                      let construct_data_for_date = index.toString().split('.');
+                      let date_from_index = new Date(construct_data_for_date[2], parseInt(construct_data_for_date[1]) - 1, construct_data_for_date[0]);
+                      if (first_loop_element === true) {
+                        first_date = date_from_index;
+                        first_loop_element = false;
+                      }
+                      if (first_date > date_from_index) {
+                        first_date = date_from_index;
+                      }
+                      if (last_date < date_from_index) {
+                        last_date = date_from_index;
+                      }
+                    });
 
-                  // Исключаем дни без свободных слотов
-                  let disabledDate = [];
-                  for (let d = new Date(first_date.getTime()); d <= last_date; d.setDate(d.getDate() + 1)) {
-                    let property = ('0' + d.getDate()).slice(-2) + '.'
-                      + ('0' + (d.getMonth() + 1)).slice(-2) + '.'
-                      + d.getFullYear();
-                    if (!unbusy_slots.hasOwnProperty(property)) {
-                      disabledDate.push(property);
+                    let datepickerConf = {};
+                    // Устанавливаем начальную дату
+                    datepickerConf['startDate'] = first_date;
+
+                    // Устанавливаем конечную дату
+                    datepickerConf['endDate'] = last_date;
+
+                    // Исключаем дни без свободных слотов
+                    let disabledDate = [];
+                    for (let d = new Date(first_date.getTime()); d <= last_date; d.setDate(d.getDate() + 1)) {
+                      let property = ('0' + d.getDate()).slice(-2) + '.'
+                        + ('0' + (d.getMonth() + 1)).slice(-2) + '.'
+                        + d.getFullYear();
+                      if (!unbusy_slots.hasOwnProperty(property)) {
+                        disabledDate.push(property);
+                      }
                     }
+                    if (disabledDate.length > 0) {
+                      datepickerConf['datesDisabled'] = disabledDate;
+                    }
+
+                    // инициализируем datepicker заново
+                    $(dateInput).datepicker('destroy');
+                    datepickerConf['language'] = 'ru';
+                    datepickerConf['autoclose'] = 'true';
+                    $(dateInput).datepicker(datepickerConf).datepicker('setDate', first_date);
+                  } else {
+                    // Если свободных слотов у специалиста нет, то выводим сообщенеи о занятости
+                    $(dateTimeRow).hide();
+                    $(busyText).show();
+                    $(dateTimeRow).closest('form').append('<input type="hidden" name="busy_order" value="1" class="busy_order_input">');
                   }
-                  if (disabledDate.length > 0) {
-                    datepickerConf['datesDisabled'] = disabledDate;
-                  }
-
-                  // инициализируем datepicker заново
-                  $(dateInput).datepicker('destroy');
-                  datepickerConf['language'] = 'ru';
-                  datepickerConf['autoclose'] = 'true';
-                  $(dateInput).datepicker(datepickerConf).datepicker('setDate', first_date);
 
                   $(stub).each(function () {
                     $(this).hide();
                   });
                 } else {
                   // Если у доктора нет слотов, то выставляем значения по умолчанию как для любого специалиста
+                  $(dateTimeRow).show();
+                  $(busyText).hide();
+                  if ($(dateInput).closest('form').find('.busy_order_input').length) {
+                    $(dateInput).closest('form').find('.busy_order_input').remove();
+                  }
                   self.resetDoctorDateTimeSelect($(dateInput).closest('form'));
                   $(stub).each(function () {
                     $(this).hide();
