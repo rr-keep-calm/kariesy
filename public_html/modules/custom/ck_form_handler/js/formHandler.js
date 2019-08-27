@@ -228,7 +228,7 @@ $(document).ready(function () {
                     }
                   });
 
-                  if (unbusy_slots.length) {
+                  if (!$.isEmptyObject(unbusy_slots)) {
                     $(dateTimeRow).show();
                     $(busyText).hide();
                     if ($(dateInput).closest('form').find('.busy_order_input').length) {
