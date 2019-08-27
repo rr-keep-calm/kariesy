@@ -55,7 +55,7 @@ class FormHandlerHelper {
 
       $url = 'https://www.google.com/recaptcha/api/siteverify';
       $params = [
-        'secret' => '6LcDTI0UAAAAAKm6YzyjVHVeZXnBhzUmJa4TUYKg',
+        'secret' => '***',
         'response' => $captchaToken,
         'remoteip' => $_SERVER['REMOTE_ADDR'],
       ];
@@ -445,7 +445,7 @@ class FormHandlerHelper {
       // Отправляем данные отзыва в телеграм канал
       $bot_message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
       $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
-      //      $telegram_bot->wrapperSendOrderMessage($bot_message);
+      $telegram_bot->wrapperSendOrderMessage($bot_message);
     }
   }
 
