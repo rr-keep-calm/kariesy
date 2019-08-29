@@ -1,0 +1,84 @@
+{% block content %}
+  {% if content|render|striptags|trim %}
+    <div class="wrapper">
+      <div class="reviews __padding __padding-min">
+        <div class="h2">О нас говорят клиенты</div>
+
+        <div class="reviews_block">
+          <div class="reviews_left">
+            <div class="reviews_items">
+              {{ content }}
+            </div>
+          </div>
+
+          <div class="reviews_right" id="form-review">
+            <div class="wait-form"></div>
+            <form id="review-form-on-service-page" enctype="multipart/form-data" action="/keep-calm-custom-form-handler"
+                  data-success_form="#form-review-send" class="reviews_form" data-eventLabel="form-feedback">
+              <input type="hidden" name="token" class="token">
+              <input type="hidden" name="action" class="captcha-action">
+              <input type="hidden" name="formName" value="review">
+              <div class="reviews_form-title">Оставить отзыв</div>
+
+              <div class="reviews_form-item">
+                <label class="reviews_label">Доктор</label>
+
+                <div class="reviews_form-data">
+                  <select name="doctor">
+                    {% for nid,doctor in doctors %}
+                      <option value="{{ nid }}">{{ doctor }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="reviews_form-item">
+                <label class="reviews_label">Клиника</label>
+
+                <div class="reviews_form-data">
+                  <select name="clinic">
+                    {% for nid,clinic in clinics %}
+                      <option value="{{ nid }}">{{ clinic }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="reviews_form-item __offset-min">
+                <label class="reviews_label">Ваше имя</label>
+
+                <div class="reviews_form-data">
+                  <input type="text" name="fio" class="review_form_item-fio" placeholder="" required/>
+                </div>
+              </div>
+
+              <div class="reviews_form-item __offset-min">
+                <label class="reviews_label">Ваш отзыв</label>
+
+                <div class="reviews_form-data">
+                  <textarea name="review-text" required class="reviews_area"></textarea>
+                </div>
+              </div>
+
+              <div class="reviews_form-item __offset-min-2">
+                <div class="reviews_row">
+                  <div class="reviews_col">
+                    <input id="photos" name="photos" type="file" multiple class="jfilestyle" data-input="false"
+                           data-text="Приложить фото">
+                  </div>
+                  <div class="reviews_col">
+                    <button type="submit" class="button">Оставить отзыв</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reviews_form-text">Нажимая на кнопку “Оставить отзыв” я даю согласие на обработку персональных
+                данных
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

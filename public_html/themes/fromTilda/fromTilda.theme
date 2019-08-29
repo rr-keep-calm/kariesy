@@ -445,9 +445,37 @@ function fromTilda_preprocess_views_view(&$variables){
     $variables['getVars'] = $_GET;
   }
 
-  // Отменяем кэширование на странице где расположен блок ""Рекомендуемые услуги
+  // Отменяем кэширование на странице где расположен блок "Рекомендуемые услуги"
   if ($view->storage->id() === 'recommended_services' && $view->current_display == 'block_1') {
     \Drupal::service('page_cache_kill_switch')->trigger();
+  }
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function fromTilda_preprocess_block(&$variables) {
+  if ($variables['configuration']['id'] === 'views_block:reviews-block_2') {
+    // Получаем список всех докторов.
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type','doktor')
+      ->condition('status', 1)
+      ->execute();
+    $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $variables['doctors'] = [];
+    foreach ($doctorsNodes as $node) {
+      $variables['doctors'][$node->id()] = $node->getTitle();
+    }
+
+    $variables['clinics'] = [];
+    $clinicNids = \Drupal::entityQuery('node')
+      ->condition('type', 'clinic')
+      ->condition('status', 1)
+      ->execute();
+    $clinicNodes = \Drupal\node\Entity\Node::loadMultiple($clinicNids);
+    foreach ($clinicNodes as $clinicNode) {
+      $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
+    }
   }
 }
 

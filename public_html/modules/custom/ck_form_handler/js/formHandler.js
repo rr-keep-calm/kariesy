@@ -131,7 +131,11 @@ $(document).ready(function () {
                 self.formData.whatPriceTab = $(link).text() + $(link).attr('href');
               }
 
-              if (formId === 'review-form-on-doctor-page' || formId === 'review-form-on-clinic-page') {
+              if (
+                formId === 'review-form-on-doctor-page'
+                || formId === 'review-form-on-clinic-page'
+                || formId === 'review-form-on-service-page'
+              ) {
                 let files = $("#photos").prop("files");
                 if (files.length > 0) {
                   self.readFile(files, files.length, 0, true);
