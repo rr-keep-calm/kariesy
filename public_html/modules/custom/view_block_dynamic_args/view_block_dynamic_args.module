@@ -35,6 +35,15 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
         }
       }
       break;
+    case 'reviews':
+      if ($display_id === 'block_2' && \Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+        $term = Term::load($tid);
+        $vacabulary_id = $term->getVocabularyId();
+        if ($vacabulary_id == 'service') {
+          $args[0] = $tid;
+        }
+      }
+      break;
   }
 }
 

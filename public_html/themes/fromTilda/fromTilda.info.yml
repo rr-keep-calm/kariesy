@@ -28,3 +28,4 @@ regions:
   clinic_list_on_feedback_page: 'Clinic list on feedback page'
   recommended_services_on_service_page: 'Recommended services on service page'
   doctor_list_on_service_page: 'Doctor list on service page'
+  review_list_on_service_page: 'Review list on service page'
