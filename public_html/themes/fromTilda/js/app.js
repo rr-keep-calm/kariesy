@@ -495,7 +495,10 @@ app.addModule('popup', function () {
 						var containerId = $(this.items[this.index]).attr('href');
 						$(containerId).find('form').attr('data-eventLabel', '');
 						$('html').removeClass('hidden');
-					}
+					},
+          resize: function() {
+            $(this.wrap).css('top', window.pageYOffset);
+          },
 				}
 			});
 			$('.popup-image').magnificPopup({
