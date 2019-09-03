@@ -52,10 +52,12 @@ class FormHandlerHelper {
     else {
       $captchaToken = $this->formData['token'];
       $captchaAction = $this->formData['action'];
+      $config = \Drupal::config('ck_form_handler.adminsettings');
+      $secret_key = $config->get('google_recaptcha_secret_key');
 
       $url = 'https://www.google.com/recaptcha/api/siteverify';
       $params = [
-        'secret' => '***',
+        'secret' => $secret_key,
         'response' => $captchaToken,
         'remoteip' => $_SERVER['REMOTE_ADDR'],
       ];

@@ -4,13 +4,16 @@ namespace Drupal\ck_form_handler\Telegram;
 
 class TelegramBot {
 
-  private $BOT_TOKEN = '*****';
+  private $BOT_TOKEN;
 
-  private $API_URL = '';
+  private $API_URL;
 
-  private $chat_id = '*****';
+  private $chat_id;
 
   public function __construct() {
+    $config = \Drupal::config('ck_form_handler.adminsettings');
+    $this->BOT_TOKEN = $config->get('telegram_bot_token');
+    $this->chat_id = $config->get('telegram_chat_id');
     $this->API_URL = 'https://api.telegram.org/bot' . $this->BOT_TOKEN . '/';
   }
 
