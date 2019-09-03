@@ -1,0 +1,6 @@
+ck_form_handler.admin_settings_form:
+  title: 'Form handler settings'
+  route_name: ck_form_handler.admin_settings_form
+  description: 'Form handler settings'
+  parent: system.admin_config_system
+  weight: 99
