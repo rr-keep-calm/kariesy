@@ -31,8 +31,4 @@
 /public_html/themes/fromTilda/templates/tildaExport/
 /public_html/sitemap.xml
 
-# Игнорируем файл сервиса телеграм-бота, так как там хранятся данные в открытом виде
-/public_html/modules/custom/ck_form_handler/src/Telegram/TelegramBot.php
-
-
 /public_html/gitWebHook.php
