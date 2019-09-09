@@ -491,6 +491,11 @@ app.addModule('popup', function () {
 							$(containerId).find('form').attr('data-eventLabel', '');
 						}
 					},
+          open: function(){
+            $('body').on('touchmove', function (e) {
+              e.preventDefault();
+            });
+          },
 					afterClose: function () {
 						var containerId = $(this.items[this.index]).attr('href');
 						$(containerId).find('form').attr('data-eventLabel', '');
