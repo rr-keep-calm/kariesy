@@ -375,3 +375,18 @@ a.about-num_item {text-decoration:none}
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.user-login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-login-form > div {
+  display: flex;
+  flex-direction: column;
+  margin: auto auto 20px;
+}
+
+.user-login-form > div label {
+  margin: auto auto 10px;
+}
