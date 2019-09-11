@@ -18,7 +18,9 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
 
   switch ($view->id()) {
     case 'recommended_services':
-      if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      if (\Drupal::routeMatch()
+          ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
+          ->getRawParameter('taxonomy_term')) {
         $term = Term::load($tid);
         $vacabulary_id = $term->getVocabularyId();
         if ($vacabulary_id == 'service') {
@@ -27,21 +29,31 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
       }
       break;
     case 'doctors':
-      if ($display_id === 'block_3' && \Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      if ($display_id === 'block_3' && \Drupal::routeMatch()
+          ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
+          ->getRawParameter('taxonomy_term')) {
         $term = Term::load($tid);
         $vacabulary_id = $term->getVocabularyId();
         if ($vacabulary_id == 'service') {
-          $args[0] = $term->get('field_service_type')->getValue()[0]['target_id'];
+          $args[0] = $term->get('field_service_type')
+            ->getValue()[0]['target_id'];
         }
       }
       break;
     case 'reviews':
-      if ($display_id === 'block_2' && \Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      if ($display_id === 'block_2' && \Drupal::routeMatch()
+          ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
+          ->getRawParameter('taxonomy_term')) {
         $term = Term::load($tid);
         $vacabulary_id = $term->getVocabularyId();
         if ($vacabulary_id == 'service') {
           $args[0] = $tid;
         }
+      }
+      break;
+    case 'clinics':
+      if ($display_id === 'block_3' && \Drupal::routeMatch()->getRouteName() == 'entity.node.canonical') {
+        $args[0] = \Drupal::routeMatch()->getRawParameter('node');
       }
       break;
   }
@@ -58,7 +70,9 @@ function view_block_dynamic_args_views_query_alter(ViewExecutable $view, QueryPl
 
   // Представление (блок доктора) на странице клиники
   if ($view->id() == 'recommended_services' && $view->current_display == 'block_1') {
-    if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+    if (\Drupal::routeMatch()
+        ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
+        ->getRawParameter('taxonomy_term')) {
       $term = Term::load($tid);
       $vacabulary_id = $term->getVocabularyId();
       if ($vacabulary_id == 'service') {
