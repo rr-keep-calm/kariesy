@@ -406,3 +406,10 @@ a.about-num_item {text-decoration:none}
   padding: 19px 28px;
   border: 1px solid #e6e9ec;
 }
+
+.recommend_base-text .recommend_link_header{
+  font: 20px 'RobotoRegular';
+  color: #303234;
+  margin-bottom: 10px;
+  text-decoration: none;
+}

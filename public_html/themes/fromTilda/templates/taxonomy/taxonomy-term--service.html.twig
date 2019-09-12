@@ -103,7 +103,7 @@
                         <img src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="58" alt="">
                     </div>
                     <div class="recommend_base-text">
-                        <h4>{{ name }}</h4>
+                        <a href="{{ url }}" class="recommend_link_header">{{ name }}</a>
                         {% if content.field_price.0 > 0 %}
                             <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }}
                                 <span>{{ content.field_price.0 }}</span> руб</p>
