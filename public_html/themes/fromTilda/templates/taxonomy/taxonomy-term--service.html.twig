@@ -26,210 +26,208 @@
  */
 #}
 {% if view_mode == 'services_list' %}
-{# список услуг на странице "services"#}
-    {% if not content.field_card_in_list|render %}
-        <div class="services_item{{ child|length > 0 ? ' __full' : '' }}">
-            {% if child|length > 0 %}
-                <div class="services_row">
-                    <div class="services_col-left">
-                        <header class="services_header">
-                            <div class="services_left">
-                                <div class="services_image">
-                                    <img alt="" src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="57">
-                                </div>
-                                <div class="services_base-text">
-                                    <div class="h4"><a href="{{ url }}">{{ name|render|striptags }}</a></div>
-                                    <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}<span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
-                                </div>
-                            </div>
-
-                            <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
-                        </header>
-                        <div class="services_text">
-                            {{ content.field_opisanie_v_spiske_uslug.0|raw }}
-                            <div class="services_mobile"><a class="services_link" href="{{ url }}">подробнее</a></div>
-                        </div>
-                    </div>
-
-                    <div class="services_col-right">
-                        <div class="services_types">
-                            {% if content.field_sub_term_heading|render %}
-                                <div class="services_type-heading">{{ content.field_sub_term_heading.0 }}</div>
-                            {% endif %}
-
-                            <div class="services_type-items">
-                                {% for childItem in child %}
-                                    <a class="services_type-item" href="{{ childItem.href }}">
-                                        <img alt="" src="{{ childItem.pikt }}" width="41">
-                                        <span>{{ childItem.name }}</span>
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <header class="services_header">
-                    <div class="services_left">
-                        <div class="services_image">
-                            <img alt="" src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="57">
-                        </div>
-
-                        <div class="services_base-text">
-                            <div class="h4"><a href="{{ url }}">{{ name|render|striptags }}</a></div>
-                            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}<span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
-                        </div>
-                    </div>
-                    <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
-                </header>
-                <div class="services_text">
-                    {{ content.field_opisanie_v_spiske_uslug.0|raw }}
-                    <div class="services_mobile">
-                        <a class="services_link" href="{{ url }}">подробнее</a>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    {% else %}
-        {{ content.field_card_in_list }}
-    {% endif %}
-{% elseif view_mode == 'recomended_service'%}
-    {# список случайных рекомендуемых услуг, на странице услуги #}
-    {% if not content.field_card_in_list|render %}
-        <div class="recommend_item">
-            <header class="recommend_header">
-                <div class="recommend_left">
-                    <div class="recommend_image">
-                        <img src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="58" alt="">
-                    </div>
-                    <div class="recommend_base-text">
-                        <a href="{{ url }}" class="recommend_link_header">{{ name }}</a>
-                        {% if content.field_price.0 > 0 %}
-                            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }}
-                                <span>{{ content.field_price.0 }}</span> руб</p>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="recommend_right">
-                    <a href="{{ url }}" class="recommend_link">подробнее</a>
-                </div>
-            </header>
-            <div class="recommend_text">
-                {{ content.field_opisanie_v_spiske_uslug.0|raw }}
-                <div class="recommend_mobile">
-                    <a href="{{ url }}" class="recommend_link">подробнее</a>
-                </div>
+  {# список услуг на странице "services"#}
+  <div class="services_item{{ child|length > 0 ? ' __full' : '' }}">
+    {% if child|length > 0 %}
+      <div class="services_row">
+        <div class="services_col-left">
+          <header class="services_header">
+            <div class="services_left">
+              <div class="services_image">
+                <img alt="" src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="57">
+              </div>
+              <div class="services_base-text">
+                <div class="h4"><a href="{{ url }}">{{ name|render|striptags }}</a></div>
+                <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}
+                    <span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
+              </div>
             </div>
+
+            <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
+          </header>
+          <div class="services_text">
+            {{ content.field_opisanie_v_spiske_uslug.0|raw }}
+            <div class="services_mobile"><a class="services_link" href="{{ url }}">подробнее</a></div>
+          </div>
         </div>
+
+        <div class="services_col-right">
+          <div class="services_types">
+            {% if content.field_sub_term_heading|render %}
+              <div class="services_type-heading">{{ content.field_sub_term_heading.0 }}</div>
+            {% endif %}
+
+            <div class="services_type-items">
+              {% for childItem in child %}
+                <a class="services_type-item" href="{{ childItem.href }}">
+                  <img alt="" src="{{ childItem.pikt }}" width="41">
+                  <span>{{ childItem.name }}</span>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
     {% else %}
-        {{ content.field_card_in_list }}
+      <header class="services_header">
+        <div class="services_left">
+          <div class="services_image">
+            <img alt="" src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="57">
+          </div>
+
+          <div class="services_base-text">
+            <div class="h4"><a href="{{ url }}">{{ name|render|striptags }}</a></div>
+            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}
+                <span>{{ content.field_price.0 }}</span> руб{% endif %}</p>
+          </div>
+        </div>
+        <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
+      </header>
+      <div class="services_text">
+        {{ content.field_opisanie_v_spiske_uslug.0|raw }}
+        <div class="services_mobile">
+          <a class="services_link" href="{{ url }}">подробнее</a>
+        </div>
+      </div>
     {% endif %}
+  </div>
+{% elseif view_mode == 'recomended_service' %}
+  {# список случайных рекомендуемых услуг, на странице услуги #}
+  <div class="recommend_item">
+    <header class="recommend_header">
+      <div class="recommend_left">
+        <div class="recommend_image">
+          <img src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="58" alt="">
+        </div>
+        <div class="recommend_base-text">
+          <a href="{{ url }}" class="recommend_link_header">{{ name }}</a>
+          {% if content.field_price.0 > 0 %}
+            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }}
+              <span>{{ content.field_price.0 }}</span> руб</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="recommend_right">
+        <a href="{{ url }}" class="recommend_link">подробнее</a>
+      </div>
+    </header>
+    <div class="recommend_text">
+      {{ content.field_opisanie_v_spiske_uslug.0|raw }}
+      <div class="recommend_mobile">
+        <a href="{{ url }}" class="recommend_link">подробнее</a>
+      </div>
+    </div>
+  </div>
 {% else %}
-    {% if content.field_oblozhka['#items'].entity.uri.value is not empty or content.description|render is not empty  %}
-        <div class="service-detail_top" style="background-image: url({{ file_url(content.field_oblozhka['#items'].entity.uri.value) }})">
-            <div class="wrapper">
-                <img class="service-detail_top-image" src="{{ file_url(content.field_oblozhka['#items'].entity.uri.value) }}" alt="">
-                {% if content.description|render %}
-                    <div class="service-detail_about">
-                        {{ content.description }}
-                    </div>
-                {% endif %}
-                {{ sub_services is defined ? sub_services : '' }}
-            </div>
+  {% if content.field_oblozhka['#items'].entity.uri.value is not empty or content.description|render is not empty %}
+    <div class="service-detail_top"
+         style="background-image: url({{ file_url(content.field_oblozhka['#items'].entity.uri.value) }})">
+      <div class="wrapper">
+        <img class="service-detail_top-image" src="{{ file_url(content.field_oblozhka['#items'].entity.uri.value) }}"
+             alt="">
+        {% if content.description|render %}
+          <div class="service-detail_about">
+            {{ content.description }}
+          </div>
+        {% endif %}
+        {{ sub_services is defined ? sub_services : '' }}
+      </div>
+    </div>
+  {% endif %}
+  {% if service_price is defined %}
+    <div class="service-detail_price">
+      <div class="wrapper">
+        <div class="service-detail_heading">
+          <h2>{{ content.field_zagolovok_bloka_cen|render|striptags }}</h2>
+          <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}"
+             class="service-detail_more">Прайс-лист на все услуги</a>
         </div>
-    {% endif %}
-    {% if service_price is defined %}
-        <div class="service-detail_price">
-            <div class="wrapper">
-                <div class="service-detail_heading">
-                    <h2>{{ content.field_zagolovok_bloka_cen|render|striptags }}</h2>
-                    <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}" class="service-detail_more">Прайс-лист на все услуги</a>
-                </div>
-                {{ service_price }}
-                <div class="service-detail_only-mobile">
-                    <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}" class="service-detail_more">Прайс-лист на все услуги</a>
-                </div>
-            </div>
+        {{ service_price }}
+        <div class="service-detail_only-mobile">
+          <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}"
+             class="service-detail_more">Прайс-лист на все услуги</a>
         </div>
-    {% endif %}
-    {% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
-        <div class="service-detail_block __1">
-            {% if content.field_zagolovok_pervogo_polya %}
-                <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
+    <div class="service-detail_block __1">
+      {% if content.field_zagolovok_pervogo_polya %}
+        <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
+      {% endif %}
+
+      <div class="wrapper">
+        <div class="service-detail_row">
+          <div class="service-detail_col-1">
+            {% if content.field_zagolovok_pervogo_polya|render %}
+              <h2>{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
             {% endif %}
 
-            <div class="wrapper">
-                <div class="service-detail_row">
-                    <div class="service-detail_col-1">
-                        {% if content.field_zagolovok_pervogo_polya|render %}
-                            <h2>{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
-                        {% endif %}
-
-                        {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
-                            {{ content.field_kontent_levoy_kolonke_perv.0['#text']|raw }}
-                        {% endif %}
-                    </div>
-                    <div class="service-detail_col-2">
-                        {% if content.field_kontent_pravoy_kolonke_per.0['#text'] %}
-                            {{ content.field_kontent_pravoy_kolonke_per.0['#text']|raw }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+            {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
+              {{ content.field_kontent_levoy_kolonke_perv.0['#text']|raw }}
+            {% endif %}
+          </div>
+          <div class="service-detail_col-2">
+            {% if content.field_kontent_pravoy_kolonke_per.0['#text'] %}
+              {{ content.field_kontent_pravoy_kolonke_per.0['#text']|raw }}
+            {% endif %}
+          </div>
         </div>
-    {% endif %}
-    {% if content.field_zagolovok_vtorogo_polya|render or content.field_kontent_levoy_kolonki_vtor|render or content.field_kontent_pravoy_kolonki_vto|render %}
-        <div class="service-detail_block __2">
-            <div class="wrapper">
-                {% if content.field_zagolovok_vtorogo_polya|render %}
-                    <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya|render|striptags }}</h2>
-                {% endif %}
-                <div class="service-detail_row">
-                    <div class="service-detail_col-3">
-                        {% if content.field_kontent_levoy_kolonki_vtor.0['#text'] %}
-                            {{ content.field_kontent_levoy_kolonki_vtor.0['#text']|raw }}
-                        {% endif %}
-                    </div>
-                    <div class="service-detail_col-4">
-                        {% if content.field_zagolovok_vtorogo_polya|render %}
-                            <h2>{{ content.field_zagolovok_vtorogo_polya|render|striptags }}</h2>
-                        {% endif %}
-                        {% if content.field_kontent_pravoy_kolonki_vto.0['#text'] %}
-                            {{ content.field_kontent_pravoy_kolonki_vto.0['#text']|raw }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.field_zagolovok_vtorogo_polya|render or content.field_kontent_levoy_kolonki_vtor|render or content.field_kontent_pravoy_kolonki_vto|render %}
+    <div class="service-detail_block __2">
+      <div class="wrapper">
+        {% if content.field_zagolovok_vtorogo_polya|render %}
+          <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_vtorogo_polya|render|striptags }}</h2>
+        {% endif %}
+        <div class="service-detail_row">
+          <div class="service-detail_col-3">
+            {% if content.field_kontent_levoy_kolonki_vtor.0['#text'] %}
+              {{ content.field_kontent_levoy_kolonki_vtor.0['#text']|raw }}
+            {% endif %}
+          </div>
+          <div class="service-detail_col-4">
+            {% if content.field_zagolovok_vtorogo_polya|render %}
+              <h2>{{ content.field_zagolovok_vtorogo_polya|render|striptags }}</h2>
+            {% endif %}
+            {% if content.field_kontent_pravoy_kolonki_vto.0['#text'] %}
+              {{ content.field_kontent_pravoy_kolonki_vto.0['#text']|raw }}
+            {% endif %}
+          </div>
         </div>
-    {% endif %}
-    {% if content.field_zagolovok_tretego_polya|render or content.field_kontent_levoy_kolonki_tret|render or content.field_kontent_pravoy_kolonki_tre|render %}
-        <div class="service-detail_step">
-            <div class="wrapper">
-                <div class="service-detail_row">
-                    <div class="service-detail_col-5">
-                        {% if content.field_zagolovok_tretego_polya|render %}
-                            <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya|render|striptags }}</h2>
-                        {% endif %}
-                        {% if content.field_kontent_levoy_kolonki_tret.0['#text'] %}
-                            {{ content.field_kontent_levoy_kolonki_tret.0['#text']|raw }}
-                        {% endif %}
-                    </div>
-                    <div class="service-detail_col-6">
-                        {% if content.field_kontent_pravoy_kolonki_tre.0['#text'] %}
-                            {{ content.field_kontent_pravoy_kolonki_tre.0['#text']|raw }}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.field_zagolovok_tretego_polya|render or content.field_kontent_levoy_kolonki_tret|render or content.field_kontent_pravoy_kolonki_tre|render %}
+    <div class="service-detail_step">
+      <div class="wrapper">
+        <div class="service-detail_row">
+          <div class="service-detail_col-5">
+            {% if content.field_zagolovok_tretego_polya|render %}
+              <h2 class="service-detail_step-heading">{{ content.field_zagolovok_tretego_polya|render|striptags }}</h2>
+            {% endif %}
+            {% if content.field_kontent_levoy_kolonki_tret.0['#text'] %}
+              {{ content.field_kontent_levoy_kolonki_tret.0['#text']|raw }}
+            {% endif %}
+          </div>
+          <div class="service-detail_col-6">
+            {% if content.field_kontent_pravoy_kolonki_tre.0['#text'] %}
+              {{ content.field_kontent_pravoy_kolonki_tre.0['#text']|raw }}
+            {% endif %}
+          </div>
         </div>
-    {% endif %}
-    {% if content.field_full_width|render %}
-        <div class="service-detail_block full-width-item-wrapper">
-            <div class="wrapper">
-                <div class="service-detail_row">
-                    {{ content.field_full_width }}
-                </div>
-            </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if content.field_full_width|render %}
+    <div class="service-detail_block full-width-item-wrapper">
+      <div class="wrapper">
+        <div class="service-detail_row">
+          {{ content.field_full_width }}
         </div>
-    {% endif %}
+      </div>
+    </div>
+  {% endif %}
 {% endif %}
