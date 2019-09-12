@@ -85,6 +85,9 @@
 }
 .clinics_item {padding:19px 28px}
 
+.akcii .services_item .services_header {padding-bottom:0}
+.akcii .services_item .services_header .services_base-text .ended {color:red}
+
 /* Скрываем reCAPTCHA от Google*/
 .grecaptcha-badge {
     display: none !important;
