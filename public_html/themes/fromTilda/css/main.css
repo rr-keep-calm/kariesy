@@ -354,6 +354,19 @@ body {
     background: #ffffff;
     position: relative;
     font: 16px/1.2 'OpenSansLight';
+    -webkit-overflow-scrolling: touch;
+}
+
+body.mfp-active {
+  -webkit-overflow-scrolling: auto;
+  width: 100%;
+  position: fixed;
+  overflow: auto;
+}
+body .mfp-wrap {
+  position: fixed;
+  overflow: auto;
+  top: 0 !important;
 }
 
 img {
