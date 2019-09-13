@@ -32,7 +32,7 @@
         "drupal/redirect": "^1.4",
         "drupal/restui": "^1.17",
         "drupal/sitemap": "^1.5",
-        "drupal/taxonomy_menu_ui": "^1.0@beta",
+        "drupal/taxonomy_menu_ui": "^1.0",
         "drupal/unset_html_head_link": "1.x-dev",
         "drush/drush": "^9.0.0",
         "egulias/email-validator": "^2.0",
