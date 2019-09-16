@@ -616,7 +616,7 @@ $(document).ready(function () {
         if (parseInt(timeMark[1]) > nowMinutes) {
           return true;
         }
-        if (parseInt(timeMark[1]) < nowMinutes) {
+        if (parseInt(timeMark[1]) <= nowMinutes) {
           $(this).remove();
           return true;
         }
