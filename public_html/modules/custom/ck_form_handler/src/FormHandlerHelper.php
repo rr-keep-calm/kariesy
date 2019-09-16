@@ -83,7 +83,7 @@ class FormHandlerHelper {
         }
         $this->$formHandlerMethod();
         if ($this->valid) {
-          $this->message .= "<br /><br /><br />Источник — {$this->source}<br />client ID: {$this->gaCid}";
+          $this->message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
           try {
             $mail = new PHPMailer(TRUE);
             $mail->CharSet = 'UTF-8';
@@ -91,18 +91,20 @@ class FormHandlerHelper {
             $mail->isHTML(TRUE);
             $this->message = nl2br($this->message);
 
+            $smtp_email = $config->get('smtp_email');
+            $smtp_password = $config->get('smtp_password');
             $mail->isSMTP();
             $mail->Host = 'smtp.yandex.ru';
             $mail->SMTPAuth = TRUE;
-            $mail->Username = 'www-kariesy-net@yandex.ru';
-            $mail->Password = '4SpnoC3WqQer';
+            $mail->Username = $smtp_email;
+            $mail->Password = $smtp_password;
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
             $recipients = explode(',', $this->to);
             $recipients = array_map('trim', $recipients);
             $first_recipient = array_shift($recipients);
-            $mail->setFrom('www-kariesy-net@yandex.ru', 'kariesy.net');
+            $mail->setFrom($smtp_email, 'kariesy.net');
             $mail->addAddress($first_recipient);
             foreach ($recipients as $recipient) {
               $mail->addBCC($recipient);
@@ -115,7 +117,7 @@ class FormHandlerHelper {
             $mail->send();
           } catch (Exception $e) {
             if (strpos($this->headers, 'text/html') === FALSE) {
-              $this->message = preg_replace('#<br\s*/?>#i', "\n", $this->message);
+              $this->message = preg_replace('#<br\s*/?>#i', '', $this->message);
             }
             mail($this->to, $this->subject, $this->message, $this->headers);
           }

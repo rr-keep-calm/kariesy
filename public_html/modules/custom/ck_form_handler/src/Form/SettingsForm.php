@@ -33,6 +33,18 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('google_recaptcha_secret_key'),
     ];
 
+    $form['smtp_email'] = [
+      '#type' => 'textfield',
+      '#title' => 'E-mail для smtp доступа',
+      '#default_value' => $config->get('smtp_email'),
+    ];
+
+    $form['smtp_password'] = [
+      '#type' => 'textfield',
+      '#title' => 'Пароль для smtp доступа',
+      '#default_value' => $config->get('smtp_password'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -46,6 +58,8 @@ class SettingsForm extends ConfigFormBase {
       ->set('telegram_bot_token', $form_state->getValue('telegram_bot_token'))
       ->set('telegram_chat_id', $form_state->getValue('telegram_chat_id'))
       ->set('google_recaptcha_secret_key', $form_state->getValue('google_recaptcha_secret_key'))
+      ->set('smtp_email', $form_state->getValue('smtp_email'))
+      ->set('smtp_password', $form_state->getValue('smtp_password'))
       ->save();
   }
 
