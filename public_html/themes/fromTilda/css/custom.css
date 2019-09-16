@@ -417,3 +417,8 @@ a.about-num_item {text-decoration:none}
   margin-bottom: 10px;
   text-decoration: none;
 }
+
+.fix_top__1 {
+  min-height: 145px;
+  padding-bottom: 0;
+}
