@@ -161,7 +161,6 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
  * Preprocess function for page*.html.twig.
  */
 function fromTilda_preprocess_page(&$variables) {
-  $defaultDoctor = false;
   if ($node = \Drupal::routeMatch()->getParameter('node')) {
     if ($node->getType() == 'doktor') {
       $doctorNidForReviews = $node->id();
@@ -187,7 +186,7 @@ function fromTilda_preprocess_page(&$variables) {
         $url = file_create_url($uri);
       }
       $variables['doctorPhotoUrl']['#markup'] = $url;
-      $defaultDoctor = $node->id();
+      $variables['defaultDoctor'] = $node->id();
       $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
     } elseif ($node->getType() == 'clinic') {
         $clinicNidForReviews = $node->id();
@@ -236,15 +235,13 @@ function fromTilda_preprocess_page(&$variables) {
 
   // Если обращение идёт к странице услуги, то запоминаем тип услуги для
   // правильного отображения на форме записи на приём
-  $defaultServiceForForm = false;
   if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
     $vacabulary_id = $term->getVocabularyId();
     if ($vacabulary_id == 'service') {
       $defaultServiceForForm = $term->get('field_service_type')->getValue();
       if ($defaultServiceForForm) {
-        $defaultServiceForForm = Term::load($defaultServiceForForm[0]['target_id'])->name->value;
-        $variables['defaultServiceForForm'] = $defaultServiceForForm;
+        $variables['defaultServiceForForm'] = Term::load($defaultServiceForForm[0]['target_id'])->name->value;
       }
     }
   }
@@ -257,31 +254,17 @@ function fromTilda_preprocess_page(&$variables) {
     ->execute();
   $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
   $variables['doctors'] = [];
-  $serviceTypesAll = [];
-  $defaulServiceType = [];
+  $variables['serviceTypesAll']['i_do_not_know']['name'] = 'Не знаю';
   foreach ($doctorsNodes as $node) {
     $serviceTypes = $node->get('field_service_type')->getValue();
     foreach ($serviceTypes as $serviceType) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
-      if (($defaultServiceForForm && $defaultServiceForForm == $serviceTypeTerm->name->value) || ($defaultDoctor && $defaultDoctor == $node->id())) {
-        $defaulServiceType[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
-        $defaulServiceType[$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
-      } else {
-        $serviceTypesAll[$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
-        $serviceTypesAll[$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
-      }
+      $variables['serviceTypesAll'][$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
+      $variables['serviceTypesAll'][$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
     }
+    $variables['serviceTypesAll']['i_do_not_know']['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
     $variables['doctors'][$node->id()] = $node->getTitle();
   }
-  if ($defaulServiceType) {
-    foreach ($defaulServiceType as $key => &$defaulServiceTypeItem) {
-      if (isset($serviceTypesAll[$key]['doctors'])) {
-        $defaulServiceTypeItem['doctors'] = array_merge($defaulServiceTypeItem['doctors'], $serviceTypesAll[$key]['doctors']);
-        unset($serviceTypesAll[$key]);
-      }
-    }
-  }
-  $variables['serviceTypesAll'] = array_merge($defaulServiceType, $serviceTypesAll);
 
   // Если обращаются к странице со списком клиник, то собираем информацию о центральной клинике
   $view_id = \Drupal::routeMatch()->getParameter('view_id');

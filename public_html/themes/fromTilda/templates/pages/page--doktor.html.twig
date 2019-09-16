@@ -145,15 +145,17 @@
 
                                 <div class="form_item">
                                     <label class="form_label">Врач</label>
-
                                     <div class="form_data">
-                                        <select class="doctors-select" name="doctor">
-                                            {% set firstServiceType = serviceTypesAll|first %}
-                                            <option value="Любой" data-doctor-nid="no_matter">Любой</option>
-                                            {% for doctor in firstServiceType.doctors %}
-                                                <option value="{{ doctor.name }}" data-doctor-nid="{{ doctor.nid }}">{{ doctor.name }}</option>
-                                            {% endfor %}
-                                        </select>
+                                      <select class="doctors-select" name="doctor">
+                                        <option value="Любой" data-doctor-nid="no_matter">Любой</option>
+                                        {% for nid, name in doctors %}
+                                        <option value="{{ name }}" data-doctor-nid="{{ nid }}"
+                                          {% if defaultDoctor is defined and defaultDoctor == nid %}
+                                            selected
+                                          {% endif %}
+                                        >{{ name }}</option>
+                                        {% endfor %}
+                                      </select>
                                     </div>
                                 </div>
                                 <div class="form_item not_desired_date_time">
@@ -345,15 +347,17 @@
 
             <div class="form_item">
                 <label class="form_label">Врач</label>
-
                 <div class="form_data">
-                    <select class="doctors-select" name="doctor">
-                        {% set firstServiceType = serviceTypesAll|first %}
-                        <option value="Любой" data-doctor-nid="no_matter">Любой</option>
-                        {% for doctor in firstServiceType.doctors %}
-                            <option value="{{ doctor.name }}" data-doctor-nid="{{ doctor.nid }}">{{ doctor.name }}</option>
-                        {% endfor %}
-                    </select>
+                  <select class="doctors-select" name="doctor">
+                    <option value="Любой" data-doctor-nid="no_matter">Любой</option>
+                    {% for nid, name in doctors %}
+                      <option value="{{ name }}" data-doctor-nid="{{ nid }}"
+                        {% if defaultDoctor is defined and defaultDoctor == nid %}
+                          selected
+                        {% endif %}
+                      >{{ name }}</option>
+                    {% endfor %}
+                  </select>
                 </div>
             </div>
             <div class="form_item not_desired_date_time">

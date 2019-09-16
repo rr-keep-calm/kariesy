@@ -242,13 +242,26 @@
 
         <div class="form_item">
             <label class="form_label">Врач</label>
-
             <div class="form_data">
+              {% if defaultServiceForForm is defined %}
+                {% set doctors = [] %}
+                {% for serviceType in serviceTypesAll if serviceType.name == defaultServiceForForm %}
+                  {% set doctors = doctors|merge(serviceType.doctors) %}
+                {% endfor %}
+              {% endif %}
                 <select class="doctors-select" name="doctor">
-                    {% set firstServiceType = serviceTypesAll|first %}
                     <option value="Любой" data-doctor-nid="no_matter">Любой</option>
-                    {% for doctor in firstServiceType.doctors %}
-                        <option value="{{ doctor.name }}" data-doctor-nid="{{ doctor.nid }}">{{ doctor.name }}</option>
+                    {% for key, doctor in doctors %}
+                      {% if doctor is iterable %}
+                        {% set nid = doctor.nid %}
+                      {% else %}
+                        {% set nid = key %}
+                      {% endif %}
+                        <option value="{{ doctor is iterable ? doctor.name : doctor }}" data-doctor-nid="{{ nid }}"
+                          {% if defaultDoctor is defined and defaultDoctor == nid %}
+                            selected
+                          {% endif %}
+                        >{{  doctor is iterable ? doctor.name : doctor }}</option>
                     {% endfor %}
                 </select>
             </div>
