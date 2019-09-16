@@ -93,8 +93,9 @@
 </div>
 
 {% block globalContent %}
+  {% set current_url = url('<current>') %}
     <div class="content{% block additionalContentClass %}{% endblock %}">
-        <div class="top __1">
+        <div class="top __1{{'stati' in current_url|render|render ? ' fix_top__1' : ''}}">
             <div class="wrapper">
                 {{ page.breadcrumbs }}
                 <h1>{{ page.header }}</h1>
