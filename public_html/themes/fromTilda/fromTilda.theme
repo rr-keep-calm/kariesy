@@ -110,21 +110,10 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
         ->loadChildren($term->id());
       $childTerms = array();
       foreach($terms as $childTerm) {
-        $childTerms[] = array($childTerm->get('tid')->value,
-          $childTerm->get('weight')->value);
+        $childTerms[] = $childTerm->get('tid')->value;
       }
 
-      // Сортируем вложенные услуги в порядке веса в словаре
-      usort($childTerms, function($a, $b){
-        return $a[1] <=> $b[1];
-      });
-
-      $childTermsTemp = array();
-      foreach ($childTerms as &$childTerm) {
-        $childTermsTemp[] = $childTerm[0];
-      }
-
-      $childTerms = implode(',', $childTermsTemp);
+      $childTerms = implode(',', $childTerms);
 
       // Получаем блок со вложенными услугами
       $view = \Drupal\views\Views::getView('sub_service');
@@ -494,7 +483,10 @@ function fromTilda_preprocess_taxonomy_term(&$variables) {
       if (!$subTerm->get('field_piktogramma')->isEmpty()) {
         $subContent['pikt'] = file_create_url($subTerm->field_piktogramma->entity->getFileUri());
       }
-      $variables['child'][] = $subContent;
+      $variables['child'][$subTerm->get('weight')->value] = $subContent;
+    }
+    if ($variables['child']) {
+      ksort($variables['child']);
     }
   }
 }
