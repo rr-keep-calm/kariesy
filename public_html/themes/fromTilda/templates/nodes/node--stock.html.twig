@@ -1,0 +1,59 @@
+{% if view_mode == 'short_list' %}
+  <div class="services_item">
+    <header class="services_header">
+      <div class="services_left">
+        <div class="services_base-text">
+          <div class="h4">
+            <a href="{{ url }}">{{ label }}</a>
+          </div>
+          {% set stock_date_end_parts = node.field_date_stock_end.value|raw|split('-') %}
+          {% if (stock_date_end_parts[0] < "now"|date("Y") or stock_date_end_parts[1] < "now"|date("m") or stock_date_end_parts[2] < "now"|date("d")) %}
+            <p class="ended">акция закончилась</p>
+          {% else %}
+            <p>срок действия акции до {{ stock_date_end_parts[2] }}.{{ stock_date_end_parts[1] }}.{{ stock_date_end_parts[0] }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+    <div class="services_text">
+      {{ node.field_stock_preview.value|raw }}
+      <div class="services_mobile">
+        <a class="services_link" href="{{ url }}">подробнее</a>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <article>
+
+    {{ title_prefix }}
+    {% if not page %}
+      <h2{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+
+    {% if display_submitted %}
+      <footer>
+        {{ author_picture }}
+        <div{{ author_attributes }}>
+          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+          {{ metadata }}
+        </div>
+      </footer>
+    {% endif %}
+
+    <div{{ content_attributes }}>
+      <div property="schema:text">
+        {{ node.field_stock_text.value|raw }}
+        {% set stock_date_end_parts = node.field_date_stock_end.value|raw|split('-') %}
+        {% if (stock_date_end_parts[0] < "now"|date("Y") or stock_date_end_parts[1] < "now"|date("m") or stock_date_end_parts[2] < "now"|date("d")) %}
+          <p class="ended">акция закончилась</p>
+        {% else %}
+          <p>срок действия акции до {{ stock_date_end_parts[2] }}.{{ stock_date_end_parts[1] }}.{{ stock_date_end_parts[0] }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+  </article>
+{% endif %}
