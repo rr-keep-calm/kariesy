@@ -30,3 +30,4 @@ regions:
   doctor_list_on_service_page: 'Doctor list on service page'
   review_list_on_service_page: 'Review list on service page'
   clinic_list_on_clinic_page: 'Clinic list on clinic page'
+  doctor_list_on_stock_page: 'Doctor list on stock page'

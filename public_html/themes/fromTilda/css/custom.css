@@ -422,3 +422,7 @@ a.about-num_item {text-decoration:none}
   min-height: 145px;
   padding-bottom: 0;
 }
+
+.page .doctors-more_item {
+  width: 365px;
+}
