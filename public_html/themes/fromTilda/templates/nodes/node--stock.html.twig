@@ -6,13 +6,17 @@
           <div class="h4">
             <a href="{{ url }}">{{ label }}</a>
           </div>
-
-          {#          <p class="ended">акция закончилась</p>#}
+          {% set stock_date_end_parts = node.field_date_stock_end.value|raw|split('-') %}
+          {% if (stock_date_end_parts[0] < "now"|date("Y") or stock_date_end_parts[1] < "now"|date("m") or stock_date_end_parts[2] < "now"|date("d")) %}
+            <p class="ended">акция закончилась</p>
+          {% else %}
+            <p>срок действия акции до {{ stock_date_end_parts[2] }}.{{ stock_date_end_parts[1] }}.{{ stock_date_end_parts[0] }}</p>
+          {% endif %}
         </div>
       </div>
     </header>
     <div class="services_text">
-      {{ node.field_stock_preview .value|raw }}
+      {{ node.field_stock_preview.value|raw }}
       <div class="services_mobile">
         <a class="services_link" href="{{ url }}">подробнее</a>
       </div>
@@ -40,21 +44,14 @@
     {% endif %}
 
     <div{{ content_attributes }}>
-      <div property="schema:text"><h2>СКИДКА НА ЦЕЛЬНОЦИРКОНИЕВУЮ КОРОНКУ</h2>
-
-        <h3>Условия акции:</h3>
-
-        <p><img alt="Цельноциркониевая коронка Prettau" data-entity-type="file"
-                data-entity-uuid="c6cf7a2d-1eae-4cf1-946d-a87d76e13516"
-                src="/sites/default/files/inline-images/promo_zircon_prettau.jpg" style="padding:10px;" width="250"
-                class="align-right">Во всех клиниках Кариесу.нет с 21 июня 2017 действует скидка 25% на безметалловую
-          цельноциркониевую коронку изготовленную с помощью технологии Prettau. Период акции ограничен. Для получения
-          скидки, Вам необходимо пройти консультацию с составлением плана лечения (консультация бесплатно) у
-          врача-ортопеда. Акция действует до 1 сентября 2017 года.</p>
-
-        <p class="page_info page_notice">Цельноциркониевая коронка <span class="old">19990</span> <span>14990</span>
-          руб. <strong>Вы экономите 5000 руб.</strong></p>
-        <p class="sale-ended">Акция завершена!</p>
+      <div property="schema:text">
+        {{ node.field_stock_text.value|raw }}
+        {% set stock_date_end_parts = node.field_date_stock_end.value|raw|split('-') %}
+        {% if (stock_date_end_parts[0] < "now"|date("Y") or stock_date_end_parts[1] < "now"|date("m") or stock_date_end_parts[2] < "now"|date("d")) %}
+          <p class="ended">акция закончилась</p>
+        {% else %}
+          <p>срок действия акции до {{ stock_date_end_parts[2] }}.{{ stock_date_end_parts[1] }}.{{ stock_date_end_parts[0] }}</p>
+        {% endif %}
       </div>
     </div>
 
