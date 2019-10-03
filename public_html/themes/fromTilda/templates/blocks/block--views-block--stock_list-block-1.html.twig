@@ -1,0 +1,8 @@
+{% block content %}
+    {% if content|render|striptags|trim %}
+            <div class="wrapper">
+            	<h2>{{label}}</h2>
+                {{ content }}
+            </div>
+    {% endif %}
+{% endblock %}
