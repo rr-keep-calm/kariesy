@@ -1,18 +1,3 @@
-#
-# robots.txt
-#
-# This file is to prevent the crawling and indexing of certain parts
-# of your site by web crawlers and spiders run by sites like Yahoo!
-# and Google. By telling these "robots" where not to go on your site,
-# you save bandwidth and server resources.
-#
-# This file will be ignored unless it is at the root of your host:
-# Used:    http://example.com/robots.txt
-# Ignored: http://example.com/site/robots.txt
-#
-# For more information about the robots.txt standard, see:
-# http://www.robotstxt.org/robotstxt.html
-
 User-agent: Yandex
 # CSS, JS, Images
 Allow: /core/*.css$
@@ -60,7 +45,8 @@ Disallow: /index.php/user/register/
 Disallow: /index.php/user/login/
 Disallow: /index.php/user/logout/
 # Custom
-Disallow: /service/aesthetics/gigena-promo
+Disallow: /uslugi/orthodontia/ustanovka-breketov-promo
+Disallow: /uslugi/gigiena/gigena-promo
 Clean-param: sort&order&price_max&price_min&utm_source&utm_medium&utm_term&utm_content&utm_campaign&yclid&gclid&_openstat&from&cm_id /
 
 User-agent: Googlebot
@@ -110,7 +96,8 @@ Disallow: /index.php/user/register/
 Disallow: /index.php/user/login/
 Disallow: /index.php/user/logout/
 # Custom
-Disallow: /service/aesthetics/gigena-promo
+Disallow: /uslugi/orthodontia/ustanovka-breketov-promo
+Disallow: /uslugi/gigiena/gigena-promo
 
 User-agent: *
 # CSS, JS, Images
@@ -159,10 +146,13 @@ Disallow: /index.php/user/register/
 Disallow: /index.php/user/login/
 Disallow: /index.php/user/logout/
 # Custom
-Disallow: /service/aesthetics/gigena-promo
+Disallow: /uslugi/orthodontia/ustanovka-breketov-promo
+Disallow: /uslugi/gigiena/gigena-promo
 Disallow: *utm
 Disallow: *yclid=
 Disallow: *gclid=
 Disallow: *openstat
 Disallow: *from
 Disallow: *cm_id
+
+Sitemap: https://kariesy.net/sitemap.xml
