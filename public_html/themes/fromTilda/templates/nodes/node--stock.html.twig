@@ -1,0 +1,33 @@
+<article>
+
+  {{ title_prefix }}
+  {% if not page %}
+    <h2{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h2>
+  {% endif %}
+  {{ title_suffix }}
+
+  {% if display_submitted %}
+    <footer>
+      {{ author_picture }}
+      <div{{ author_attributes }}>
+        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        {{ metadata }}
+      </div>
+    </footer>
+  {% endif %}
+
+  <div{{ content_attributes }}>
+    <div property="schema:text"><h2>СКИДКА НА ЦЕЛЬНОЦИРКОНИЕВУЮ КОРОНКУ</h2>
+
+      <h3>Условия акции:</h3>
+
+      <p><img alt="Цельноциркониевая коронка Prettau" data-entity-type="file" data-entity-uuid="c6cf7a2d-1eae-4cf1-946d-a87d76e13516" src="/sites/default/files/inline-images/promo_zircon_prettau.jpg" style="padding:10px;" width="250" class="align-right">Во всех клиниках Кариесу.нет с 21 июня 2017 действует скидка 25% на безметалловую цельноциркониевую коронку изготовленную с помощью технологии Prettau. Период акции ограничен. Для получения скидки, Вам необходимо пройти консультацию с составлением плана лечения (консультация бесплатно) у врача-ортопеда. Акция действует до 1 сентября 2017 года.</p>
+
+      <p class="page_info page_notice">Цельноциркониевая коронка <span class="old">19990</span> <span>14990</span> руб. <strong>Вы экономите 5000 руб.</strong></p>
+      <p class="sale-ended">Акция завершена!</p>
+    </div>
+  </div>
+
+</article>
