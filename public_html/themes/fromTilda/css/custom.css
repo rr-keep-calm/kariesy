@@ -422,3 +422,27 @@ a.about-num_item {text-decoration:none}
   min-height: 145px;
   padding-bottom: 0;
 }
+
+.page .doctors-more {
+  background: none;
+}
+
+.additionals-blocks {
+  background: #f7fafd;
+  margin-bottom: -80px;
+}
+
+@media screen and (max-width: 767px) {
+  .additionals-blocks {
+    background: #f7fafd;
+    margin-bottom: -40px;
+  }
+}
+
+.additionals-blocks .services_items.akcii .services_item {
+  background: #fff;
+}
+
+.page p.ended {
+  color: red;
+}

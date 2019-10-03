@@ -13,6 +13,7 @@ function fromTilda_preprocess_html(&$variables)
  */
 function fromTilda_preprocess_breadcrumb(&$variables) {
   $is_service_term = FALSE;
+  $is_stock_page = FALSE;
   $serviceTypeBread = [];
   if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
     $term = Term::load($tid);
@@ -36,12 +37,25 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
       $is_service_term = TRUE;
     }
   }
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.node.canonical') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node->bundle() === 'stock') {
+      $is_stock_page = TRUE;
+    }
+  }
   if ($variables['breadcrumb']) {
     if ($is_service_term) {
       $variables['breadcrumb'] = array_merge(
         array_slice($variables['breadcrumb'], 0, 1),
         [['text' => 'Услуги', 'url' => '/uslugi']],
         $serviceTypeBread,
+        array_slice($variables['breadcrumb'], 1)
+      );
+    }
+    if ($is_stock_page) {
+      $variables['breadcrumb'] = array_merge(
+        array_slice($variables['breadcrumb'], 0, 1),
+        [['text' => 'Акции', 'url' => '/akcii']],
         array_slice($variables['breadcrumb'], 1)
       );
     }
