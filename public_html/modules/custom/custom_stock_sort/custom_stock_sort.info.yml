@@ -1,0 +1,5 @@
+name: 'Custom stock sort'
+description: 'Особая сортировка акций по дате окончания'
+type: module
+core: 8.x
+version: 1.x
