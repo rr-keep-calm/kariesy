@@ -446,3 +446,11 @@ a.about-num_item {text-decoration:none}
 .page p.ended {
   color: red;
 }
+
+.form_input,
+.select2-container--default .select2-selection--single .select2-selection__rendered,
+.reviews_area,
+.review_form_item-fio,
+.form_area {
+  border: 1px solid #d6d6d6;
+}
