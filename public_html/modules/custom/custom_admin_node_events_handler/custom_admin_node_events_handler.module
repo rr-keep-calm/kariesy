@@ -16,8 +16,8 @@ function custom_admin_node_events_handler_entity_presave(Drupal\Core\Entity\Enti
       }
       $service_price_node = \Drupal\node\Entity\Node::load($service_price_id);
       $prices = [
-        $service_price_node->get('field_price_from')->value,
-        $service_price_node->get('field_cena')->value
+        $service_price_node->get('field_cena')->value,
+        $service_price_node->get('field_price_to')->value
       ];
       $prices = array_filter($prices);
       $entity->set('field_price', min($prices));
