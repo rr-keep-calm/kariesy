@@ -1,0 +1,52 @@
+<?php
+/**
+ * Implements hook_entity_presave().
+ */
+function custom_admin_node_events_handler_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  // Вмешиваемся только при сохранении элемента таксономии
+  if ($entity->getEntityTypeId() !== 'taxonomy_term') {
+    return;
+  }
+  switch ($entity->bundle()) {
+    case 'service':
+      // Устанавливаем значение в поле "Цена" из материала "Цена на услугу"
+      $service_price_id = $entity->get('field_href_to_service_price')->target_id;
+      if (!$service_price_id) {
+        return;
+      }
+      $service_price_node = \Drupal\node\Entity\Node::load($service_price_id);
+      $prices = [
+        $service_price_node->get('field_price_from')->value,
+        $service_price_node->get('field_cena')->value
+      ];
+      $prices = array_filter($prices);
+      $entity->set('field_price', min($prices));
+      break;
+  }
+}
+
+function custom_admin_node_events_handler_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
+  // Вмешиваемся только после сохранения ноды
+  if ($entity->getEntityTypeId() !== 'node') {
+    return;
+  }
+  switch ($entity->bundle()) {
+    case 'service_price':
+      // Устанавливаем значение в поле "Цена" из материала "Цена на услугу" у
+      // всех связанных услуг
+      $terms = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->loadByProperties(['field_href_to_service_price' => $entity->id()]);
+      $terms = array_filter($terms, function($item) {
+        return $item->bundle() === 'service';
+      });
+      if (!$terms) {
+        return;
+      }
+      // Просто пересохраняем услуги ссылающиеся на эту "цену на услугу"
+      foreach ($terms as $term) {
+        $term->save();
+      }
+      break;
+  }
+}

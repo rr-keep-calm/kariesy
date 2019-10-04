@@ -1,0 +1,6 @@
+name: 'Custom admin node events handler'
+description: 'Различные реакции на разнообразные события нод в админке (Keep Calm)'
+type: module
+core: 8.x
+version: 1.x
+package: KeepCalm
