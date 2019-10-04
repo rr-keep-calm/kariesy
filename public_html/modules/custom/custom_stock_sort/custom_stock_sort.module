@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function custom_stock_sort_views_data_alter(array &$data) {
+  $data['node__field_date_stock_end']['stock'] = array(
+    'title' => t('Custom stock sort'),
+    'group' => t('Content'),
+    'help' => t('Sort stock by past/future end of date, then distance from now.'),
+    'sort' => array(
+      'field' => 'field_date_stock_end_value',
+      'id' => 'stock',
+    ),
+  );
+}
