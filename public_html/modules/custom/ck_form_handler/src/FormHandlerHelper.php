@@ -524,4 +524,31 @@ class FormHandlerHelper {
       $this->valid = TRUE;
     }
   }
+
+  protected function freeConsultServiceHandle() {
+    // Проверяем что были переданы все праметры
+    if (!isset($this->formData['phone'], $this->formData['name']) ||
+      empty($this->formData['name']) ||
+      empty($this->formData['phone'])
+    ) {
+      $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    }
+    else {
+      $this->subject = 'Запись на бесплатную консультацию';
+
+      // Формируем тело письма
+      $this->message = 'Название формы — Запись на бесплатную консультацию<br />';
+      $this->message .= "Услуга — {$this->formData['whatExactlyService']}";
+      $this->message .= "Имя клиента - {$this->formData['name']}<br />";
+      $this->message .= "Телефон для связи \"{$this->formData['phone']}\"";
+
+      $this->headers = 'From: robot@kariesy.net';
+      $this->headers .= "\r\nReply-To: robot@kariesy.net";
+      $this->headers .= "\r\nContent-Type: text/html; charset=\"utf-8\"";
+      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+      $this->response = 'OK';
+      $this->valid = TRUE;
+    }
+  }
 }
