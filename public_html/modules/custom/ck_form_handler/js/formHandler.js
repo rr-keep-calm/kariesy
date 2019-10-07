@@ -499,6 +499,7 @@ $(document).ready(function () {
               }
               if (formId == 'free-consult-form-on-service-page-form') {
                 coMagicMessage += 'Запись на бесплатную консультацию\n';
+                coMagicMessage += 'Услуга — ' + $('.top h1').text();
               }
               if (formId == 'question-for-doctor-form') {
                 coMagicMessage += 'Вопрос врачу\n';
