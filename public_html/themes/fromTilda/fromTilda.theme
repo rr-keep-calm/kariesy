@@ -232,6 +232,7 @@ function fromTilda_preprocess_page(&$variables) {
       if ($defaultServiceForForm) {
         $variables['defaultServiceForForm'] = Term::load($defaultServiceForForm[0]['target_id'])->name->value;
       }
+      $variables['hideFreeConsultBlock'] = (bool)$term->get('field_hide_free_consult_block')->getValue()[0]['value'];
     }
   }
 

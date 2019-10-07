@@ -468,3 +468,70 @@ a.about-num_item {text-decoration:none}
 .footer_socials .footer_mails-items a {
   font-size: 0.8em;
 }
+
+#block-besplatnayakonsultaciya {
+  background: #f7fafd;
+  padding: 50px 0;
+}
+
+.free-consultation {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ebedf0;
+  padding: 22px 30px;
+  background-image: url(/themes/fromTilda/img/footer-1_psi.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.free-consultation-item.custom-block-header {
+  font: 20px 'RobotoRegular';
+  color: #231f20;
+  margin-bottom: 10px;
+}
+
+.free-consultation-item.check-marker-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.free-consultation-item.check-marker-list .checker-mark-element {
+  background: url(/themes/fromTilda/img/check_mark.png) no-repeat;
+  padding-left: 27px;
+  margin-bottom: 10px;
+  min-height: 20px;
+}
+.free-consultation-item.check-marker-list .checker-mark-element:last-child {
+  margin-bottom: 0;
+}
+
+.free-consultation-item:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media screen and (max-width: 767px) {
+  .free-consultation {
+    flex-direction: column;
+  }
+  .free-consultation-item.custom-block-header {
+    text-align: center;
+  }
+  .free-consultation-item.check-marker-list {
+    width: fit-content;
+    margin: 0 auto;
+  }
+  .free-consultation-item.check-marker-list .checker-mark-element {
+    width: fit-content;
+  }
+  .free-consultation-item:last-child {
+    margin: 13px auto 0;
+    min-width: 226px;
+  }
+}
+
+.free-consult-wait-form {
+  margin-top: -50px;
+  margin-left: -45px;
+}
