@@ -44,6 +44,7 @@
 .services_item.__full.__main .services_types .services_type-item.stub {
     cursor: default;
     border: none;
+    box-shadow: none;
 }
 .services_item.__full.__main .services_types .services_type-items:after {
     content: '';
