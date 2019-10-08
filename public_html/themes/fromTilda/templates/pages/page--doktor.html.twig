@@ -35,7 +35,11 @@
                 <div class="reviews_block">
                     <div class="reviews_left">
                         <div class="reviews_items">
+                          {% if reviews|trim == '' %}
+                            Никто ещё не оставлял отзыва об этом враче.
+                          {% else %}
                             {{ reviews }}
+                          {% endif %}
                         </div>
                     </div>
 
