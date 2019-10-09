@@ -39,37 +39,6 @@ $(document).ready(function () {
     $('#views-exposed-form-reviews-page-1 select').change(function () {
         $('#views-exposed-form-reviews-page-1').submit();
     });
-
-    if ($('.ya-map-container').length > 0) {
-        var mapsData = {};
-        // Обходим все контейнеры предназначенные для отображения карт и собираем данные
-        $('.ya-map-container').each(function () {
-            let id = $(this).attr('id');
-            mapsData[id] = {};
-
-            var center = $(this).attr('data-ym_center');
-            if (typeof center !== typeof undefined && center !== false) {
-                mapsData[id]['center'] = center;
-            }
-
-            var coords = $(this).attr('data-ym_coords');
-            if (typeof coords !== typeof undefined && coords !== false) {
-                coords = coords.split('|||');
-                mapsData[id]['coords'] = coords;
-            }
-
-            var balloonContent = $(this).attr('data-ym_balloon_content');
-            if (typeof balloonContent !== typeof undefined && balloonContent !== false) {
-                balloonContent = balloonContent.split('|||');
-                mapsData[id]['balloons'] = balloonContent;
-            }
-        });
-
-        // Если есть контейнеры с данными для формирования карт, то передаём работу в генератор
-        if (Object.keys(mapsData).length > 0) {
-            checkYamapsReady(mapsData);
-        }
-    }
 });
 
 var jivo_onLoadCallback = function () {
@@ -82,16 +51,6 @@ var jivo_onLoadCallback = function () {
     }
     jivo_api.setUserToken(setTokenForJivo);
 };
-
-function checkYamapsReady(mapsData) {
-    if (typeof ymaps !== typeof undefined) {
-        ymaps.ready(generateYaMaps(mapsData));
-    } else {
-        window.setTimeout(function () {
-            checkYamapsReady(mapsData);
-        }, 100);
-    }
-}
 
 function generateYaMaps(mapsData) {
     return function () {
@@ -157,3 +116,51 @@ $.fn.once = function(processed_class)
     }
     return this.not('.' + processed_class).addClass(processed_class);
 };
+
+$(document).one('scroll mouseout', loadScriptChecker);
+
+function loadScriptChecker() {
+  if (typeof $.loadScript !== typeof undefined) {
+    YaMapInspector();
+  } else {
+    window.setTimeout(function () {
+      loadScriptChecker();
+    }, 100);
+  }
+}
+
+function YaMapInspector() {
+  if (typeof window.yamap_was_loaded === typeof undefined && $('.ya-map-container').length > 0) {
+    window.yamap_was_loaded = true;
+    $.loadScript('https://api-maps.yandex.ru/2.1/?apikey=a5b6a791-3575-42c5-b911-0f997bc78232&lang=ru_RU', {'lazyLoad': true}).done(function () {
+      var mapsData = {};
+      // Обходим все контейнеры предназначенные для отображения карт и собираем данные
+      $('.ya-map-container').each(function () {
+        let id = $(this).attr('id');
+        mapsData[id] = {};
+
+        var center = $(this).attr('data-ym_center');
+        if (typeof center !== typeof undefined && center !== false) {
+          mapsData[id]['center'] = center;
+        }
+
+        var coords = $(this).attr('data-ym_coords');
+        if (typeof coords !== typeof undefined && coords !== false) {
+          coords = coords.split('|||');
+          mapsData[id]['coords'] = coords;
+        }
+
+        var balloonContent = $(this).attr('data-ym_balloon_content');
+        if (typeof balloonContent !== typeof undefined && balloonContent !== false) {
+          balloonContent = balloonContent.split('|||');
+          mapsData[id]['balloons'] = balloonContent;
+        }
+      });
+
+      // Если есть контейнеры с данными для формирования карт, то передаём работу в генератор
+      if (Object.keys(mapsData).length > 0) {
+        ymaps.ready(generateYaMaps(mapsData));
+      }
+    });
+  }
+}
