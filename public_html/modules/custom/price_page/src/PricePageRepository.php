@@ -27,6 +27,7 @@ class PricePageRepository {
     // Получаем все цены
     $nids = \Drupal::entityQuery('node')
       ->condition('type', 'service_price')
+      ->condition('status', 1)
       ->execute();
     $nodes = \Drupal\node\Entity\Node::loadMultiple($nids);
 
