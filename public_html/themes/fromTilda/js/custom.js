@@ -104,6 +104,7 @@ function generateYaMaps(mapsData) {
             }
 
             map.setZoom(13);
+            map.behaviors.disable('scrollZoom');
         }
     }
 }
