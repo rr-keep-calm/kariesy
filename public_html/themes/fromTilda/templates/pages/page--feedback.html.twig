@@ -31,9 +31,17 @@
 
                                         <div class="reviews_form-data">
                                             <select name="doctor">
-                                                {% for nid,doctor in doctors %}
-                                                    <option value="{{ nid }}">{{ doctor }}</option>
+                                              {% for nid,doctor in doctors %}
+                                                {# Формируем строку со списком клиник для каждого доктора #}
+                                                {% set clinicsList = '' %}
+                                                {% for clinicNid in doctors_clinic[nid] %}
+                                                  {% set clinicsList = clinicsList ~ clinics[clinicNid] ~ ':::' ~ clinicNid %}
+                                                  {% if not loop.last %}
+                                                    {% set clinicsList = clinicsList ~ '|' %}
+                                                  {% endif %}
                                                 {% endfor %}
+                                                <option value="{{ nid }}" data-clinic_list="{{ clinicsList }}" >{{ doctor }}</option>
+                                              {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -43,9 +51,9 @@
 
                                         <div class="reviews_form-data">
                                             <select name="clinic">
-                                                {% for nid,clinic in clinics %}
-                                                    <option value="{{ nid }}">{{ clinic }}</option>
-                                                {% endfor %}
+                                              {% for clinicNid in doctors_clinic[defaultDoctor] %}
+                                                <option value="{{ clinicNid }}">{{ clinics[clinicNid] }}</option>
+                                              {% endfor %}
                                             </select>
                                         </div>
                                     </div>
