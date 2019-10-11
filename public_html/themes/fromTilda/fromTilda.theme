@@ -178,7 +178,7 @@ function fromTilda_preprocess_page(&$variables) {
       $variables['defaultDoctor'] = $node->id();
       $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
     } elseif ($node->getType() == 'clinic') {
-        $clinicNidForReviews = $node->id();
+      $variables['defaultClinic'] = $clinicNidForReviews = $node->id();
     }
   }
 
@@ -246,14 +246,39 @@ function fromTilda_preprocess_page(&$variables) {
   $variables['doctors'] = [];
   $variables['serviceTypesAll']['i_do_not_know']['name'] = 'Не знаю';
   foreach ($doctorsNodes as $node) {
+    $doctorNid = $node->id();
     $serviceTypes = $node->get('field_service_type')->getValue();
     foreach ($serviceTypes as $serviceType) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
       $variables['serviceTypesAll'][$serviceType['target_id']]['name'] = $serviceTypeTerm->name->value;
-      $variables['serviceTypesAll'][$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
+      $variables['serviceTypesAll'][$serviceType['target_id']]['doctors'][] = ['name' => $node->getTitle(), 'nid' => $doctorNid];
     }
-    $variables['serviceTypesAll']['i_do_not_know']['doctors'][] = ['name' => $node->getTitle(), 'nid' => $node->id()];
-    $variables['doctors'][$node->id()] = $node->getTitle();
+    $variables['serviceTypesAll']['i_do_not_know']['doctors'][] = ['name' => $node->getTitle(), 'nid' => $doctorNid];
+    $variables['doctors'][$doctorNid] = $node->getTitle();
+
+    // Сохраняем клиники в которых работает доктор (используется на форме отзывов для актуализации клиник)
+    $schedule = $node->get('field_schedule')->getValue();
+    if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+      $schedule = json_decode($schedule[0]['value'], TRUE);
+    }
+    if (!$schedule || !is_array($schedule)) {
+      continue;
+    }
+    foreach ($schedule as $value) {
+      foreach ($value as $key => $clinik) {
+        if ($key == 'start' || $key == 'end' || !$clinik) {
+          continue;
+        }
+        $variables['doctors_clinic'][$doctorNid][(int)$clinik] = (int)$clinik;
+        if (!isset($variables['defaultDoctor']) && isset($clinicNidForReviews) && $clinicNidForReviews == $clinik) {
+          $variables['defaultDoctor'] = $doctorNid;
+        }
+      }
+    }
+  }
+  if (!isset($variables['defaultDoctor'])) {
+    $doctorsNids = array_keys($variables['doctors']);
+    $variables['defaultDoctor'] = reset($doctorsNids);
   }
 
   // Если обращаются к странице со списком клиник, то собираем информацию о центральной клинике

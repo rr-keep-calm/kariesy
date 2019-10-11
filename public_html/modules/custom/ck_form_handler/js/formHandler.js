@@ -6,6 +6,8 @@ $(document).ready(function () {
       '#free-consult-form-on-service-page',
     /* Идентификаторы форм записи на приём */
     orderFormsId: '#form-order, #form-order-doctor-page, #form-order-doctor-page-popup-form',
+    /* Идентификаторы форм отзывов */
+    reviewFormsId: '#review-form-on-doctor-page, #review-form-on-clinic-page',
     formProcessPool: {},
     formData: false,
     fileReader: new FileReader(),
@@ -163,6 +165,11 @@ $(document).ready(function () {
       $(self.orderFormsId).on('change', 'select.service-type', function () {
         self.actualizationDoctorList($(this).closest('form'));
         self.resetDoctorDateTimeSelect($(this).closest('form'));
+      });
+
+      // Актуализируем список клиник
+      $(self.reviewFormsId).on('change', 'select[name="doctor"]', function () {
+        self.actualizationClinicList($(this).closest('form'));
       });
 
       // Работа с формой записи на приём в части даты и времени
@@ -564,6 +571,19 @@ $(document).ready(function () {
       $.each(doctors, function (index, value) {
         let doctorData = value.split(':::');
         $(doctorsSelect).append('<option value="' + doctorData[0] + '" data-doctor-nid="' + doctorData[1] + '">' + doctorData[0] + '</option>');
+      });
+    },
+    actualizationClinicList(form) {
+      let doctorList = $(form).find('select[name="doctor"]');
+      // Получаем все клиники в которых работает выбранный доктор
+      let clinics = $("option:selected", doctorList).data('clinic_list').split('|');
+
+      // Актуализируем список клиник
+      let clinicSelect = $(form).find('select[name="clinic"]');
+      $(clinicSelect).html('');
+      $.each(clinics, function (index, value) {
+        let clinicData = value.split(':::');
+        $(clinicSelect).append('<option value="' + clinicData[1] + '">' + clinicData[0] + '</option>');
       });
     },
     resetDoctorDateTimeSelect(form) {
