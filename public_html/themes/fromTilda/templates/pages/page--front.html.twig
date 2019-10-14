@@ -39,10 +39,14 @@
                     </div>
                 </a>
                 <div class="about-num_item">
-                    <div class="about-num_info">
-                        <div class="about-num_cnt">21</div>
-                        <p class="about-num_text">год успешной <br>работы</p>
-                    </div>
+                  <div class="about-num_info">
+                    <div class="about-num_cnt">{{ years_of_successful_work }}</div>
+                    {% set cases = [2,0,1,1,1,2] %}
+                    {% set cases_key = min(years_of_successful_work|number_format(0) % 10, 5) %}
+                    {% set years_titles = ['год', 'года', 'лет'] %}
+                    {% set key = (years_of_successful_work|number_format(0) % 100 > 4 and years_of_successful_work|number_format(0) % 100 < 20) ? 2 : cases[cases_key] %}
+                    <p class="about-num_text">{{ years_titles[key] }} успешной <br>работы</p>
+                  </div>
                 </div>
                 <div class="about-num_item">
                     <div class="about-num_info">
@@ -53,7 +57,6 @@
                 <a href="/feedback" class="about-num_item">
                     <div class="about-num_info">
                         <div class="about-num_cnt">{{ reviews_count }}</div>
-                        {% set cases = [2,0,1,1,1,2] %}
                         {% set cases_key = min(reviews_count|number_format(0) % 10, 5) %}
                         {% set reviews_titles = ['отзыв', 'отзыва', 'отзывов'] %}
                         {% set key = (reviews_count|number_format(0) % 100 > 4 and reviews_count|number_format(0) % 100 < 20) ? 2 : cases[cases_key] %}
