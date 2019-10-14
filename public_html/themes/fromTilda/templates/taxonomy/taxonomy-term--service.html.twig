@@ -153,14 +153,14 @@
   {% if content.field_zagolovok_pervogo_polya|render or content.field_kontent_levoy_kolonke_perv|render or content.field_kontent_pravoy_kolonke_per|render %}
     <div class="service-detail_block __1">
       {% if content.field_zagolovok_pervogo_polya %}
-        <h2 class="service-detail_only-mobile">{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
+        <span class="service-detail_only-mobile h2">{{ content.field_zagolovok_pervogo_polya|render|striptags }}</span>
       {% endif %}
 
       <div class="wrapper">
         <div class="service-detail_row">
           <div class="service-detail_col-1">
             {% if content.field_zagolovok_pervogo_polya|render %}
-              <h2>{{ content.field_zagolovok_pervogo_polya|render|striptags }}</h2>
+              <span class="h2">{{ content.field_zagolovok_pervogo_polya|render|striptags }}</span>
             {% endif %}
 
             {% if content.field_kontent_levoy_kolonke_perv.0['#text'] %}
