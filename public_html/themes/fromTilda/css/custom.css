@@ -540,3 +540,23 @@ a.about-num_item {text-decoration:none}
 .doctor_info {
   color: #231f20;
 }
+
+.service-detail_block .h2 {
+  display: block;
+  margin-bottom: 21px;
+}
+
+.service-detail_block .service-detail_only-mobile.h2 {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .service-detail_block .h2 {
+    display: none;
+  }
+  .service-detail_block .service-detail_only-mobile.h2 {
+    display: block !important;
+    text-align: center;
+    font-size: 22px;
+  }
+}
