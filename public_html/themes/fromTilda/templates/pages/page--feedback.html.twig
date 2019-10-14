@@ -51,7 +51,7 @@
 
                                         <div class="reviews_form-data">
                                             <select name="clinic">
-                                              {% for clinicNid in doctors_clinic[defaultDoctor] %}
+                                              {% for clinicNid in doctors_clinic[defaultDoctorForFeedback] %}
                                                 <option value="{{ clinicNid }}">{{ clinics[clinicNid] }}</option>
                                               {% endfor %}
                                             </select>
