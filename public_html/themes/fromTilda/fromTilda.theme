@@ -311,13 +311,19 @@ function fromTilda_preprocess_page(&$variables) {
     }
   }
 
-  // Для главной страницы получаем реульное количество опубликованных отзывов
+  // Для главной страницы
   if (\Drupal::service('path.matcher')->isFrontPage()) {
+    // Получаем реульное количество опубликованных отзывов
     $nids = \Drupal::entityQuery('node')
       ->condition('type','review')
       ->condition('status', 1)
       ->execute();
     $variables['reviews_count'] = count($nids);
+
+    // Получаем количество лет работы от 15 октября 1998 года
+    $startDate = new DateTime('1998-10-15 00:00:00', new DateTimeZone('Europe/Moscow'));
+    $interval = $startDate->diff(new DateTime(), true);
+    $variables['years_of_successful_work'] = $interval->y + 1;
   }
 }
 
