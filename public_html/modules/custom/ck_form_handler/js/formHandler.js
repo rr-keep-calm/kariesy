@@ -392,6 +392,18 @@ $(document).ready(function () {
           }
         });
       }
+      self.afterInit();
+    },
+    afterInit() {
+      let self = this;
+      $(self.orderFormsId).each(function () {
+        let doctorList = $(this).find('.doctors-select');
+        if (doctorList.length) {
+          if ($("option:selected", doctorList).attr('data-doctor-nid') !== 'no_matter') {
+            $(doctorList).change();
+          }
+        }
+      })
     },
     readFile(files, length, step, readForce) {
       let self = this;

@@ -2,6 +2,7 @@
 
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Transliteration\PhpTransliteration;
+use Drupal\views\Views;
 
 function fromTilda_preprocess_html(&$variables)
 {
@@ -175,7 +176,8 @@ function fromTilda_preprocess_page(&$variables) {
         $url = file_create_url($uri);
       }
       $variables['doctorPhotoUrl']['#markup'] = $url;
-      $variables['defaultDoctor'] = $node->id();
+      // Доктор по умолчанию на странице доктора
+      $variables['defaultDoctorForFeedback'] = $variables['defaultDoctor'] = $node->id();
       $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
     } elseif ($node->getType() == 'clinic') {
       $variables['defaultClinic'] = $clinicNidForReviews = $node->id();
@@ -235,6 +237,15 @@ function fromTilda_preprocess_page(&$variables) {
       $variables['hideFreeConsultBlock'] = (bool)$term->get('field_hide_free_consult_block')->getValue()[0]['value'];
     }
   }
+  if ($viewIdReviews === 'services_page' && preg_match('/view.services_page.(page_\d)/', \Drupal::routeMatch()->getRouteName(), $matches)) {
+    $routeObject = \Drupal::routeMatch()->getRouteObject();
+    $viewsId = $routeObject->getDefault('view_id');
+    $view = Views::getView($viewsId);
+    $viewsDisplay = $view->storage->getDisplay($matches[1]);
+    $serviseTypeId = reset($viewsDisplay['display_options']['filters']['field_service_type_target_id']['value']);
+    $term = Term::load($serviseTypeId);
+    $variables['defaultServiceForForm'] = $term->name->value;
+  }
 
   // Получаем список всех докторов.
   // Попутно сохраняя список оказываемых доктором услуг.
@@ -270,15 +281,17 @@ function fromTilda_preprocess_page(&$variables) {
           continue;
         }
         $variables['doctors_clinic'][$doctorNid][(int)$clinik] = (int)$clinik;
-        if (!isset($variables['defaultDoctor']) && isset($clinicNidForReviews) && $clinicNidForReviews == $clinik) {
-          $variables['defaultDoctor'] = $doctorNid;
+        // Устанавливаем доктора по умолчанию при условии что он ещё не установлен и мы находимся на странцие клиники и в этой клинике работают доктора
+        if (!isset($variables['defaultDoctorForFeedback']) && isset($clinicNidForReviews) && $clinicNidForReviews == $clinik) {
+          $variables['defaultDoctorForFeedback'] = $doctorNid;
         }
       }
     }
   }
-  if (!isset($variables['defaultDoctor'])) {
+  // Если так и не установили доктора по умолчанию то берём первого доктора и назначаем его поумолчанию
+  if (!isset($variables['defaultDoctorForFeedback'])) {
     $doctorsNids = array_keys($variables['doctors']);
-    $variables['defaultDoctor'] = reset($doctorsNids);
+    $variables['defaultDoctorForFeedback'] = reset($doctorsNids);
   }
 
   // Если обращаются к странице со списком клиник, то собираем информацию о центральной клинике
