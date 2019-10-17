@@ -391,70 +391,82 @@ class FormHandlerHelper {
     ) {
       $this->response = 'Пожалуйста заполните все поля';
     }
-
     else {
-      // Проверяем были ли переданы фотографии и обрабатываем их при наличии
-      $files = [];
-      $path = 'review/' . date('Y-m');
-      foreach ($this->formData as $key => $value) {
-        if (preg_match('/files(\d)+base/', $key, $matches)) {
-          $img = \Drupal::service('ck_form_handler.base64_image_handler');
-          $img->setBase64Image($value);
-          $img->setFileName($this->formData['files' . $matches[1] . 'name']);
-          $img->decodeBase64Image();
-          $img->setFileDirectory($path);
-          $file = file_save_data($img->getFileData(), 'public://' . $path . '/' . $img->getFileName(), FILE_EXISTS_REPLACE);
-          $files[] = $file->id();
-        }
+      // Проверяем нет ли отзыва полностью совпадащего с передаваемым текстом
+      $database = \Drupal::database();
+      $result = $database->select('node__field_review_text', 'nfrt')
+        ->fields('nfrt', ['entity_id'])
+        ->condition('field_review_text_value', "%" . $database->escapeLike(strip_tags($this->formData['review-text'])) . "%", 'LIKE')
+        ->execute()
+        ->fetchAll();
+
+      if ($result) {
+        $this->response = 'Уже существует отзыв с точно таким же текстом';
       }
-
-      // Создаём отзыв по переданным данным
-      $nodeCreate = [
-        'type' => 'review',
-        'title' => $this->formData['fio'],
-        'field_doctor' => [$this->formData['doctor']],
-        'field_clinic' => [$this->formData['clinic']],
-        'field_review_text' => $this->formData['review-text'],
-      ];
-      if ($files) {
-        foreach ($files as $fid) {
-          $nodeCreate['field_photos_of_review'][] = [
-            'target_id' => $fid,
-          ];
+      else {
+        // Проверяем были ли переданы фотографии и обрабатываем их при наличии
+        $files = [];
+        $path = 'review/' . date('Y-m');
+        foreach ($this->formData as $key => $value) {
+          if (preg_match('/files(\d)+base/', $key, $matches)) {
+            $img = \Drupal::service('ck_form_handler.base64_image_handler');
+            $img->setBase64Image($value);
+            $img->setFileName($this->formData['files' . $matches[1] . 'name']);
+            $img->decodeBase64Image();
+            $img->setFileDirectory($path);
+            $file = file_save_data($img->getFileData(), 'public://' . $path . '/' . $img->getFileName(), FILE_EXISTS_REPLACE);
+            $files[] = $file->id();
+          }
         }
+
+        // Создаём отзыв по переданным данным
+        $nodeCreate = [
+          'type' => 'review',
+          'title' => $this->formData['fio'],
+          'field_doctor' => [$this->formData['doctor']],
+          'field_clinic' => [$this->formData['clinic']],
+          'field_review_text' => $this->formData['review-text'],
+        ];
+        if ($files) {
+          foreach ($files as $fid) {
+            $nodeCreate['field_photos_of_review'][] = [
+              'target_id' => $fid,
+            ];
+          }
+        }
+        $node = Node::create($nodeCreate);
+        $node->save();
+        $nid = $node->id();
+        $request = \Drupal::request();
+        $origin = $request->headers->get('origin');
+
+        // Формируем тело письма
+        $bot_message = "{$this->formData['fio']} оставил(а) отзыв на сайте.\n\n";
+        $this->message = "{$this->formData['fio']} оставил(а) отзыв на сайте {$origin}.\n\n";
+
+        $bot_message .= "Текст отзыва:\n";
+        $this->message .= "Текст отзыва:\n";
+
+        $bot_message .= $this->formData['review-text'];
+        $this->message .= $this->formData['review-text'];
+
+        $this->message .= "\n\nСсылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
+
+        $this->subject = 'Новый отзыв на сайте "' . $origin . '"';
+
+        $this->headers = 'From: robot@kariesy.net';
+        $this->headers .= "\r\nReply-To: robot@kariesy.net";
+        $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
+        $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
+
+        $this->response = 'OK';
+        $this->valid = TRUE;
+
+        // Отправляем данные отзыва в телеграм канал
+        $bot_message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
+        $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
+        $telegram_bot->wrapperSendOrderMessage($bot_message);
       }
-      $node = Node::create($nodeCreate);
-      $node->save();
-      $nid = $node->id();
-      $request = \Drupal::request();
-      $origin = $request->headers->get('origin');
-
-      // Формируем тело письма
-      $bot_message = "{$this->formData['fio']} оставил(а) отзыв на сайте.\n\n";
-      $this->message = "{$this->formData['fio']} оставил(а) отзыв на сайте {$origin}.\n\n";
-
-      $bot_message .= "Текст отзыва:\n";
-      $this->message .= "Текст отзыва:\n";
-
-      $bot_message .= $this->formData['review-text'];
-      $this->message .= $this->formData['review-text'];
-
-      $this->message .= "\n\nСсылка для редактирования отзыва - {$origin}/node/{$nid}/edit";
-
-      $this->subject = 'Новый отзыв на сайте "' . $origin . '"';
-
-      $this->headers = 'From: robot@kariesy.net';
-      $this->headers .= "\r\nReply-To: robot@kariesy.net";
-      $this->headers .= "\r\nContent-Type: text/plain; charset=\"utf-8\"";
-      $this->headers .= "\r\nX-Mailer: PHP/" . PHP_VERSION;
-
-      $this->response = 'OK';
-      $this->valid = TRUE;
-
-      // Отправляем данные отзыва в телеграм канал
-      $bot_message .= "\n\n\nИсточник — {$this->source}\nclient ID: {$this->gaCid}";
-      $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
-      $telegram_bot->wrapperSendOrderMessage($bot_message);
     }
   }
 
