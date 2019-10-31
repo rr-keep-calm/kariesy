@@ -30,6 +30,7 @@
 .doctor_plan.weekends {
     margin-top: 15px;
 }
+.doctor_info {font: 14px/25px 'OpenSansLight'}
 .doctor_info p.h2 {
 	font: 24px/1.2 'GothamProLight';
     color: #231f20;
@@ -51,7 +52,7 @@
     flex-shrink: 0;
     position: absolute;
     left:-14px;
-    top:6px
+    top:10px
 }
 .price_old {
     text-decoration: line-through;
