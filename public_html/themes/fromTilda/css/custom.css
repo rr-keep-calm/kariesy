@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'als_rubl';
+  src: url('rouble-webfont.eot');
+  src: url('rouble-webfont.eot?#iefix') format('embedded-opentype'),
+  url('rouble-webfont.woff') format('woff'),
+  url('rouble-webfont.svg#als_rublregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .services-footer {
     margin-top: 80px;
     padding: 0 15px;
@@ -571,4 +581,8 @@ a.about-num_item {text-decoration:none}
     text-align: center;
     font-size: 22px;
   }
+}
+
+.price_sign {
+  font: 16px 'als_rubl';
 }
