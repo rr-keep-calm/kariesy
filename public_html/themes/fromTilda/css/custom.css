@@ -632,3 +632,8 @@ a.about-num_item {text-decoration:none}
 .price_sign {
   font: 20px 'als_rubl';
 }
+
+.services_base-text p .price_sign {
+  font: 24px 'als_rubl';
+  color: #2299d2;
+ }
