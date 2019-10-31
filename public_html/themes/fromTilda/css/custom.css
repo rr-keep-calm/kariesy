@@ -30,6 +30,12 @@
 .doctor_plan.weekends {
     margin-top: 15px;
 }
+.doctor_info p.h2 {
+	font: 24px/1.2 'GothamProLight';
+    color: #231f20;
+    margin: 15px 0 2px 0;
+}
+.doctor_info p.h2:nth-of-type(1) {margin-top:0}
 .price_old {
     text-decoration: line-through;
     color: #231f20;
