@@ -288,13 +288,13 @@ a.about-num_item {text-decoration:none}
 }
 
 .white-slide .main_title, .white-slide .main_text {color:#ffffff}
-.small-slide .main_title {font-size:40px}
-.small-slide .main_title span {font-size:32px}
 
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
 	.service-detail_about{width:680px;padding:40px 50px}
 	.service-detail_top{padding:70px 0 24px}
+	.small-slide .main_title {font-size:40px}
+	.small-slide .main_title span {font-size:32px}
 }
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}
