@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'als_rubl';
-  src: url('rouble-webfont.eot');
-  src: url('rouble-webfont.eot?#iefix') format('embedded-opentype'),
-  url('rouble-webfont.woff') format('woff'),
-  url('rouble-webfont.svg#als_rublregular') format('svg');
+  src: url('../fonts/rouble-webfont.eot');
+  src: url('../fonts/rouble-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/rouble-webfont.woff') format('woff'),
+  url('../fonts/rouble-webfont.svg#als_rublregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -29,6 +29,30 @@
 }
 .doctor_plan.weekends {
     margin-top: 15px;
+}
+.doctor_info {font: 14px/25px 'OpenSansLight'}
+.doctor_info p.h2 {
+	font: 24px/1.2 'GothamProLight';
+    color: #231f20;
+    margin: 15px 0 2px 0;
+}
+.doctor_info p.h2:nth-of-type(1) {margin-top:0}
+.doctor_info li {margin:0 0 10px 14px;position:relative}
+.doctor_info li:before {
+	content: '';
+    width: 4px;
+    height: 4px;
+    background: #38b4ef;
+    display: inline-block;
+    -webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+    border-radius: 50%;
+    margin-right: 14px;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    position: absolute;
+    left:-14px;
+    top:10px
 }
 .price_old {
     text-decoration: line-through;
@@ -265,13 +289,32 @@ a.about-num_item {text-decoration:none}
 }
 
 .white-slide .main_title, .white-slide .main_text {color:#ffffff}
-.small-slide .main_title {font-size:40px}
-.small-slide .main_title span {font-size:32px}
+
+.doctors-feedback_btn {
+    text-align: center;
+    font: 12px/1 'OpenSansSemiBold';
+    color: #2299d2;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 18px 0;
+    border: 1px solid #daddde;
+    border-radius: 5px;
+    -webkit-transition: .3s;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.doctors-feedback_btn:hover {
+    border: 1px solid #2299d2;
+}
 
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
 	.service-detail_about{width:680px;padding:40px 50px}
 	.service-detail_top{padding:70px 0 24px}
+	.small-slide .main_title {font-size:40px}
+	.small-slide .main_title span {font-size:32px}
 }
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}
@@ -588,10 +631,16 @@ a.about-num_item {text-decoration:none}
 }
 
 .price_sign {
-  font: 16px 'als_rubl';
+  font: 20px 'als_rubl';
 }
+
+.services_base-text p .price_sign {
+  font: 24px 'als_rubl';
+  color: #2299d2;
+ }
 
 .all_reviews_for_doctor.link_wrapper {
   display: flex;
   justify-content: center;
 }
+

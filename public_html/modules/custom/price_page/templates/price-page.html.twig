@@ -3,10 +3,11 @@
     <ul class="price_types">
       {% for serviceType in data.service_type_list %}
         <li{{ serviceType.active == 1 ? ' class="ui-tabs-active"' : '' }}>
-          <a href="/price/{{ serviceType.url }}">{{ serviceType.name }}</a>
+          <a href="/price/{{ serviceType.url }}"{{ serviceType.active == 1 ? ' class="active"' : '' }}>{{ serviceType.name }}</a>
         </li>
       {% endfor %}
     </ul>
+    <div class="price_select"></div>
   </div>
   <div class="price_content">
     <div class="wrapper">
@@ -32,13 +33,13 @@
                     <span class="price_num">
                         {{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price|raw|trim }}
                     </span>
-                    <span class="price_sign">₽</span>
+                    <span class="price_sign">a</span>
                     {% if price.price_to is defined %}
                       <div class="flex-line-break"></div>
                       <span class="price_num">
                           <span class="price-to">до</span> {{ price.price_to }}
                       </span>
-                      <span class="price_sign">₽</span>
+                      <span class="price_sign">a</span>
                     {% endif %}
                   </div>
                 </div>
