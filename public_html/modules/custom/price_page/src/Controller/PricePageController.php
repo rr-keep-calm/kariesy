@@ -25,7 +25,7 @@ class PricePageController extends ControllerBase {
     $translitiration = new PhpTransliteration();
     foreach ($service_types as $service_types_item) {
       if (strtolower(str_replace(' ', '_', $translitiration->transliterate($service_types_item->name, 'en', '_'))) === $service_type) {
-        $title = 'Цены на услугу "' . $service_types_item->name . '"';
+        $title = 'Цены на услугу ' . $service_types_item->name;
       }
     }
     return [
