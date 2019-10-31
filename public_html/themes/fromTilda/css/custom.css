@@ -289,6 +289,25 @@ a.about-num_item {text-decoration:none}
 
 .white-slide .main_title, .white-slide .main_text {color:#ffffff}
 
+.doctors-feedback_btn {
+    text-align: center;
+    font: 12px/1 'OpenSansSemiBold';
+    color: #2299d2;
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 18px 0;
+    border: 1px solid #daddde;
+    border-radius: 5px;
+    -webkit-transition: .3s;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.doctors-feedback_btn:hover {
+    border: 1px solid #2299d2;
+}
+
 @media screen and (min-width: 768px) {
 	.price_cnt.flex-custom {max-width: 265px;}
 	.service-detail_about{width:680px;padding:40px 50px}
