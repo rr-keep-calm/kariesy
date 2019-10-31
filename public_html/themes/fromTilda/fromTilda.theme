@@ -208,9 +208,11 @@ function fromTilda_preprocess_page(&$variables) {
         ->condition('type', 'review');
       if (isset($doctorNidForReviews)) {
         $reviewsNids->condition('field_doctor', $doctorNidForReviews);
+        $variables['current_nid'] = $doctorNidForReviews;
       }
       elseif (isset($clinicNidForReviews)) {
         $reviewsNids->condition('field_clinic', $clinicNidForReviews);
+        $variables['current_nid'] = $clinicNidForReviews;
       }
       $reviewsNids = $reviewsNids->execute();
       $viewReviews = \Drupal\views\Views::getView('reviews');
@@ -221,6 +223,7 @@ function fromTilda_preprocess_page(&$variables) {
         $variables['reviews'] = \Drupal::service('renderer')
           ->render($renderReviews);
       }
+      $variables['reviews_count'] = count($reviewsNids);
     }
   }
 

@@ -638,3 +638,9 @@ a.about-num_item {text-decoration:none}
   font: 24px 'als_rubl';
   color: #2299d2;
  }
+
+.all_reviews_for_doctor.link_wrapper {
+  display: flex;
+  justify-content: center;
+}
+

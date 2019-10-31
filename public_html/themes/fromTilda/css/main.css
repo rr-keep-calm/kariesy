@@ -8452,13 +8452,6 @@ ul.price_types, .price_types li {
         display: block;
     }
 
-    .main_wrapper {
-        background-image: url("../img/main-bg.png");
-        background-position: top left;
-        background-repeat: no-repeat;
-        background-size: contain;
-    }
-
     .main_title {
         font-size: 20px;
         margin-bottom: 12px;
