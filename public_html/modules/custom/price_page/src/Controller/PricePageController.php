@@ -16,9 +16,21 @@ class PricePageController extends ControllerBase {
     \Drupal::service('page_cache_kill_switch')->trigger();
     $repo = new PricePageRepository();
     $pricePageData = $repo->getData($service_type);
+
+    $title = 'Цены';
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    $service_types = \Drupal::entityTypeManager()
+      ->getStorage('taxonomy_term')
+      ->loadTree('service_type');
+    $translitiration = new PhpTransliteration();
+    foreach ($service_types as $service_types_item) {
+      if (strtolower(str_replace(' ', '_', $translitiration->transliterate($service_types_item->name, 'en', '_'))) === $service_type) {
+        $title = 'Цены на услугу "' . $service_types_item->name . '"';
+      }
+    }
     return [
       '#theme' => 'price_page',
-      '#title' => 'Цены',
+      '#title' => $title,
       '#data' => $pricePageData,
     ];
   }
