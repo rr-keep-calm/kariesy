@@ -586,3 +586,8 @@ a.about-num_item {text-decoration:none}
 .price_sign {
   font: 16px 'als_rubl';
 }
+
+.all_reviews_for_doctor.link_wrapper {
+  display: flex;
+  justify-content: center;
+}
