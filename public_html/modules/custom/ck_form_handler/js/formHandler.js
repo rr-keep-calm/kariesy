@@ -135,7 +135,7 @@ $(document).ready(function () {
 
               // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
               if (formId === 'recall-form-on-price-page') {
-                let link = $(".price .price_types .ui-state-active a");
+                let link = $(".price .price_types .ui-tabs-active a");
                 self.formData.whatPriceTab = $(link).text() + $(link).attr('href');
               }
 

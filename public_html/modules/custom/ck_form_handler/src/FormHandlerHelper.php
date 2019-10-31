@@ -338,11 +338,8 @@ class FormHandlerHelper {
       if (isset($this->formData['whatPriceTab']) && !empty($this->formData['whatPriceTab'])) {
         $request = \Drupal::request();
         $referer = $request->headers->get('referer');
-        list($tabText, $tabAnchor) = explode('#', $this->formData['whatPriceTab']);
-        if (strpos($referer, 'price') === FALSE) {
-          $referer .= 'price';
-        }
-        $this->message .= "<br /><br />Ссылка на страницу с формой - <a href='{$referer}#{$tabAnchor}'>Цена на услугу \"$tabText\"</a>";
+        list($serviceName) = explode('/', $this->formData['whatPriceTab'], 2);
+        $this->message .= "<br /><br />Ссылка на страницу с формой - <a href='{$referer}'>Цена на услугу \"{$serviceName}\"</a>";
       }
 
       $this->headers = 'From: robot@kariesy.net';
