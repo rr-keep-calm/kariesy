@@ -3,10 +3,11 @@
     <ul class="price_types">
       {% for serviceType in data.service_type_list %}
         <li{{ serviceType.active == 1 ? ' class="ui-tabs-active"' : '' }}>
-          <a href="/price/{{ serviceType.url }}">{{ serviceType.name }}</a>
+          <a href="/price/{{ serviceType.url }}"{{ serviceType.active == 1 ? ' class="active"' : '' }}>{{ serviceType.name }}</a>
         </li>
       {% endfor %}
     </ul>
+    <div class="price_select"></div>
   </div>
   <div class="price_content">
     <div class="wrapper">
