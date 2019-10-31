@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'als_rubl';
-  src: url('rouble-webfont.eot');
-  src: url('rouble-webfont.eot?#iefix') format('embedded-opentype'),
-  url('rouble-webfont.woff') format('woff'),
-  url('rouble-webfont.svg#als_rublregular') format('svg');
+  src: url('../fonts/rouble-webfont.eot');
+  src: url('../fonts/rouble-webfont.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/rouble-webfont.woff') format('woff'),
+  url('../fonts/rouble-webfont.svg#als_rublregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -630,5 +630,5 @@ a.about-num_item {text-decoration:none}
 }
 
 .price_sign {
-  font: 16px 'als_rubl';
+  font: 20px 'als_rubl';
 }
