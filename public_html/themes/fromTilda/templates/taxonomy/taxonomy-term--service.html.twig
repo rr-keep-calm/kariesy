@@ -139,12 +139,12 @@
       <div class="wrapper">
         <div class="service-detail_heading">
           <h2>{{ content.field_zagolovok_bloka_cen|render|striptags }}</h2>
-          <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}"
+          <a href="/price{{ service_price_last_part_url is defined ? '/' ~ service_price_last_part_url : '' }}"
              class="service-detail_more">Прайс-лист на все услуги</a>
         </div>
         {{ service_price }}
         <div class="service-detail_only-mobile">
-          <a href="/price{{ service_price_anchor is defined ? '#' ~ service_price_anchor : '' }}"
+          <a href="/price{{ service_price_last_part_url is defined ? '/' ~ service_price_last_part_url : '' }}"
              class="service-detail_more">Прайс-лист на все услуги</a>
         </div>
       </div>

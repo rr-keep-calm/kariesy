@@ -133,14 +133,14 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
       if (count($render['#rows']) > 0) {
         $vars['service_price'] = \Drupal::service('renderer')->render($render);
 
-        // Формируем якорь для ссылки на страницу прайса
+        // Формируем заключительную часть ссылки на нужную страницу прайса
         $service_type = $term->get('field_service_type')->getValue();
         if (isset($service_type[0]) && isset($service_type[0]['target_id'])) {
           $service_type = Term::load($service_type[0]['target_id']);
           $service_type_name = $service_type->name->value;
           $translitiration = new PhpTransliteration();
-          $anchor = str_replace(' ', '_', $translitiration->transliterate($service_type_name, 'en', '_'));
-          $vars['service_price_anchor'] = $anchor;
+          $last_part_url = strtolower(str_replace(' ', '_', $translitiration->transliterate($service_type_name, 'en', '_')));
+          $vars['service_price_last_part_url'] = $last_part_url;
         }
       }
     }

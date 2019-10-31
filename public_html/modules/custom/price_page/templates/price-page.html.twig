@@ -1,67 +1,64 @@
-{{ attach_library('fromTilda/jquery-ui') }}
-
 <div class="price">
+  <div class="wrapper">
+    <ul class="price_types">
+      {% for serviceType in data.service_type_list %}
+        <li{{ serviceType.active == 1 ? ' class="ui-tabs-active"' : '' }}>
+          <a href="/price/{{ serviceType.url }}">{{ serviceType.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="price_content">
     <div class="wrapper">
-        <ul class="price_types">
-            {% for dataItem in data %}
-                <li><a href="#{{ dataItem.anchor }}">{{ dataItem.name }}</a></li>
-            {% endfor %}
-        </ul>
-        <div class="price_select"></div>
-    </div>
-    {% for dataItem in data %}
-        <div class="price_content" id="{{ dataItem.anchor }}">
-            <div class="wrapper">
-                <div class="price_blocks">
-                    {% for type in dataItem.types %}
-                    <div class="price_block">
-                        <header class="price_header">{{ type.name }}</header>
-                        <div class="price_items">
-                            {% for price in type.prices %}
-                            <div class="price_item{% if price.price_old %} with_old{% endif %}">
-                                <div class="price_text">
-                                    <div class="price_what">{{ price.name }}</div>
-                                    {% if price.price_code %}
-                                        <div class="price_code">Код услуги: {{ price.price_code }}</div>
-                                    {% endif %}
-                                    <div class="price_data">{{ price.description|raw }}</div>
-                                </div>
+      <div class="price_blocks">
+        {% for dataTypeItem in data.types %}
+          <div class="price_block">
+            <header class="price_header">{{ dataTypeItem.name }}</header>
+            <div class="price_items">
+              {% for price in dataTypeItem.prices %}
+                <div class="price_item{% if price.price_old %} with_old{% endif %}">
+                  <div class="price_text">
+                    <div class="price_what">{{ price.name }}</div>
+                    {% if price.price_code %}
+                      <div class="price_code">Код услуги: {{ price.price_code }}</div>
+                    {% endif %}
+                    <div class="price_data">{{ price.description|raw }}</div>
+                  </div>
 
-                                <div class="price_cnt flex-custom">
-                                    {% if price.price_old %}
-                                        <span class="price_old">{{ price.price_old }}</span>
-                                    {% endif %}
-                                    <span class="price_num">
-                                        {{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price|raw|trim }}
-                                    </span>
-                                    <span class="price_sign">руб</span>
-                                    {% if price.price_to is defined %}
-                                        <div class="flex-line-break"></div>
-                                        <span class="price_num">
-                                            <span class="price-to">до</span> {{ price.price_to }}
-                                        </span>
-                                        <span class="price_sign">руб</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
+                  <div class="price_cnt flex-custom">
+                    {% if price.price_old %}
+                      <span class="price_old">{{ price.price_old }}</span>
+                    {% endif %}
+                    <span class="price_num">
+                        {{ price.price_from is defined ? '<span class="price-from">от</span> ' : '' }}{{ price.price|raw|trim }}
+                    </span>
+                    <span class="price_sign">руб</span>
+                    {% if price.price_to is defined %}
+                      <div class="flex-line-break"></div>
+                      <span class="price_num">
+                          <span class="price-to">до</span> {{ price.price_to }}
+                      </span>
+                      <span class="price_sign">руб</span>
+                    {% endif %}
+                  </div>
                 </div>
+              {% endfor %}
             </div>
-        </div>
-    {% endfor %}
-
-    <div class="get-cart">
-        <div class="wrapper">
-            <div class="get-cart_text">Запишись на бесплатную консультацию с составлением плана <br>лечения и получи
-                накопительную дисконтную карту
-            </div>
-
-            <div class="get-cart_button">
-                <a href="#form-recall-price" class="button get-cart_btn popup">записаться на прием</a>
-            </div>
-        </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
+  </div>
+
+  <div class="get-cart">
+    <div class="wrapper">
+      <div class="get-cart_text">Запишись на бесплатную консультацию с составлением плана <br>лечения и получи
+        накопительную дисконтную карту
+      </div>
+
+      <div class="get-cart_button">
+        <a href="#form-recall-price" class="button get-cart_btn popup">записаться на прием</a>
+      </div>
+    </div>
+  </div>
 </div>

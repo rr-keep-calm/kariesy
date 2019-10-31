@@ -1,7 +1,8 @@
 price_page.price_page:
-  path: '/price'
+  path: '/price/{service_type}'
   defaults:
     _controller: '\Drupal\price_page\Controller\PricePageController::pricePage'
-    _title: 'Цены на услуги в стоматологии «Кариесу.нет»'
+    _title_callback: '\Drupal\price_page\Controller\PricePageController::priceTitle'
+    service_type: 'default'
   requirements:
     _permission: 'access content'
