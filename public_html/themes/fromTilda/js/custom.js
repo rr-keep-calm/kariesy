@@ -1,13 +1,4 @@
 $(document).ready(function () {
-    if ($(".price").length) {
-        $(".price").tabs();
-        $(".price_select").on('change', '.select2-hidden-accessible', function () {
-            var valueSelected = this.value;
-            $('.price_content').hide();
-            $('.price_content' + valueSelected).show();
-        })
-    }
-
     // Если мы на главной странице и есть текст больше одного абзаца
     if ($('.home-text.page .wrapper').length && $('.home-text.page .wrapper').children().length <= 2) {
         $('.home-text.page .wrapper .pagination-block_more').hide();
