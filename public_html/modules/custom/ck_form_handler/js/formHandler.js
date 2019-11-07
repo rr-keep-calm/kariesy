@@ -403,7 +403,11 @@ $(document).ready(function () {
             $(doctorList).change();
           }
         }
-      })
+      });
+      // открываем форму записи на приём если есть соответствующий якорь в адресной строке
+      if (window.location.hash && $('a[href="' + window.location.hash + '"]').length) {
+        $('a[href="' + window.location.hash + '"]').click();
+      }
     },
     readFile(files, length, step, readForce) {
       let self = this;
