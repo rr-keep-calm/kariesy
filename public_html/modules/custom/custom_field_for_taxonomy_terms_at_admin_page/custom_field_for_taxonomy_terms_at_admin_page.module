@@ -1,0 +1,39 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_form_ID_alter().
+ */
+function custom_field_for_taxonomy_terms_at_admin_page_form_taxonomy_overview_terms_alter(&$form, FormStateInterface $formState) {
+  $storage = $formState->getStorage();
+  if (!$storage) {
+    return;
+  }
+  $id = $storage["taxonomy"]["vocabulary"]->id();
+  if (!$id || $id !== 'service') {
+    return;
+  }
+  $form['terms']['#header'] = array_merge(array_slice($form['terms']['#header'], 0, 1, TRUE),
+    ['Тип услуги'],
+    array_slice($form['terms']['#header'], 1, NULL, TRUE));
+
+  foreach ($form['terms'] as &$term) {
+    if (is_array($term) && !empty($term['#term'])) {
+      $tid = $term['#term']->get('field_service_type')->getValue();
+      $term_name = 'Не указано';
+      if ($tid) {
+        $term_name = Term::load($tid[0]['target_id'])->name->value;
+      }
+      $service_type['status'] = [
+        '#markup' => $term_name,
+        '#type' => 'item',
+      ];
+
+      $term = array_slice($term, 0, 1, TRUE) +
+        $service_type +
+        array_slice($term, 1, NULL, TRUE);
+    }
+  }
+}
