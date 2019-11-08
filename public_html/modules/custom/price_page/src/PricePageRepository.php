@@ -36,7 +36,8 @@ class PricePageRepository {
         $result['service_type_list'][$service_type_tid]['tid'] = $service_type_tid;
         $result['service_type_list'][$service_type_tid]['name'] = $service_type_term->getName();
         $result['service_type_list'][$service_type_tid]['weight'] = $service_type_term->getWeight();
-        $result['service_type_list'][$service_type_tid]['url'] = strtolower(str_replace(' ', '_', $translitiration->transliterate($result['service_type_list'][$service_type_tid]['name'], 'en', '_')));
+        $result['service_type_list'][$service_type_tid]['url'] = strtolower($translitiration->transliterate($result['service_type_list'][$service_type_tid]['name'], 'en', '_'));
+        $result['service_type_list'][$service_type_tid]['url'] = str_replace([' ', 'kh', 'KH', 'Kh', 'kH'], ['-', 'h', 'H', 'H', 'h'], $result['service_type_list'][$service_type_tid]['url']);
         $result['service_type_list'][$service_type_tid]['active'] = 0;
         if ($result['service_type_list'][$service_type_tid]['url'] === $service_type) {
           $current_service_type_tid = $service_type_tid;
