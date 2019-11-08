@@ -24,7 +24,9 @@ class PricePageController extends ControllerBase {
       ->loadTree('service_type');
     $translitiration = new PhpTransliteration();
     foreach ($service_types as $service_types_item) {
-      if (strtolower(str_replace(' ', '_', $translitiration->transliterate($service_types_item->name, 'en', '_'))) === $service_type) {
+      $service_types_item_name = strtolower($translitiration->transliterate($service_types_item->name, 'en', '_'));
+      $service_types_item_name = str_replace([' ', 'kh', 'KH', 'Kh', 'kH'], ['-', 'h', 'H', 'H', 'h'], $service_types_item_name);
+      if ($service_types_item_name === $service_type) {
         $title = 'Цены на услугу ' . $service_types_item->name;
       }
     }
@@ -42,7 +44,9 @@ class PricePageController extends ControllerBase {
       ->loadTree('service_type');
     $translitiration = new PhpTransliteration();
     foreach ($service_types as $service_types_item) {
-      if (strtolower(str_replace(' ', '_', $translitiration->transliterate($service_types_item->name, 'en', '_'))) === $service_type) {
+      $service_types_item_name = strtolower($translitiration->transliterate($service_types_item->name, 'en', '_'));
+      $service_types_item_name = str_replace([' ', 'kh', 'KH', 'Kh', 'kH'], ['-', 'h', 'H', 'H', 'h'], $service_types_item_name);
+      if ($service_types_item_name === $service_type) {
         return 'Цены на услугу "' . $service_types_item->name . '" в стоматологии «Кариесу.нет»';
       }
     }
