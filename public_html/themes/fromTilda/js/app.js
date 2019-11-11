@@ -391,11 +391,6 @@ app.addModule('main', function () {
 		});
 	}
 });
-app.addModule('mask', function () {
-	this.init = function () {
-		$('input[type=tel]').inputmask("+7 999 999 99 99");
-	};
-});
 app.addModule('menu', function () {
 	var menu = $('.menu');
 	var isActive = false;

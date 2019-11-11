@@ -16,7 +16,7 @@ global-js:
    js/bootstrap-datepicker.min.js: {}
    js/bootstrap-datepicker.ru.min.js: {}
    js/jquery-filestyle.min.js: {}
-   js/jquery.maskedinput.min.js: {}
+   js/jquery.mask.min.js: {}
    js/lib.js: {}
    js/app.js: {}
    js/jquery.fancybox.min.js: {attributes: { defer: true }}

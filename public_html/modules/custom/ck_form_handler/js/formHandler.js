@@ -408,6 +408,24 @@ $(document).ready(function () {
       if (window.location.hash && $('a[href="' + window.location.hash + '"]').length) {
         $('a[href="' + window.location.hash + '"]').click();
       }
+      self.addMaskToFields();
+    },
+    addMaskToFields() {
+      var modOptions = {
+        placeholder: "+7 ___ ___ __ __",
+        onKeyPress: function(val, e, field, options) {
+          var cleanVal = $(field).cleanVal();
+          cleanVal = cleanVal.replace(/\D+/g, '');
+          if (cleanVal.length > 9) {
+            cleanVal = cleanVal.substr(-10);
+            $('input[type=tel]').mask('+7 000 000 00 00', options);
+          } else {
+            $('input[type=tel]').mask('+7 000 000 00 009', options);
+          }
+          $(field).val(field.masked(cleanVal));
+        },
+      };
+      $('input[type=tel]').mask('+7 000 000 00 009', modOptions);
     },
     readFile(files, length, step, readForce) {
       let self = this;
@@ -553,6 +571,7 @@ $(document).ready(function () {
               this.actualizationDoctorList(form);
               this.resetDoctorDateTimeSelect(form);
             }
+            this.addMaskToFields();
           } else {
             alert(response.text);
           }
@@ -626,6 +645,7 @@ $(document).ready(function () {
     },
     closeForm() {
       $.magnificPopup.close();
+      this.addMaskToFields();
     },
     serializeFormJSON(form) {
       let o = {};
