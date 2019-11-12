@@ -1,0 +1,137 @@
+<?php
+
+use \Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_cron().
+ */
+function yandex_map_review_parser_cron() {
+  $last_run = \Drupal::state()->get('yandex_map_review_parser.last_run', 0);
+
+  // If 22 hours passed since last time.
+  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 79200) {
+    // Проверяем есть ли информация о том по какой клинике собирать отзывы сейчас
+    $clinic_was_parse = \Drupal::state()
+      ->get('yandex_map_review_parser.clinic_was_parse', []);
+    $clinic_nids = \Drupal::entityQuery('node')
+      ->condition('type', 'clinic')
+      ->execute();
+    $clinic_nodes = \Drupal\node\Entity\Node::loadMultiple($clinic_nids);
+    $clinic_nodes = array_diff_key($clinic_nodes, $clinic_was_parse);
+
+    // Если не осталось клиник для которых нужно парсить
+    if (!$clinic_nodes) {
+      \Drupal::state()
+        ->set('yandex_map_review_parser.last_run', $_SERVER['REQUEST_TIME']);
+      \Drupal::state()->set('yandex_map_review_parser.clinic_was_parse', []);
+      \Drupal::state()->set('yandex_map_review_parser.page', 1);
+      return;
+    }
+
+    $clinic_node = reset($clinic_nodes);
+    $response = getReviewFromYandexMap($clinic_node->field_yandex_map_business_id->value);
+    $response = json_decode($response, TRUE);
+
+    // Если в ответ пришёл токен, то записываем его и прекращаем работу до следующего запуска
+    if (isset($response['csrfToken'])) {
+      \Drupal::state()
+        ->set('yandex_map_review_parser.csrf_token', $response['csrfToken']);
+      \Drupal::state()->set('yandex_map_review_parser.page', 1);
+      return;
+    }
+
+    // Если нет отзывов то помечаем клинику как уже распарсенную
+    if (!$response['data']['reviews']) {
+      $clinic_was_parse[$clinic_node->id()] = 1;
+      \Drupal::state()
+        ->set('yandex_map_review_parser.clinic_was_parse', $clinic_was_parse);
+      \Drupal::state()->set('yandex_map_review_parser.page', 1);
+      return;
+    }
+
+    // Получаем все идентификаторы отзывов с Яндекса
+    $connection = \Drupal::database();
+    $query = $connection->query("SELECT field_review_id_value FROM node__field_review_id WHERE bundle = 'review'");
+    $review_ids_tmp = $query->fetchAll();
+    $review_ids = [];
+    foreach ($review_ids_tmp as $review_ids_from_db) {
+      $review_ids[] = $review_ids_from_db->field_review_id_value;
+    }
+
+    foreach ($response['data']['reviews'] as $review) {
+      // Если отзыв с таким идентификатором уже есть на сайте, то продолжаем
+      // работу со следующим отзывом
+      if (in_array($review['reviewId'], $review_ids)) {
+        continue;
+      }
+
+      // Проверяем чтобы отсутствовали отзывы с точно таким же текстом
+      $result = $connection->select('node__field_review_text', 'nfrt')
+        ->fields('nfrt', ['entity_id'])
+        ->condition('field_review_text_value', "%" . $connection->escapeLike(strip_tags($review['text'])) . "%", 'LIKE')
+        ->execute()
+        ->fetchAll();
+      if ($result) {
+        continue;
+      }
+      // Создаём отзыв
+      $create_date = new DateTime($review['updatedTime']);
+      $europeMoscow = new DateTimeZone('Europe/Moscow');
+      $create_date->setTimeZone($europeMoscow);
+      $title = $review['author']['name'] ?? 'Анонимный отзыв';
+      $nodeCreate = [
+        'type' => 'review',
+        'title' => $title,
+        'created' => $create_date->format('U'),
+        'field_clinic' => [$clinic_node->id()],
+        'field_review_text' => $review['text'],
+        'field_review_id' => $review['reviewId'],
+      ];
+      if (isset($review['businessComment']['text']) && $review['businessComment']['text']) {
+        $nodeCreate['field_answer_text'] = $review['businessComment']['text'];
+        $nodeCreate['field_answer_name'] = 'Администрация';
+        $nodeCreate['field_answer_info'] = explode('T', $review['businessComment']['updatedTime'])[0];
+      }
+      $node = Node::create($nodeCreate);
+      $node->save();
+
+      $bot_message = "{$title} оставил(а) отзыв на Яндекс Картах.\n\n";
+      $bot_message .= "Текст отзыва:\n";
+      $bot_message .= $review['text'];
+      $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
+      $telegram_bot->wrapperSendOrderMessage($bot_message);
+    }
+
+    if ($response['params']['page'] != $response['params']['totalPages']) {
+      $page = $response['params']['page'] + 1;
+      \Drupal::state()
+        ->set('yandex_map_review_parser.page', $page);
+      return;
+    }
+
+    $clinic_was_parse[$clinic_node->id()] = 1;
+    \Drupal::state()
+      ->set('yandex_map_review_parser.clinic_was_parse', $clinic_was_parse);
+    \Drupal::state()->set('yandex_map_review_parser.page', 1);
+  }
+}
+
+function getReviewFromYandexMap($businessId) {
+  $csrf_token = \Drupal::state()
+    ->get('yandex_map_review_parser.csrf_token', '');
+  $page = \Drupal::state()
+    ->get('yandex_map_review_parser.page', 1);
+  $ch = curl_init("https://yandex.ru/maps/api/business/fetchReviews?ajax=1&businessId={$businessId}&csrfToken={$csrf_token}&page={$page}&pageSize=50");
+  curl_setopt($ch, CURLOPT_HEADER, FALSE);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYSTATUS, FALSE);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+  curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+  curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookie');
+  curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookie');
+  $response = curl_exec($ch);
+  curl_close($ch);
+  return $response;
+}
+
