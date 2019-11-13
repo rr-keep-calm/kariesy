@@ -59,6 +59,11 @@ function yandex_map_review_parser_cron() {
     }
 
     foreach ($response['data']['reviews'] as $review) {
+      // Не обрабатываем отзывы ниже четырёх звёзд
+      if ((int)$review['rating'] < 4) {
+        continue;
+      }
+
       // Если отзыв с таким идентификатором уже есть на сайте, то продолжаем
       // работу со следующим отзывом
       if (in_array($review['reviewId'], $review_ids)) {
