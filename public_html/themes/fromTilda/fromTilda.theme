@@ -380,6 +380,18 @@ function fromTilda_preprocess_node(&$variables){
       $variables['unpublishedDoctors'][$node->id()] = $node->getTitle();
     }
   }
+
+  // Если отрисовывается отзыв, то получаем дополнительную информацию
+  if ($variables['node']->getType() == 'review') {
+    if ($variables['node']->get('field_review_id')->getValue()[0]['value']) {
+      $clinik_nid = $variables['node']->get('field_clinic')->getValue();
+      if ($clinik_nid) {
+        $clinik_node = \Drupal\node\Entity\Node::load($clinik_nid[0]['target_id']);
+        $variables['clinik_yandex_map_id'] = $clinik_node->get('field_yandex_map_business_id')
+          ->getValue()[0]['value'];
+      }
+    }
+  }
 }
 
 function fromTilda_preprocess_views_view(&$variables){

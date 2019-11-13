@@ -26,7 +26,12 @@
             </ul>
         </div>
 
-        <div class="reviews_text">{{ content.field_review_text }}</div>
+        <div class="reviews_text">
+          {{ content.field_review_text }}
+          {% if clinik_yandex_map_id is defined and clinik_yandex_map_id != '' %}
+            <a href="//yandex.ru/maps/org/kariyesu_net/{{ clinik_yandex_map_id }}/">Посмотреть на карте</a>
+          {% endif %}
+        </div>
 
         {{ content.field_photos_of_review }}
 
