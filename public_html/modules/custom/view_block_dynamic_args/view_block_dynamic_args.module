@@ -57,7 +57,37 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
         $term = Term::load($tid);
         $vacabulary_id = $term->getVocabularyId();
         if ($vacabulary_id == 'service') {
-          $args[0] = $tid;
+          // Смотрим сколько отзывов прикреплено к данной услуге
+          $tid_argument = 'all';
+          $nids_argument = 'all';
+          $reviews = \Drupal::entityQuery('node')
+            ->condition('type', 'review')
+            ->condition('field_service', $tid)
+            ->execute();
+          if (count($reviews) >= 3) {
+            $tid_argument = $tid;
+          } else {
+            $nids = $reviews;
+            $query = \Drupal::database()->select('node__field_all_services', 'nfal');
+            $query->join('node_field_data', 'nfd', 'nfal.entity_id = nfd.nid');
+            $query->fields('nfal', ['entity_id']);
+            $query->condition('nfal.field_all_services_value', 1);
+            $query->condition('nfd.status', 1);
+            $query->range(0, 3 - count($nids));
+            $query->orderRandom();
+
+            if ($nids) {
+              foreach ($nids as $nid) {
+                $query->condition('nfal.entity_id', $nid, '!=');
+              }
+            }
+
+            $results = $query->execute()->fetchCol();
+            $nids += $results;
+            $nids_argument = implode('+', $nids);
+          }
+          $args[0] = $tid_argument;
+          $args[1] = $nids_argument;
         }
       }
       break;
