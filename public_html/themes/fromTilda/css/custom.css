@@ -405,6 +405,9 @@ a.about-num_item {text-decoration:none}
         order: 1;
         margin-bottom: 40px;
     }
+    .doctors-feedback_btn {
+      width: 100%;
+    }
 }
 @media screen and (max-width: 900px) {
     .services_item.__full.__main .services_types .services_type-item {
