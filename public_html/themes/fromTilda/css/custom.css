@@ -124,6 +124,8 @@
 .akcii .services_item .services_header .services_base-text .ended {color:red}
 .page .sale-ended {font:16px/20px 'OpenSansSemiBold';color:red}
 
+.page ol li, .service-detail_block ol li {font:14px/25px 'OpenSansLight'}
+
 /* Скрываем reCAPTCHA от Google*/
 .grecaptcha-badge {
     display: none !important;
