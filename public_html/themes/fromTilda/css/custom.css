@@ -305,6 +305,7 @@ a.about-num_item {text-decoration:none}
     -webkit-transition: .3s;
     transition: .3s;
     cursor: pointer;
+    width: 100%;
 }
 
 .doctors-feedback_btn:hover {
@@ -406,9 +407,6 @@ a.about-num_item {text-decoration:none}
         -webkit-order: 1;
         order: 1;
         margin-bottom: 40px;
-    }
-    .doctors-feedback_btn {
-      width: 100%;
     }
 }
 @media screen and (max-width: 900px) {
