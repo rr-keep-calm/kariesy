@@ -7,5 +7,48 @@
                 {{ page.content }}
             </div>
         </div>
+        {% if not hideFreeConsultBlock %}
+          {{ page.free_consultation_on_service_page }}
+        {% endif %}
+        {{ page.doctor_list_on_service_type_page }}
+        {{ page.review_list_on_service_type_page }}
     </div>
+{% endblock %}
+
+{% block afterFooterAdd %}
+  <div class="forms mfp-hide" id="free-consult-form-on-service-page">
+    <form id="free-consult-form-on-service-page-form" action="/keep-calm-custom-form-handler" class="form" method="post" data-success_form="#form-normal">
+      <div class="wait-form free-consult-wait-form"></div>
+      <input type="hidden" name="token" class="token">
+      <input type="hidden" name="action" class="captcha-action">
+      <input type="hidden" name="formName" value="freeConsultService">
+      <div class="h4 form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами</div>
+
+      <div class="form_item">
+        <label class="form_label">Ваше имя</label>
+
+        <div class="form_data">
+          <input type="text" name="name" class="form_input">
+        </div>
+      </div>
+
+      <div class="form_item">
+        <label class="form_label">Номер телефона</label>
+
+        <div class="form_data">
+          <input type="tel" name="phone" class="form_input">
+        </div>
+      </div>
+
+      <div class="form_button">
+        <button type="submit" class="button g-recaptcha"
+                data-sitekey="6LdLQo0UAAAAAAEBcbkJeVNeB3x6wRhY_c8_KE1x"
+                data-callback="YourOnSubmitFn">
+          заказать звонок
+        </button>
+      </div>
+    </form>
+
+    <button type="button" class="forms_close popup-close"></button>
+  </div>
 {% endblock %}
