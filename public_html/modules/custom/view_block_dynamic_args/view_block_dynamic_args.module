@@ -41,6 +41,15 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
               ->getValue()[0]['target_id'];
           }
         }
+        if (strpos(\Drupal::routeMatch()->getRouteName(), 'view.services_page') === 0) {
+          $router = \Drupal::routeMatch()->getRouteName();
+          $parent_view = \Drupal\views\Views::getView('services_page');
+          $router_parts = explode('.', $router);
+          $parent_display = end($router_parts);
+          $parent_view->setDisplay($parent_display);
+          $parent_display_params = $parent_view->getDisplay();
+          $args[0] = reset($parent_display_params->display['display_options']['filters']['field_service_type_target_id']['value']);
+        }
         if (\Drupal::routeMatch()->getRouteName() === 'entity.node.canonical') {
           $node = \Drupal::routeMatch()->getParameter('node');
           if ($node->bundle() === 'stock') {
