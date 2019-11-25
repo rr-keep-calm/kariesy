@@ -31,9 +31,10 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
     case 'doctors':
       if ($display_id === 'block_3') {
         if (
-          \Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical'
+          \Drupal::routeMatch()
+            ->getRouteName() == 'entity.taxonomy_term.canonical'
           && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')
-        ){
+        ) {
           $term = Term::load($tid);
           $vacabulary_id = $term->getVocabularyId();
           if ($vacabulary_id == 'service') {
@@ -41,7 +42,8 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
               ->getValue()[0]['target_id'];
           }
         }
-        if (strpos(\Drupal::routeMatch()->getRouteName(), 'view.services_page') === 0) {
+        if (strpos(\Drupal::routeMatch()
+            ->getRouteName(), 'view.services_page') === 0) {
           $router = \Drupal::routeMatch()->getRouteName();
           $parent_view = \Drupal\views\Views::getView('services_page');
           $router_parts = explode('.', $router);
@@ -60,48 +62,79 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
       }
       break;
     case 'reviews':
-      if ($display_id === 'block_2' && \Drupal::routeMatch()
-          ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
-          ->getRawParameter('taxonomy_term')) {
-        $term = Term::load($tid);
-        $vacabulary_id = $term->getVocabularyId();
-        if ($vacabulary_id == 'service') {
-          // Смотрим сколько отзывов прикреплено к данной услуге
-          $tid_argument = 'all';
-          $nids_argument = 'all';
-          $reviews = \Drupal::entityQuery('node')
-            ->condition('type', 'review')
-            ->condition('field_service', $tid)
-            ->execute();
-          if (count($reviews) >= 3) {
-            $tid_argument = $tid;
-          } else {
-            $nids = $reviews;
-            $query = \Drupal::database()->select('node__field_all_services', 'nfal');
-            $query->join('node_field_data', 'nfd', 'nfal.entity_id = nfd.nid');
-            $query->fields('nfal', ['entity_id']);
-            $query->condition('nfal.field_all_services_value', 1);
-            $query->condition('nfd.status', 1);
-            $query->range(0, 3 - count($nids));
-            $query->orderRandom();
-
-            if ($nids) {
-              foreach ($nids as $nid) {
-                $query->condition('nfal.entity_id', $nid, '!=');
-              }
-            }
-
-            $results = $query->execute()->fetchCol();
-            $nids += $results;
-            $nids_argument = implode('+', $nids);
+      if ($display_id !== 'block_2') {
+        return;
+      }
+      if (\Drupal::routeMatch()
+          ->getRouteName() == 'entity.taxonomy_term.canonical' ||
+        strpos(\Drupal::routeMatch()
+          ->getRouteName(), 'view.services_page') === 0) {
+        $tid_argument = 'all';
+        $nids_argument = 'all';
+        $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+        // Если не удалось  определить идентификатор термина, то мы на странице
+        // типа услуги, а значит формируем аргумент множественного типа
+        if (!$tid) {
+          $router = \Drupal::routeMatch()->getRouteName();
+          $parent_view = Views::getView('services_page');
+          $router_parts = explode('.', $router);
+          $parent_display = end($router_parts);
+          $parent_view->setDisplay($parent_display);
+          $parent_display_params = $parent_view->getDisplay();
+          $parent_tid = reset($parent_display_params->display['display_options']['filters']['field_service_type_target_id']['value']);
+          if (!$parent_tid) {
+            return;
           }
-          $args[0] = $tid_argument;
-          $args[1] = $nids_argument;
+          $tids = \Drupal::entityTypeManager()
+            ->getStorage('taxonomy_term')
+            ->loadByProperties(['field_service_type' => $parent_tid]);
+          $tid_argument = implode('+', array_keys($tids));
+          $tids = array_keys($tids);
+        }
+        else {
+          $term = Term::load($tid);
+          $vacabulary_id = $term->getVocabularyId();
+          if ($vacabulary_id != 'service') {
+            return;
+          }
+          $tids = [$tid];
+        }
+        // Смотрим сколько отзывов прикреплено к данной услуге
+        $reviews = \Drupal::entityQuery('node')
+          ->condition('type', 'review')
+          ->condition('field_service', $tids, 'IN')
+          ->execute();
+        if (count($reviews) >= 3) {
+          $tid_argument = $tid;
+        }
+        else {
+          $nids = $reviews;
+          $query = \Drupal::database()
+            ->select('node__field_all_services', 'nfal');
+          $query->join('node_field_data', 'nfd', 'nfal.entity_id = nfd.nid');
+          $query->fields('nfal', ['entity_id']);
+          $query->condition('nfal.field_all_services_value', 1);
+          $query->condition('nfd.status', 1);
+          $query->range(0, 3 - count($nids));
+          $query->orderRandom();
+
+          if ($nids) {
+            foreach ($nids as $nid) {
+              $query->condition('nfal.entity_id', $nid, '!=');
+            }
+          }
+
+          $results = $query->execute()->fetchCol();
+          $nids += $results;
+          $nids_argument = implode('+', $nids);
         }
       }
+      $args[0] = $tid_argument;
+      $args[1] = $nids_argument;
       break;
     case 'clinics':
-      if ($display_id === 'block_3' && \Drupal::routeMatch()->getRouteName() == 'entity.node.canonical') {
+      if ($display_id === 'block_3' && \Drupal::routeMatch()
+          ->getRouteName() == 'entity.node.canonical') {
         $args[0] = \Drupal::routeMatch()->getRawParameter('node');
       }
       break;

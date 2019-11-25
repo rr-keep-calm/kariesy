@@ -249,7 +249,10 @@ function fromTilda_preprocess_page(&$variables) {
     $parent_display_params = $parent_view->getDisplay();
     $parent_tid = reset($parent_display_params->display['display_options']['filters']['field_service_type_target_id']['value']);
     $term = Term::load($parent_tid);
-    $variables['hideFreeConsultBlock'] = (bool)$term->get('field_hide_free_consult_block')->getValue()[0]['value'];
+    if ($term) {
+      $variables['hideFreeConsultBlock'] = (bool) $term->get('field_hide_free_consult_block')
+        ->getValue()[0]['value'];
+    }
   }
   if ($viewIdReviews === 'services_page' && preg_match('/view.services_page.(page_\d)/', \Drupal::routeMatch()->getRouteName(), $matches)) {
     $routeObject = \Drupal::routeMatch()->getRouteObject();
@@ -394,7 +397,8 @@ function fromTilda_preprocess_node(&$variables){
 
   // Если отрисовывается отзыв, то получаем дополнительную информацию
   if ($variables['node']->getType() == 'review') {
-    if ($variables['node']->get('field_review_id')->getValue()[0]['value']) {
+    $review_id = $variables['node']->get('field_review_id')->getValue();
+    if ($review_id && $review_id[0]['value']) {
       $clinik_nid = $variables['node']->get('field_clinic')->getValue();
       if ($clinik_nid) {
         $clinik_node = \Drupal\node\Entity\Node::load($clinik_nid[0]['target_id']);
