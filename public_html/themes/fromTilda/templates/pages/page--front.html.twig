@@ -95,9 +95,9 @@
                     <div class="about-num_info">
                         <div class="about-num_cnt">{{ reviews_count }}</div>
                         {% set cases_key = min(reviews_count|number_format(0) % 10, 5) %}
-                        {% set reviews_titles = ['отзыв', 'отзыва', 'отзывов'] %}
+                        {% set reviews_titles = ['реальный отзыв', 'реальных отзыва', 'реальных отзывов'] %}
                         {% set key = (reviews_count|number_format(0) % 100 > 4 and reviews_count|number_format(0) % 100 < 20) ? 2 : cases[cases_key] %}
-                        <p class="about-num_text">{{ reviews_titles[key] }} <br>на сайте</p>
+                        <p class="about-num_text">{{ reviews_titles[key] }} <br>от пациентов</p>
                     </div>
                 </a>
             </div>
