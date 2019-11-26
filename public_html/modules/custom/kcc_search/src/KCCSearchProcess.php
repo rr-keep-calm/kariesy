@@ -23,11 +23,11 @@ class KCCSearchProcess {
 
     $this->searchByTerms();
     $this->searchByNodes();
-    // TODO организовать поиск по данным параграфов
-    // TODO организовать поиск по глобальным полям вьюсов в типах услуг
+    //TODO организовать поиск по данным параграфов
+    //TODO организовать поиск по глобальным полям вьюсов в типах услуг
 
     $this->handleSearchResult();
-    // TODO сортировка данных по релевантности
+    //TODO сортировка данных по релевантности
 
     return $this->search_result;
   }
@@ -49,6 +49,11 @@ class KCCSearchProcess {
       unset($items[$key]);
     }
 
+    // исключаем поиск по заявкам на приём
+    if ($key = array_search('form_order', $items)) {
+      unset($items[$key]);
+    }
+
     // TODO поиск по отзывам и по вопорсам должен уводить на страницу где
     // выводится этот отзыв или вопрос в списке других
 
@@ -59,6 +64,7 @@ class KCCSearchProcess {
     $condition_and->condition('node_field_data.type', 'review', '!=');
     $condition_and->condition('node_field_data.type', 'vopros_otvet', '!=');
     $condition_and->condition('node_field_data.type', 'service_price', '!=');
+    $condition_and->condition('node_field_data.type', 'form_order', '!=');
     $this->searchInBase($field_tables, $condition_and);
   }
 
