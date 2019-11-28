@@ -7,6 +7,11 @@ use Drupal\views\Views;
 function fromTilda_preprocess_html(&$variables)
 {
   $variables['#attached']['drupalSettings']['path']['themeUrl'] = \Drupal::theme()->getActiveTheme()->getPath();
+  $title_parts = explode('|||', $variables['head_title']['title']);
+  if (strpos($variables['head_title']['title'], 'Цены на услуги в стоматологии Кариесу.нет') === 0) {
+    $title_parts[0] = str_replace(' | Кариесу.нет', '', $title_parts[0]);
+  }
+  $variables['head_title']['title'] = end($title_parts);
 }
 
 /**
