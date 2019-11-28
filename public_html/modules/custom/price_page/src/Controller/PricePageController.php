@@ -17,7 +17,7 @@ class PricePageController extends ControllerBase {
     $repo = new PricePageRepository();
     $pricePageData = $repo->getData($service_type);
 
-    $title = 'Цены';
+    $title = 'Цены на услуги';
     \Drupal::service('page_cache_kill_switch')->trigger();
     $service_types = \Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
@@ -27,7 +27,29 @@ class PricePageController extends ControllerBase {
       $service_types_item_name = strtolower($translitiration->transliterate($service_types_item->name, 'en', '_'));
       $service_types_item_name = str_replace([' ', 'kh', 'KH', 'Kh', 'kH'], ['-', 'h', 'H', 'H', 'h'], $service_types_item_name);
       if ($service_types_item_name === $service_type) {
-        $title = 'Цены на услугу ' . $service_types_item->name;
+        switch ($service_types_item->tid) {
+          case 3:
+            $title = 'Цены на лечение зубов';
+            break;
+          case 4:
+            $title = 'Цены на имплантацию зубов';
+            break;
+          case 8:
+            $title = 'Цены на протезирование зубов';
+            break;
+          case 9:
+            $title = 'Цены на хирургическую стоматологию';
+            break;
+          case 10:
+            $title = 'Цены на ортодонтические услуги';
+            break;
+          case 11:
+            $title = 'Цены на услуги профессиональной гигиены ';
+            break;
+          case 12:
+            $title = 'Цены на услуги детской стоматологии';
+            break;
+        }
       }
     }
     return [
@@ -47,9 +69,33 @@ class PricePageController extends ControllerBase {
       $service_types_item_name = strtolower($translitiration->transliterate($service_types_item->name, 'en', '_'));
       $service_types_item_name = str_replace([' ', 'kh', 'KH', 'Kh', 'kH'], ['-', 'h', 'H', 'H', 'h'], $service_types_item_name);
       if ($service_types_item_name === $service_type) {
-        return 'Цены на услугу "' . $service_types_item->name . '" в стоматологии «Кариесу.нет»';
+        $title = '';
+        switch ($service_types_item->tid) {
+          case 3:
+            $title = 'Цены на лечение зубов в Москве';
+            break;
+          case 4:
+            $title = 'Цены на имплантацию зубов в Москве';
+            break;
+          case 8:
+            $title = 'Цены на протезирование зубов в Москве';
+            break;
+          case 9:
+            $title = 'Цены на хирургическую стоматологию в Москве';
+            break;
+          case 10:
+            $title = 'Цены на ортодонтические услуги в Москве';
+            break;
+          case 11:
+            $title = 'Цены на услуги профессиональной гигиены полости рта и зубов в Москве';
+            break;
+          case 12:
+            $title = 'Цены на услуги детской стоматологии в Москве';
+            break;
+        }
+        return $service_types_item->tid . '|||' . $title;
       }
     }
-    return 'Цены на услуги в стоматологии «Кариесу.нет»';
+    return 'Цены на услуги в стоматологии Кариесу.нет';
   }
 }

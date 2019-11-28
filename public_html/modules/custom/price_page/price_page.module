@@ -7,15 +7,51 @@ function price_page_theme($existing, $type, $theme, $path) {
   ];
 }
 
-function price_page_page_attachments(array &$page) {
+function price_page_page_attachments_alter(array &$page) {
   if (\Drupal::routeMatch()->getRouteName() == 'price_page.price_page') {
-    $description = [
-      '#tag' => 'meta',
-      '#attributes' => [
-        'name' => 'description',
-        'content' => 'Подробный прайс-лист на цены в стоматологии «Кариесу.нет» с описанием услуг. Скидка на первое посещение по купону с сайта, а так же дисконтная карта в подарок',
-      ],
-    ];
-    $page['#attached']['html_head'][] = [$description, 'description'];
+    $tid = 0;
+    foreach ($page['#attached']['html_head'] as &$item) {
+      if ($item[0]['#attributes']['name'] === 'title') {
+        $title_parts = explode('|||', $item[0]['#attributes']['content']);
+        if (count($title_parts) > 1) {
+          $tid = $title_parts[0];
+        }
+        else {
+          $title_parts[0] = str_replace(' | Кариесу.нет', '', $title_parts[0]);
+        }
+        $item[0]['#attributes']['content'] = end($title_parts);
+        break;
+      }
+    }
+    $h1 = 'Цены на услуги';
+    switch ($tid) {
+      case 3:
+        $h1 = 'Цены на лечение зубов';
+        break;
+      case 4:
+        $h1 = 'Цены на имплантацию зубов';
+        break;
+      case 8:
+        $h1 = 'Цены на протезирование зубов';
+        break;
+      case 9:
+        $h1 = 'Цены на хирургическую стоматологию';
+        break;
+      case 10:
+        $h1 = 'Цены на ортодонтические услуги';
+        break;
+      case 11:
+        $h1 = 'Цены на услуги профессиональной гигиены ';
+        break;
+      case 12:
+        $h1 = 'Цены на услуги детской стоматологии';
+        break;
+    }
+    foreach ($page['#attached']['html_head'] as &$item) {
+      if ($item[0]['#attributes']['name'] === 'description') {
+        $item[0]['#attributes']['content'] = $h1 . ' в стоматологиях «Кариесу.нет». ✔Действуют скидки для клиентов. ☎Звоните и записывайтесь!';
+        break;
+      }
+    }
   }
 }
