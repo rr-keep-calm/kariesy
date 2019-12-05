@@ -568,6 +568,25 @@ function fromTilda_preprocess_taxonomy_term(&$variables) {
     if ($variables['child']) {
       ksort($variables['child']);
     }
+    //  Смотрим нужно ли брать данные из другого термина для отображения
+    $tid_for_data_import = $term->get('field_get_data_from_service')->target_id;
+    if ($tid_for_data_import) {
+      $term_for_data_import = Term::load($tid_for_data_import);
+      foreach (array_keys($variables['content']) as $field_name) {
+        if (in_array($field_name, ['field_do_not_show_in_general', 'field_service_type'])) {
+          continue;
+        }
+        $current_term_field_value = $term->get($field_name)->getValue();
+        $import_term_field_value = $term_for_data_import->get($field_name)->getValue();
+        if ($current_term_field_value == $import_term_field_value || $current_term_field_value) {
+          continue;
+        }
+        if (isset($term_for_data_import->$field_name)) {
+          $variables['content'][$field_name] = $term_for_data_import->$field_name->view();
+        }
+      }
+      $variables['url'] = $term_for_data_import->toUrl();
+    }
   }
 }
 
