@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Transliteration\PhpTransliteration;
 use Drupal\views\Views;
@@ -12,6 +13,16 @@ function fromTilda_preprocess_html(&$variables)
     $title_parts[0] = str_replace(' | Кариесу.нет', '', $title_parts[0]);
   }
   $variables['head_title']['title'] = end($title_parts);
+  if (!isset($_GET['page']) || !$_GET['page'] || (int)$_GET['page'] === 0) {
+    return;
+  }
+
+  $current_url = Url::fromRoute('<current>');
+  $path = $current_url->toString();
+  if ($path === '/feedback') {
+    $page = ++$_GET['page'];
+    $variables['head_title']['title'] .= ' — страница ' . $page;
+  }
 }
 
 /**
