@@ -49,6 +49,12 @@ class PricePageController extends ControllerBase {
           case 12:
             $title = 'Цены на услуги детской стоматологии';
             break;
+          case 157:
+            $title = 'Цены на услуги пародонтологии';
+            break;
+          case 158:
+            $title = 'Цены на услуги диагностики';
+            break;
         }
       }
     }
@@ -91,6 +97,12 @@ class PricePageController extends ControllerBase {
             break;
           case 12:
             $title = 'Цены на услуги детской стоматологии в Москве';
+            break;
+          case 157:
+            $title = 'Цены на услуги пародонтологии в Москве';
+            break;
+          case 158:
+            $title = 'Цены на услуги диагностики в Москве';
             break;
         }
         return $service_types_item->tid . '|||' . $title;

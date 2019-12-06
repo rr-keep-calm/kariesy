@@ -46,6 +46,12 @@ function price_page_page_attachments_alter(array &$page) {
       case 12:
         $h1 = 'Цены на услуги детской стоматологии';
         break;
+      case 157:
+        $h1 = 'Цены на услуги пародонтологии';
+        break;
+      case 158:
+        $h1 = 'Цены на услуги диагностики';
+        break;
     }
     foreach ($page['#attached']['html_head'] as &$item) {
       if ($item[0]['#attributes']['name'] === 'description') {
