@@ -33,6 +33,8 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
         10 => '/uslugi/orthodontia',
         11 => '/uslugi/gigiena',
         12 => '/uslugi/detskaya-stomatologiya',
+        157 => '/uslugi/parodontologiya',
+        158 => '/uslugi/diagnostika'
       ];
       $serviceType = $term->get('field_service_type')->getValue();
       if ($serviceType) {
