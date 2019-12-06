@@ -676,3 +676,7 @@ a.about-num_item {text-decoration:none}
   justify-content: center;
 }
 
+.reviews_left .pagination-block .pagination-block_right {
+  margin: 0 auto;
+}
+
