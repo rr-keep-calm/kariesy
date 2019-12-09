@@ -434,6 +434,16 @@ a.about-num_item {text-decoration:none}
         order: 1;
         margin-bottom: 40px;
     }
+    .pagination-block_right {
+      display: inline-block;
+    }
+    .pagination-block_right .pagination a {
+      min-width: 30px;
+      min-height: 30px;
+    }
+    .pagination-block_right .pagination a:first-child {
+      margin-left: 0;
+    }
 }
 @media screen and (max-width: 900px) {
     .services_item.__full.__main .services_types .services_type-item {
