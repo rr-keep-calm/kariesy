@@ -17,7 +17,8 @@ class SettingsForm extends ConfigFormBase {
     $config = $this->config('services_export.adminsettings');
     $service_type_exclude_saved = $config->get('service_type_exclude');
 
-    $form['link']['#markup'] = '<a href="/services_export_file.xls">Скачать XLS-файл</a>';
+    $randomNumber = rand();
+    $form['link']['#markup'] = '<a href="/services_export_file.xls?' . $randomNumber . '">Скачать XLS-файл</a>';
 
     $tids = [];
     if ($service_type_exclude_saved) {
