@@ -1,0 +1,6 @@
+name: Keep Calm services export
+description: Экспорт всех услуг в XLS
+type: module
+core: 8.x
+version: 1.x
+package: KeepCalm
