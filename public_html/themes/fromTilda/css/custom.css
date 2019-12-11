@@ -690,3 +690,18 @@ a.about-num_item {text-decoration:none}
   margin: 0 auto;
 }
 
+.reviews_image.avatar-exist {
+  margin-left: 19px;
+}
+
+@media screen and (max-width: 1230px) {
+  .reviews_image {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .reviews_image.avatar-exist {
+    margin-left: 0;
+    margin-right: 19px;
+  }
+}
+

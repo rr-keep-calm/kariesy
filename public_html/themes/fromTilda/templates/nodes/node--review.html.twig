@@ -2,7 +2,10 @@
     <div class="reviews_item">
         <div class="reviews_top">
             <div class="reviews_human">
-                <div class="reviews_image">
+                <div class="reviews_image{% if not node.field_avatar.isempty %} avatar-exist{% endif %}">
+                  {% if not node.field_avatar.isempty %}
+                    <img src="{{ file_url(node.field_avatar.entity.fileuri) }}" alt="">
+                  {% endif %}
                 </div>
 
                 <div class="reviews_human-content">
