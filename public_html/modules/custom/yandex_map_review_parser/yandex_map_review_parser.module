@@ -1,6 +1,7 @@
 <?php
 
 use \Drupal\node\Entity\Node;
+Use \Drupal\Core\File\FileSystemInterface;
 
 /**
  * Implements hook_cron().
@@ -9,7 +10,8 @@ function yandex_map_review_parser_cron() {
   $last_run = \Drupal::state()->get('yandex_map_review_parser.last_run', 0);
 
   // If 22 hours passed since last time.
-  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 79200) {
+//  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 79200) {
+  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 0) { // temp
     // Проверяем есть ли информация о том по какой клинике собирать отзывы сейчас
     $clinic_was_parse = \Drupal::state()
       ->get('yandex_map_review_parser.clinic_was_parse', []);
@@ -51,11 +53,13 @@ function yandex_map_review_parser_cron() {
 
     // Получаем все идентификаторы отзывов с Яндекса
     $connection = \Drupal::database();
-    $query = $connection->query("SELECT field_review_id_value FROM node__field_review_id WHERE bundle = 'review'");
+    $query = $connection->query("SELECT field_review_id_value, entity_id FROM node__field_review_id WHERE bundle = 'review'"); // temp
     $review_ids_tmp = $query->fetchAll();
     $review_ids = [];
+    $review_ids_entities = []; // temp
     foreach ($review_ids_tmp as $review_ids_from_db) {
       $review_ids[] = $review_ids_from_db->field_review_id_value;
+      $review_ids_entities[$review_ids_from_db->field_review_id_value] = $review_ids_from_db->entity_id; // temp
     }
 
     foreach ($response['data']['reviews'] as $review) {
@@ -67,9 +71,26 @@ function yandex_map_review_parser_cron() {
       // Если отзыв с таким идентификатором уже есть на сайте, то продолжаем
       // работу со следующим отзывом
       if (in_array($review['reviewId'], $review_ids)) {
+        // Временно нужно сделать так, чтобы обновлялись существующие отзывы.
+        // Добавляем аватарку.
+        // temp start
+        if (isset($review['author']['avatarUrl']) && $review['author']['avatarUrl']) {
+          $avatar_url = str_replace('{size}', 'islands-300', $review['author']['avatarUrl']);
+          $file_data = file_get_contents($avatar_url);
+          $extension = 'jpg';
+          if (strpos($http_response_header[3], 'png') !== false) {
+            $extension = 'png';
+          }
+          $file = file_save_data($file_data, 'public://ya_maps_reviews_avatars/' . $review['reviewId'] . '.' . $extension, FileSystemInterface::EXISTS_REPLACE);
+          $node = Node::load($review_ids_entities[$review['reviewId']]);
+          $node->field_avatar->setValue([
+            'target_id' => $file->id()
+          ]);
+          $node->save();
+        }
+        // temp end
         continue;
       }
-
       // Проверяем чтобы отсутствовали отзывы с точно таким же текстом
       $result = $connection->select('node__field_review_text', 'nfrt')
         ->fields('nfrt', ['entity_id'])
@@ -92,6 +113,18 @@ function yandex_map_review_parser_cron() {
         'field_review_text' => $review['text'],
         'field_review_id' => $review['reviewId'],
       ];
+      if (isset($review['author']['avatarUrl']) && $review['author']['avatarUrl']) {
+        $avatar_url = str_replace('{size}', 'islands-300', $review['author']['avatarUrl']);
+        $file_data = file_get_contents($avatar_url);
+        $extension = 'jpg';
+        if (strpos($http_response_header[3], 'png') !== false) {
+          $extension = 'png';
+        }
+        $file = file_save_data($file_data, 'public://ya_maps_reviews_avatars/' . $review['reviewId'] . '.' . $extension, FileSystemInterface::EXISTS_REPLACE);
+        $nodeCreate['field_avatar'] = [
+          'target_id' => $file->id(),
+        ];
+      }
       if (isset($review['businessComment']['text']) && $review['businessComment']['text']) {
         $nodeCreate['field_answer_text'] = $review['businessComment']['text'];
         $nodeCreate['field_answer_name'] = 'Администрация';
