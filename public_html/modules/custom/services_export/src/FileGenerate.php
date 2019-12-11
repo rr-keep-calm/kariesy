@@ -50,7 +50,7 @@ class FileGenerate {
       }
 
       // Описание
-      $description_value = $service->get('description')->getValue();
+      $description_value = $service->get('field_opisanie_v_spiske_uslug')->getValue();
       $description = '';
       if ($description_value) {
         $description = strip_tags(reset($description_value)['value']);
