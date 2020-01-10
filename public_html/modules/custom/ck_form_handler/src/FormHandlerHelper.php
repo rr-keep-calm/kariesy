@@ -439,6 +439,10 @@ class FormHandlerHelper {
 
         // Формируем тело письма
         $bot_message = "{$this->formData['fio']} оставил(а) отзыв на сайте.\n\n";
+        $doctor_node = Node::load($this->formData['doctor']);
+        $doctor_name = $doctor_node->getTitle();
+        $bot_message .= "О враче - $doctor_name.\n\n";
+
         $this->message = "{$this->formData['fio']} оставил(а) отзыв на сайте {$origin}.\n\n";
 
         $bot_message .= "Текст отзыва:\n";
