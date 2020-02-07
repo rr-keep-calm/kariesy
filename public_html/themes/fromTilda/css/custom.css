@@ -1,9 +1,8 @@
 @font-face {
-  font-family: 'als_rubl';
-  src: url('../fonts/rouble-webfont.eot');
-  src: url('../fonts/rouble-webfont.eot?#iefix') format('embedded-opentype'),
-  url('../fonts/rouble-webfont.woff') format('woff'),
-  url('../fonts/rouble-webfont.svg#als_rublregular') format('svg');
+  font-family: 'vrubel';
+  src: url('../fonts/vrubel.eot');
+  src: url('../fonts/vrubel.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/vrubel.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -673,11 +672,11 @@ a.about-num_item {text-decoration:none}
 }
 
 .price_sign {
-  font: 20px 'als_rubl';
+  font: 20px 'vrubel';
 }
 
 .services_base-text p .price_sign {
-  font: 24px 'als_rubl';
+  font: 24px 'vrubel';
   color: #2299d2;
  }
 
