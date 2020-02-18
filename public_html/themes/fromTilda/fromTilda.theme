@@ -425,6 +425,17 @@ function fromTilda_preprocess_node(&$variables){
       }
     }
   }
+
+  if ($variables['node']->getType() == 'stock') {
+    $price_for_stock = $variables['node']->get('field_price_from_list')->getValue();
+    if ($price_for_stock) {
+      $priceNode = \Drupal\node\Entity\Node::load($price_for_stock[0]["target_id"]);
+      $variables['price_for_stock'] =  $priceNode->get('field_cena')->getValue()[0]['value'];
+      $variables['price_for_stock_from'] =  $priceNode->get('field_price_from')->getValue()[0]['value'];
+      $variables['price_for_stock_field_old_price'] =  $priceNode->get('field_old_price')->getValue()[0]['value'];
+      $variables['price_for_stock_field_price_to'] =  $priceNode->get('field_price_to')->getValue()[0]['value'];
+    }
+  }
 }
 
 function fromTilda_preprocess_views_view(&$variables){

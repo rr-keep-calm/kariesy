@@ -55,5 +55,27 @@
       </div>
     </div>
 
+    {% if price_for_stock is defined %}
+      <div>
+        {% if price_for_stock_field_old_price %}
+          <span class="price_old">
+            {{ price_for_stock_field_old_price }}
+          </span>
+        {% endif %}
+        <span class="price_num">
+          {% if price_for_stock_from == '1' or price_for_stock_field_price_to %}
+            <span class="price-from">от</span>
+          {% endif %}
+          {{ price_for_stock }}
+        </span>
+        <span class="price_sign">руб.</span>
+        {% if price_for_stock_field_price_to %}
+          <span class="price_num">
+              <span class="price-to">до</span> {{ price_for_stock_field_price_to }}
+          </span>
+          <span class="price_sign">руб.</span>
+        {% endif %}
+      </div>
+    {% endif %}
   </article>
 {% endif %}
