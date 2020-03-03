@@ -751,3 +751,8 @@ a.about-num_item {text-decoration:none}
   background-color: #ffffff;
 }
 
+.article_author {
+  font: 14px/25px 'OpenSansLight';
+  font-weight: bold;
+}
+

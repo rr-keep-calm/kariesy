@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Url;
+use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Transliteration\PhpTransliteration;
 use Drupal\views\Views;
@@ -213,7 +214,7 @@ function fromTilda_preprocess_page(&$variables) {
     $clinicNids = \Drupal::entityQuery('node')
       ->condition('type', 'clinic')
       ->execute();
-    $clinicNodes = \Drupal\node\Entity\Node::loadMultiple($clinicNids);
+    $clinicNodes = Node::loadMultiple($clinicNids);
     foreach ($clinicNodes as $clinicNode) {
       $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
     }
@@ -288,7 +289,7 @@ function fromTilda_preprocess_page(&$variables) {
     ->condition('type','doktor')
     ->condition('status', 1)
     ->execute();
-  $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+  $doctorsNodes =  Node::loadMultiple($nids);
   $variables['doctors'] = [];
   $variables['serviceTypesAll']['i_do_not_know']['name'] = 'Не знаю';
   foreach ($doctorsNodes as $node) {
@@ -387,7 +388,7 @@ function fromTilda_preprocess_node(&$variables){
         array_walk($value, function(&$clinik, $key){
           if ($key != 'start' && $key != 'end' && $clinik) {
             // Составляем ссылки на страницы клиник
-            $nodeClinic = \Drupal\node\Entity\Node::load($clinik);
+            $nodeClinic = Node::load($clinik);
             $url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $nodeClinic->id()]);
             $clinik = ['name' => $nodeClinic->getTitle(), 'url' => $url->toString()];
           }
@@ -406,7 +407,7 @@ function fromTilda_preprocess_node(&$variables){
       ->condition('type','doktor')
       ->condition('status', 0)
       ->execute();
-    $unpublishedDoctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $unpublishedDoctorsNodes =  Node::loadMultiple($nids);
     $variables['unpublishedDoctors'] = [];
     foreach ($unpublishedDoctorsNodes as $node) {
       $variables['unpublishedDoctors'][$node->id()] = $node->getTitle();
@@ -419,7 +420,7 @@ function fromTilda_preprocess_node(&$variables){
     if ($review_id && $review_id[0]['value']) {
       $clinik_nid = $variables['node']->get('field_clinic')->getValue();
       if ($clinik_nid) {
-        $clinik_node = \Drupal\node\Entity\Node::load($clinik_nid[0]['target_id']);
+        $clinik_node = Node::load($clinik_nid[0]['target_id']);
         $variables['clinik_yandex_map_id'] = $clinik_node->get('field_yandex_map_business_id')
           ->getValue()[0]['value'];
       }
@@ -429,11 +430,21 @@ function fromTilda_preprocess_node(&$variables){
   if ($variables['node']->getType() == 'stock') {
     $price_for_stock = $variables['node']->get('field_price_from_list')->getValue();
     if ($price_for_stock) {
-      $priceNode = \Drupal\node\Entity\Node::load($price_for_stock[0]["target_id"]);
+      $priceNode = Node::load($price_for_stock[0]["target_id"]);
       $variables['price_for_stock'] =  $priceNode->get('field_cena')->getValue()[0]['value'];
       $variables['price_for_stock_from'] =  $priceNode->get('field_price_from')->getValue()[0]['value'];
       $variables['price_for_stock_field_old_price'] =  $priceNode->get('field_old_price')->getValue()[0]['value'];
       $variables['price_for_stock_field_price_to'] =  $priceNode->get('field_price_to')->getValue()[0]['value'];
+    }
+  }
+
+  if ($variables['node']->getType() == 'article') {
+    $auhor_doctor_nid = $variables['node']->get('field_article_author')->target_id;
+    if ($auhor_doctor_nid) {
+      $author_node = Node::load($auhor_doctor_nid);
+      $variables['article_author_name'] = $author_node->getTitle();
+      $variables['article_author_nid'] = $author_node->id();
+      $variables['article_author_specializations'] = $author_node->get('field_specialization')->getValue();
     }
   }
 }
@@ -449,7 +460,7 @@ function fromTilda_preprocess_views_view(&$variables){
       ->condition('type','doktor')
       ->condition('status', 1)
       ->execute();
-    $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $doctorsNodes =  Node::loadMultiple($nids);
     $translitiration = new PhpTransliteration();
     $allSpecializations = [];
     $allClinics = [];
@@ -468,7 +479,7 @@ function fromTilda_preprocess_views_view(&$variables){
           array_walk($value, function(&$clinik, $key) use($translitiration, &$allClinics){
             if ($key != 'start' && $key != 'end' && $clinik) {
               // Составляем ссылки на страницы клиник
-              $nodeClinic = \Drupal\node\Entity\Node::load($clinik);
+              $nodeClinic = Node::load($clinik);
               $name = $nodeClinic->getTitle();
               $clinicKey = str_replace(' ', '_', $translitiration->transliterate($name, 'en', '_'));
               $allClinics[$clinicKey] = $name;
@@ -490,7 +501,7 @@ function fromTilda_preprocess_views_view(&$variables){
       ->condition('type','review')
       ->condition('status', 1)
       ->execute();
-    $reviewNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $reviewNodes =  Node::loadMultiple($nids);
     $allDoctors = [];
     $allClinics = [];
     foreach ($reviewNodes as $review) {
@@ -504,13 +515,13 @@ function fromTilda_preprocess_views_view(&$variables){
       }
     }
 
-    $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($allDoctors);
+    $doctorsNodes =  Node::loadMultiple($allDoctors);
     $allDoctors = [];
     foreach ($doctorsNodes as $doctor) {
       $allDoctors[$doctor->id()] = $doctor->getTitle();
     }
 
-    $clinicsNodes =  \Drupal\node\Entity\Node::loadMultiple($allClinics);
+    $clinicsNodes =  Node::loadMultiple($allClinics);
     $allClinics = [];
     foreach ($clinicsNodes as $clinic) {
       $allClinics[$clinic->id()] = $clinic->getTitle();
@@ -537,7 +548,7 @@ function fromTilda_preprocess_block(&$variables) {
       ->condition('type','doktor')
       ->condition('status', 1)
       ->execute();
-    $doctorsNodes =  \Drupal\node\Entity\Node::loadMultiple($nids);
+    $doctorsNodes =  Node::loadMultiple($nids);
     $variables['doctors'] = [];
     foreach ($doctorsNodes as $node) {
       $variables['doctors'][$node->id()] = $node->getTitle();
@@ -548,7 +559,7 @@ function fromTilda_preprocess_block(&$variables) {
       ->condition('type', 'clinic')
       ->condition('status', 1)
       ->execute();
-    $clinicNodes = \Drupal\node\Entity\Node::loadMultiple($clinicNids);
+    $clinicNodes = Node::loadMultiple($clinicNids);
     foreach ($clinicNodes as $clinicNode) {
       $variables['clinics'][$clinicNode->id()] = $clinicNode->getTitle();
     }
@@ -621,7 +632,7 @@ function fromTilda_preprocess_paragraph(&$variables) {
   if (isset($variables['content']['field_doctor'])) {
     $doctorId = $variables['paragraph']->get('field_doctor')
       ->getValue()[0]['target_id'];
-    $node = \Drupal\node\Entity\Node::load($doctorId);
+    $node = Node::load($doctorId);
     $specializations = $node->get('field_specialization')->getValue();
     $specializations = array_map(function ($v) {
       return $v['value'];
@@ -631,5 +642,12 @@ function fromTilda_preprocess_paragraph(&$variables) {
 
   if (isset($variables['content']['field_answer'])) {
     $variables['q_a_url'] = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $variables['paragraph']->getParentEntity()->id()]);
+  }
+}
+
+function fromTilda_preprocess_pager(&$variables) {
+  $variables['add_selector'] = '';
+  if (\Drupal::routeMatch()->getRouteName() === 'view.articles.page_1') {
+    $variables['add_selector'] = ' views-articles-list';
   }
 }
