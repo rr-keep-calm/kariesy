@@ -704,3 +704,50 @@ a.about-num_item {text-decoration:none}
   }
 }
 
+.services_item.article_item {
+  padding: 0;
+}
+
+.services_item.article_item {
+  width: 32.1%;
+}
+
+.services_item.article_item img{
+  width: 100%
+}
+
+.services_item.article_item .article_item_inner{
+  padding: 15px 25px;
+}
+.views-articles-list .pagination-block_right {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1230px) {
+  .services_item.article_item {
+    width: 49.1%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .services_item.article_item {
+    width: 100%;
+  }
+}
+
+.contact_me_wrapper {
+  display: flex;
+}
+
+.contact_me_wrapper span {
+  font: 14px 'OpenSansLight';
+}
+
+.form_input.contact_me {
+  width: 19px;
+  height: 19px;
+  border: 1px solid #d6d6d6;
+  margin-right: 0.2em;
+  background-color: #ffffff;
+}
+
