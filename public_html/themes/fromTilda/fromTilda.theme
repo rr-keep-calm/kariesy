@@ -110,6 +110,11 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
     $suggestions[] = 'page__views__question';
   }
 
+  // Определяем отдельный шаблон для страницы списка статей
+  if ($route_name == 'view.articles.page_1') {
+    $suggestions[] = 'page__views__articles';
+  }
+
   $request = \Drupal::request();
   if ($exception = $request->attributes->get('exception')) {
     $status_code = $exception->getStatusCode();
@@ -356,6 +361,24 @@ function fromTilda_preprocess_page(&$variables) {
       if (!$node->field_image->isEmpty()) {
         $uri = $node->field_image->entity->getFileUri();
         $variables['centralClinic']['img'] = file_create_url($uri);
+      }
+    }
+  }
+
+  // Если обращаются к странице со списком статей, то получаем все теги
+  if ($view_id === 'articles') {
+    $articlesNids = \Drupal::entityQuery('node')
+      ->condition('type', 'article');
+    $articlesNids = $articlesNids->execute();
+    if ($articlesNids) {
+      $articlesNodes =  Node::loadMultiple($articlesNids);
+      foreach ($articlesNodes as $article) {
+        $tags = $article->get('field_tags')->getValue();
+        foreach ($tags as $tag) {
+          if (!isset($variables['tags'][$tag['target_id']])) {
+            $variables['tags'][$tag['target_id']] = Term::load($tag['target_id'])->name->value;
+          }
+        }
       }
     }
   }

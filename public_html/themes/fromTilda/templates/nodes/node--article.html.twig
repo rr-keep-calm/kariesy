@@ -33,7 +33,7 @@
     {{ title_suffix }}
 
     <div{{ content_attributes }}>
-      {{ content|without('field_article_author') }}
+      {{ content|without('field_article_author', 'field_tags') }}
     </div>
     {% if article_author_name is defined %}
       <div class="article_author">
@@ -41,5 +41,10 @@
         <div><a href="/stati?author={{ article_author_nid }}">{{ article_author_name }}</a>{% if article_author_specializations %}, врач {% for specialization in article_author_specializations %}{{ specialization.value }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</div>
       </div>
     {% endif %}
+    <div class="tags">
+      {% for tag in node.field_tags %}
+        <a href="/stati?tags={{ tag.entity.name.value }}">{{ tag.entity.name.value }}</a>
+      {% endfor %}
+    </div>
   </article>
 {% endif %}

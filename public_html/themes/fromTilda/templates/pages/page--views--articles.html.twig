@@ -1,0 +1,29 @@
+{% extends  "page.html.twig" %}
+
+{% block globalContent %}
+  {% set current_url = url('<current>') %}
+  <div class="content{% block additionalContentClass %}{% endblock %}">
+    <div class="top __1{{'stati' in current_url|render|render ? ' fix_top__1' : ''}}">
+      <div class="wrapper">
+        {{ page.breadcrumbs }}
+        <h1>{{ page.header }}</h1>
+      </div>
+      {% if tags is defined %}
+        <div class="wrapper tags">
+          {% for tag in tags %}
+            <a href="/stati?tags={{ tag }}">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% block content %}
+      <div class="content_main __min">
+        <div class="wrapper">
+          <div class="page">
+            {{ page.content }}
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+  </div>
+{% endblock %}
