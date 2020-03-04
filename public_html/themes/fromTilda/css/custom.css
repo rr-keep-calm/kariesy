@@ -123,7 +123,7 @@
 .akcii .services_item .services_header .services_base-text .ended {color:red}
 .page .sale-ended {font:16px/20px 'OpenSansSemiBold';color:red}
 
-.page ol li, .service-detail_block ol li {font:14px/25px 'OpenSansLight'}
+.service-detail_block ol li {font:14px/25px 'OpenSansLight'}
 
 /* Статьи */
 .page .flex-wrapper {
@@ -557,6 +557,11 @@ a.about-num_item {text-decoration:none}
 .page p.ended {
   color: red;
 }
+
+.page ol li, .page ul li, .page p, .page a {font:18px/30px 'OpenSansLight'}
+.page ul li:not(:last-child) {margin-bottom:15px}
+.page a:hover {color:#f41224;text-decoration:underline}
+.page ul li:before {top:15px}
 
 .form_input,
 .select2-container--default .select2-selection--single .select2-selection__rendered,
