@@ -763,3 +763,5 @@ a.about-num_item {text-decoration:none}
 
 .page_table {margin-bottom:20px}
 
+.price_types a {margin-right:30px}
+.price_types li:first-of-type {margin-bottom:15px}
