@@ -1,0 +1,50 @@
+{% if (view_mode == 'teaser') %}
+  <div class="services_item article_item">
+    {% if not content.field_image.isEmpty() %}
+      <div class="article_image">
+        <a class="services_link" href="{{ url }}">
+          <img src="{{ file_url(node.field_article_image.entity.fileuri) }}" alt="">
+        </a>
+      </div>
+    {% endif %}
+    <div class="article_item_inner">
+      <header class="services_header"><div class="services_left">
+          <div class="services_base-text">
+            <div class="h4"><a href="{{ url }}">{{ label }}</a></div>
+          </div>
+        </div>
+      </header>
+      <div class="services_text">
+        {{ node.body.summary }}
+        <div class="services_mobile">
+          <a class="services_link" href="{{ url }}">подробнее</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <article>
+    {{ title_prefix }}
+    {% if not page %}
+      <h2{{ title_attributes }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+
+    <div{{ content_attributes }}>
+      {{ content|without('field_article_author', 'field_tags') }}
+    </div>
+    {% if article_author_name is defined %}
+      <div class="article_author">
+        <div>Автор статьи:</div>
+        <div><a href="/stati?author={{ article_author_nid }}">{{ article_author_name }}</a>{% if article_author_specializations %}, врач {% for specialization in article_author_specializations %}{{ specialization.value }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</div>
+      </div>
+    {% endif %}
+    <div class="tags">
+      {% for tag in node.field_tags %}
+        <a href="/stati?tags={{ tag.entity.name.value }}">{{ tag.entity.name.value }}</a>
+      {% endfor %}
+    </div>
+  </article>
+{% endif %}

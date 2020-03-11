@@ -23,59 +23,43 @@
     </div>
   </div>
 {% else %}
-  <article>
-
-    {{ title_prefix }}
-    {% if not page %}
-      <h2{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h2>
-    {% endif %}
-    {{ title_suffix }}
-
-    {% if display_submitted %}
-      <footer>
-        {{ author_picture }}
-        <div{{ author_attributes }}>
-          {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-          {{ metadata }}
-        </div>
-      </footer>
-    {% endif %}
-
-    <div{{ content_attributes }}>
-      <div property="schema:text">
-        {{ node.field_stock_text.value|raw }}
-        {% set stock_date_end_parts = node.field_date_stock_end.value|raw|split('-') %}
-        {% if (stock_date_end_parts[0] < "now"|date("Y") or stock_date_end_parts[1] < "now"|date("m") or stock_date_end_parts[2] < "now"|date("d")) %}
-          <p class="ended">акция закончилась</p>
-        {% else %}
-          <p>срок действия акции до {{ stock_date_end_parts[2] }}.{{ stock_date_end_parts[1] }}.{{ stock_date_end_parts[0] }}</p>
+  {% if content.field_stock_oblozhka['#items'].entity.uri.value is not empty or content.field_stock_description|render is not empty %}
+    <div class="stock-detail_top"
+         style="background-image: url({{ file_url(content.field_stock_oblozhka['#items'].entity.uri.value) }})">
+      <div class="wrapper">
+        <img class="stock-detail_top-image" src="{{ file_url(content.field_oblozhka['#items'].entity.uri.value) }}"
+             alt="">
+        {% if content.field_stock_description|render %}
+          <div class="stock-detail_about">
+            {{ content.field_stock_description }}
+          </div>
         {% endif %}
       </div>
     </div>
-
-    {% if price_for_stock is defined %}
-      <div>
-        {% if price_for_stock_field_old_price %}
-          <span class="price_old">
-            {{ price_for_stock_field_old_price }}
-          </span>
-        {% endif %}
-        <span class="price_num">
-          {% if price_for_stock_from == '1' or price_for_stock_field_price_to %}
-            <span class="price-from">от</span>
-          {% endif %}
-          {{ price_for_stock }}
-        </span>
-        <span class="price_sign">руб.</span>
-        {% if price_for_stock_field_price_to %}
-          <span class="price_num">
-              <span class="price-to">до</span> {{ price_for_stock_field_price_to }}
-          </span>
-          <span class="price_sign">руб.</span>
-        {% endif %}
+  {% endif %}
+  {% if stock_price is defined %}
+    <div class="stock-detail_price">
+      <div class="wrapper">
+        <div class="stock-detail_heading">
+          <h2>{{ content.field_stock_zagolovok_bloka_cen|render|striptags }}</h2>
+          <a href="/price{{ stock_price_last_part_url is defined ? '/' ~ stock_price_last_part_url : '' }}"
+             class="stock-detail_more">Прайс-лист на все услуги</a>
+        </div>
+        {{ stock_price }}
+        <div class="stock-detail_only-mobile">
+          <a href="/price{{ stock_price_last_part_url is defined ? '/' ~ stock_price_last_part_url : '' }}"
+             class="stock-detail_more">Прайс-лист на все услуги</a>
+        </div>
       </div>
-    {% endif %}
-  </article>
+    </div>
+  {% endif %}
+  {% if content.field_stock_text|render %}
+    <div class="service-detail_block full-width-item-wrapper">
+      <div class="wrapper">
+        <div class="service-detail_row">
+          {{ content.field_stock_text }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endif %}

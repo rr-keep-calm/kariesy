@@ -7,7 +7,7 @@ $(document).ready(function () {
     /* Идентификаторы форм записи на приём */
     orderFormsId: '#form-order, #form-order-doctor-page, #form-order-doctor-page-popup-form',
     /* Идентификаторы форм отзывов */
-    reviewFormsId: '#review-form-on-doctor-page, #review-form-on-clinic-page',
+    reviewFormsId: '#review-form-on-doctor-page, #review-form-on-clinic-page, #review-form-on-stock-page',
     formProcessPool: {},
     formData: false,
     fileReader: new FileReader(),
@@ -143,6 +143,7 @@ $(document).ready(function () {
                 formId === 'review-form-on-doctor-page'
                 || formId === 'review-form-on-clinic-page'
                 || formId === 'review-form-on-service-page'
+                || formId === 'review-form-on-stock-page'
               ) {
                 let files = $("#photos").prop("files");
                 if (files.length > 0) {
@@ -592,6 +593,7 @@ $(document).ready(function () {
           }
           let id = $(form).attr('id');
           this.formProcessPool[id] = false;
+          this.photoIsReady = false;
         }
       });
     },

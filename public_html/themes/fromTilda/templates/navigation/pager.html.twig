@@ -32,7 +32,7 @@
 {% if items %}
     {# Получаем номер последней страницы #}
     {% set lastPageNumber = (items.last.href|split('&')|last|split('=')|last + 1) %}
-    <div class="pagination-block answer_bottom">
+    <div class="pagination-block answer_bottom{{ add_selector }}">
         <div class="pagination-block_right">
             <div class="pagination">
                 {# Print previous item if we are not on the first page. #}
