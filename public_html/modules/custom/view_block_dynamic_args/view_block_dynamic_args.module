@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
@@ -62,28 +63,41 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
       }
       break;
     case 'reviews':
-      if ($display_id !== 'block_2') {
+      if ($display_id !== 'block_2' && $display_id !== 'block_3') {
         return;
       }
       if (\Drupal::routeMatch()
           ->getRouteName() == 'entity.taxonomy_term.canonical' ||
         strpos(\Drupal::routeMatch()
-          ->getRouteName(), 'view.services_page') === 0) {
+          ->getRouteName(), 'view.services_page') === 0 ||
+        \Drupal::routeMatch()->getRouteName() == 'entity.node.canonical'
+      ) {
         $tid_argument = 'all';
         $nids_argument = 'all';
         $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term');
+        $nid = \Drupal::routeMatch()->getRawParameter('node');
         // Если не удалось  определить идентификатор термина, то мы на странице
-        // типа услуги, а значит формируем аргумент множественного типа
+        // типа услуги или акции, а значит формируем аргумент множественного
+        // типа
         if (!$tid) {
-          $router = \Drupal::routeMatch()->getRouteName();
-          $parent_view = Views::getView('services_page');
-          $router_parts = explode('.', $router);
-          $parent_display = end($router_parts);
-          $parent_view->setDisplay($parent_display);
-          $parent_display_params = $parent_view->getDisplay();
-          $parent_tid = reset($parent_display_params->display['display_options']['filters']['field_service_type_target_id']['value']);
-          if (!$parent_tid) {
-            return;
+          if (!$nid) {
+            $router = \Drupal::routeMatch()->getRouteName();
+            $parent_view = Views::getView('services_page');
+            $router_parts = explode('.', $router);
+            $parent_display = end($router_parts);
+            $parent_view->setDisplay($parent_display);
+            $parent_display_params = $parent_view->getDisplay();
+            $parent_tid = reset($parent_display_params->display['display_options']['filters']['field_service_type_target_id']['value']);
+            if (!$parent_tid || $parent_display_params->display['id'] != $parent_display) {
+              return;
+            }
+          } else { // Блок отзывов для страницы акции
+            $stock_node = Node::load($nid);
+            $service_type = $stock_node->get('field_service_type2')->getValue();
+            if (!$service_type) {
+              return;
+            }
+            $parent_tid = $service_type[0]['target_id'];
           }
           $tids = \Drupal::entityTypeManager()
             ->getStorage('taxonomy_term')
@@ -109,7 +123,7 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
             ->condition('status', 1)
             ->execute();
           if (count($reviews) >= 3) {
-            $tid_argument = $tid;
+            $tid_argument = $tid ?? $tid_argument;
           }
           else {
             // Получаем типы услуг для услуг, к которым не хватает отзывов
@@ -129,7 +143,9 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
             // услуга не отнесена к какому-то типу услуги и каким-то образом мы
             // попали на страницу этой услуги, что маловероятно, поэтому
             // проверки никакой нет
-            $query->condition('nflst.field_list_service_type_target_id', $service_type_tids, 'IN');
+            if ( $service_type_tids) {
+              $query->condition('nflst.field_list_service_type_target_id', $service_type_tids, 'IN');
+            }
 
             $query->condition('nfd.status', 1);
             $query->range(0, 3 - count($nids));
@@ -144,6 +160,7 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
             $results = $query->distinct()->execute()->fetchCol();
             $nids += $results;
             $nids_argument = implode('+', $nids);
+            $tid_argument = 'all';
           }
         }
       }

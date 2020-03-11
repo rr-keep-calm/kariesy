@@ -382,7 +382,10 @@ class FormHandlerHelper {
 
   protected function reviewHandle() {
     // Проверяем что были переданы все праметры
-    if (!isset($this->formData['fio'], $this->formData['review-text']) ||
+    if (!isset($this->formData['fio'],
+        $this->formData['review-text'],
+        $this->formData['phone']
+      ) ||
       empty($this->formData['fio']) ||
       empty($this->formData['review-text'])
     ) {
@@ -438,7 +441,14 @@ class FormHandlerHelper {
         $origin = $request->headers->get('origin');
 
         // Формируем тело письма
-        $bot_message = "{$this->formData['fio']} оставил(а) отзыв на сайте.\n\n";
+        $phone = preg_replace('/\D/', '', $this->formData['phone']);
+        $phone = $phone[0] !== '7' ? $phone : '+' . $phone;
+        $bot_message = "{$this->formData['fio']} оставил(а) отзыв на сайте.\n";
+        $bot_message .= "Телефон для связи {$phone}\n";
+        if (isset($this->formData['contact_me']) && $this->formData['contact_me'] === 'on') {
+          $bot_message .= "Человек просит с ним связаться!\n";
+        }
+        $bot_message .= "\n";
         $doctor_node = Node::load($this->formData['doctor']);
         $doctor_name = $doctor_node->getTitle();
         $bot_message .= "О враче - $doctor_name.\n\n";
