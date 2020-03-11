@@ -141,7 +141,7 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
       $childTerms = implode(',', $childTerms);
 
       // Получаем блок со вложенными услугами
-      $view = \Drupal\views\Views::getView('sub_service');
+      $view = Views::getView('sub_service');
       $view->setDisplay('block_1');
       $view->setArguments(array($childTerms));
       $render = $view->render();
@@ -150,7 +150,7 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
       }
 
       // Получаем блок с ценами на услуги заболеваний
-      $view = \Drupal\views\Views::getView('blok_cen_na_stranice_uslugi');
+      $view = Views::getView('blok_cen_na_stranice_uslugi');
       $view->setDisplay('block_1');
       $view->setArguments(array($term->id()));
       $render = $view->render();
@@ -165,6 +165,37 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
           $translitiration = new PhpTransliteration();
           $last_part_url = strtolower(str_replace(' ', '_', $translitiration->transliterate($service_type_name, 'en', '_')));
           $vars['service_price_last_part_url'] = $last_part_url;
+        }
+      }
+    }
+  }
+}
+
+function fromTilda_theme_suggestions_node_alter(&$suggestions, &$vars, $hook) {
+  static $wasRenderForThisNid = [];
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.node.canonical' && $nid = \Drupal::routeMatch()->getRawParameter('node')) {
+    if (in_array($nid, $wasRenderForThisNid)) {
+      return;
+    }
+    $wasRenderForThisNid[] = $nid;
+    $node = Node::load($nid);
+    if ($node->getType() == 'stock') {
+      $price = $node->get('field_price_from_list')->getValue();
+      if ($price) {
+        // Получаем блок с ценами на услуги заболеваний
+        $view = Views::getView('blok_cen_na_stranice_akcii');
+        $view->setDisplay('block_1');
+        $view->setArguments([$price[0]['target_id']]);
+        $vars['stock_price'] = \Drupal::service('renderer')->render($view->render());
+
+        // Формируем заключительную часть ссылки на нужную страницу прайса
+        $service_type = $node->get('field_service_type2')->getValue();
+        if (isset($service_type[0]) && isset($service_type[0]['target_id'])) {
+          $service_type = Term::load($service_type[0]['target_id']);
+          $service_type_name = $service_type->name->value;
+          $translitiration = new PhpTransliteration();
+          $last_part_url = strtolower(str_replace(' ', '_', $translitiration->transliterate($service_type_name, 'en', '_')));
+          $vars['stock_price_last_part_url'] = $last_part_url;
         }
       }
     }
@@ -205,6 +236,11 @@ function fromTilda_preprocess_page(&$variables) {
       $variables['doctorName'] = $node->get('title')->getValue()[0]['value'];
     } elseif ($node->getType() == 'clinic') {
       $variables['defaultClinic'] = $clinicNidForReviews = $node->id();
+    } elseif ($node->getType() == 'stock') {
+      $hide_free_consult_block = $node->get('field_hide_free_consult_block')->getValue();
+      if ($hide_free_consult_block) {
+        $variables['hideFreeConsultBlock'] = (bool) $hide_free_consult_block[0]['value'];
+      }
     }
   }
 
@@ -239,7 +275,7 @@ function fromTilda_preprocess_page(&$variables) {
         $variables['current_nid'] = $clinicNidForReviews;
       }
       $reviewsNids = $reviewsNids->execute();
-      $viewReviews = \Drupal\views\Views::getView('reviews');
+      $viewReviews = Views::getView('reviews');
       $viewReviews->setDisplay('block_1');
       $viewReviews->setArguments([implode('+', $reviewsNids)]);
       $renderReviews = $viewReviews->render();
@@ -266,7 +302,7 @@ function fromTilda_preprocess_page(&$variables) {
   }
   if (strpos(\Drupal::routeMatch()->getRouteName(), 'view.services_page') === 0) {
     $router = \Drupal::routeMatch()->getRouteName();
-    $parent_view = \Drupal\views\Views::getView('services_page');
+    $parent_view = Views::getView('services_page');
     $router_parts = explode('.', $router);
     $parent_display = end($router_parts);
     $parent_view->setDisplay($parent_display);
@@ -565,8 +601,11 @@ function fromTilda_preprocess_views_view(&$variables){
  * Implements hook_preprocess().
  */
 function fromTilda_preprocess_block(&$variables) {
-  if ($variables['configuration']['id'] === 'views_block:reviews-block_2') {
+  if ($variables['configuration']['id'] === 'views_block:reviews-block_2' ||
+    $variables['configuration']['id'] === 'views_block:reviews-block_3'
+  ) {
     // Получаем список всех докторов.
+    // Попутно сохраняя список оказываемых доктором услуг.
     $nids = \Drupal::entityQuery('node')
       ->condition('type','doktor')
       ->condition('status', 1)
@@ -574,7 +613,25 @@ function fromTilda_preprocess_block(&$variables) {
     $doctorsNodes =  Node::loadMultiple($nids);
     $variables['doctors'] = [];
     foreach ($doctorsNodes as $node) {
-      $variables['doctors'][$node->id()] = $node->getTitle();
+      $doctorNid = $node->id();
+      $variables['doctors'][$doctorNid] = $node->getTitle();
+
+      // Сохраняем клиники в которых работает доктор (используется на форме отзывов для актуализации клиник)
+      $schedule = $node->get('field_schedule')->getValue();
+      if (isset($schedule[0]['value']) && $schedule[0]['value']) {
+        $schedule = json_decode($schedule[0]['value'], TRUE);
+      }
+      if (!$schedule || !is_array($schedule)) {
+        continue;
+      }
+      foreach ($schedule as $value) {
+        foreach ($value as $key => $clinik) {
+          if ($key == 'start' || $key == 'end' || !$clinik) {
+            continue;
+          }
+          $variables['doctors_clinic'][$doctorNid][(int)$clinik] = (int)$clinik;
+        }
+      }
     }
 
     $variables['clinics'] = [];
