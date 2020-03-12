@@ -1,0 +1,149 @@
+{% extends  "page.html.twig" %}
+
+{% block globalContent %}
+  {% set current_url = url('<current>') %}
+  <div class="content{% block additionalContentClass %}{% endblock %}">
+    <div class="top __1{{'stati' in current_url|render|render ? ' fix_top__1' : ''}}">
+      <div class="wrapper">
+        {{ page.breadcrumbs }}
+        <h1>{{ page.header }}</h1>
+      </div>
+    </div>
+    {% block content %}
+      <div class="content_main __min">
+        <div class="wrapper">
+          <div class="page">
+            {{ page.content }}
+          </div>
+          <div class="clinics_contacts">
+            <div class="clinics_contacts-item">
+              <header class="clinics_header __small">
+                <h2>Наши клиники в Москве</h2>
+              </header>
+              <div class="clinics_city-text __small">Мы находимся у станций <br>метро Медведково и Бабушкинская</div>
+            </div>
+            <div class="clinics_contacts-item">
+              <div class="clinics_header __small">
+                <h2>График работы клиник</h2>
+              </div>
+
+              <div class="clinics_time">
+                <div class="clinics_time-item">
+                  <div class="clinics_day">Понедельник-пятница</div>
+                  <div class="clinics_hour">9:00 – 21:00</div>
+                </div>
+                <div class="clinics_time-item">
+                  <div class="clinics_day">Суббота-воскресенье</div>
+                  <div class="clinics_hour">10:00 – 18:00</div>
+                </div>
+              </div>
+            </div>
+            <div class="clinics_contacts-item">
+              <div class="clinics_header __small">
+                <h2>Единый телефон</h2>
+              </div>
+
+              <div class="clinics_call">
+                <a href="tel:+74951048350" class="clinics_tel">+7 (495) 104-83-50</a>
+
+                <a href="#form-recall" class="clinics_recall popup">Заказать звонок</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clinics_map-container __offset-top">
+          <div
+            class="clinics_map __normal ya-map-container"
+            id="map-on-contacts"
+            data-ym_center="55.885170076293896,37.66451159802244"
+            data-ym_coords="55.89228906885038,37.67481300000002|||55.875657068867326,37.644431999999995|||55.87933856884694,37.64605799999998"
+            data-ym_balloon_content="Россия, Москва, Осташковская улица, 30|||Россия, Москва, проезд Шокальского, 11|||Россия, Москва, проезд Шокальского, 20"
+          ></div>
+        </div>
+      </div>
+    {% endblock %}
+  </div>
+{% endblock %}
+
+
+{#
+{% block globalContent %}
+    <div class="content">
+        <div class="top __1 __border-none">
+            <div class="wrapper">
+                {{ page.breadcrumbs }}
+                <h1>{{ page.header }}</h1>
+            </div>
+        </div>
+
+        <div class="content_main">
+            <div class="wrapper">
+                <div class="all-clinic">
+                    <div class="all-clinic_carts-clone"></div>
+                </div>
+            </div>
+
+            <div class="wrapper">
+                <div class="content_row">
+                    <div class="content_left">
+                        <div class="all-clinic">
+                            <div class="all-clinic_carts">
+                                <div class="all-clinic_cart">
+                                    <div class="all-clinic_cart-title">Единый телефон</div>
+                                    <a href="tel:+74952042552" class="all-clinic_cart-phone">+7 (495) 204-25-52</a>
+                                    <a href="#form-recall" class="all-clinic_cart-link popup">Заказать звонок</a>
+                                </div>
+                                <div class="all-clinic_cart">
+                                    <div class="all-clinic_cart-title">График работы клиник</div>
+                                    <div class="all-clinic_cart-day">понедельник-пятница — <strong>с 9:00 до 21:00</strong></div>
+                                    <div class="all-clinic_cart-day">суббота и воскресенье — <strong>с 10:00 до 18:00</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="all-clinic_content">
+                                <div class="clinics ">
+                                    {% if centralClinic is defined %}
+                                        <div class="clinics_content __base __base-2">
+                                            <h2>Центральная клиника</h2>
+
+                                            <div class="clinics_items">
+                                                <div class="clinics_item">
+                                                    <div class="clinics_heading">{{ centralClinic.title|raw }}</div>
+
+                                                    <div class="clinics_item-content">
+                                                        <div class="clinics_image">
+                                                            {% if centralClinic.img is defined  %}
+                                                                <img src="{{ centralClinic.img|raw }}" alt="">
+                                                            {% endif %}
+                                                        </div>
+
+                                                        <div class="clinics_text">
+                                                            <p>{{ centralClinic.metro.0.value is defined ? centralClinic.metro.0.value : '' }}</p>
+
+                                                            <p>{{ centralClinic.city }}, <br>{{ centralClinic.address.0.value }}</p>
+
+                                                            <a href="{{ centralClinic.url }}">подробнее</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {{ page.content }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content_right">
+                        <div class="all-clinic_maps ya-map-container"
+                             id="map-all-clinics"
+                             data-ym_center="55.885170076293896,37.66451159802244"
+                             data-ym_coords="55.89228906885038,37.67481300000002|||55.875657068867326,37.644431999999995|||55.87933856884694,37.64605799999998"
+                             data-ym_balloon_content="Россия, Москва, Осташковская улица, 30|||Россия, Москва, проезд Шокальского, 11|||Россия, Москва, проезд Шокальского, 20"
+                        ></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}#}

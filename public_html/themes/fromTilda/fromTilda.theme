@@ -115,6 +115,11 @@ function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {
     $suggestions[] = 'page__views__articles';
   }
 
+  // Определяем отдельный шаблон для страницы списка клиник
+  if (strpos($route_name, 'view.clinics.page_') === 0) {
+    $suggestions[] = 'page__views__clinics';
+  }
+
   $request = \Drupal::request();
   if ($exception = $request->attributes->get('exception')) {
     $status_code = $exception->getStatusCode();

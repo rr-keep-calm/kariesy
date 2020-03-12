@@ -3488,13 +3488,13 @@ img.mfp-img {
 }
 
 .clinics_text p {
-    font: 14px/20px 'OpenSansLight';
-    color: #231f20;
-    margin-bottom: 13px;
+    font: 14px/20px 'OpenSansLight' !important;
+    color: #231f20 !important;
+    margin-bottom: 13px !important;
 }
 
 .clinics_text a {
-    font: 14px 'OpenSansLight';
+    font: 14px 'OpenSansLight' !important;
     color: #449bd2;
 }
 
@@ -8084,13 +8084,13 @@ ul.price_types, .price_types li {
     }
 
     .clinics_text p {
-        font-size: 13px;
-        line-height: 1.2;
-        margin-bottom: 15px;
+        font-size: 13px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 15px !important;
     }
 
     .clinics_text a {
-        font-size: 13px;
+        font-size: 13px !important;
     }
 
     .clinics_contacts-item {
