@@ -886,3 +886,18 @@ a.about-num_item {text-decoration:none}
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+.clinics_content.__base-2.clinics_list_2 .clinics_item {
+  width: 30%;
+}
+
+.clinics_content.__base-2.clinics_list_3 .clinics_item {
+  width: 100%;
+}
+
+.clinics_content.__base-2.clinics_list_3 .clinics_text {
+  width: available;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  text-align: center;
+}
