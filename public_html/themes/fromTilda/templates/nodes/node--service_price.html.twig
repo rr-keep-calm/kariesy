@@ -85,20 +85,20 @@
         <div class="price_cnt __min flex-custom">
             {% if content.field_old_price|render %}
                 <span class="price_old">
-                    {{ content.field_old_price.0['#markup'] }}
+                  {{ _self.price_format(content.field_old_price.0['#markup']) }}
                 </span>
             {% endif %}
             <span class="price_num">
                 {% if content.field_price_from.0['#markup'] == 'Вкл' or (content.field_price_to.0['#markup'] != '' and content.field_price_to.0['#markup'] != 0) %}
                     <span class="price-from">от</span>
                 {% endif %}
-                {{ content.field_cena.0['#markup'] }}
+                {{ _self.price_format(content.field_cena.0['#markup']) }}
             </span>
             <span class="price_sign">руб.</span>
-            {% if content.field_price_to.0['#markup'] != '' and content.field_price_to.0['#markup'] != 0 %}
+            {% if content.field_price_to.0['#markup']|trim != '' and content.field_price_to.0['#markup']|trim != 0 %}
                 <div class="flex-line-break"></div>
                 <span class="price_num">
-                    <span class="price-to">до</span> {{ content.field_price_to.0['#markup'] }}
+                    <span class="price-to">до</span> {{ _self.price_format(content.field_price_to.0['#markup']) }}
                 </span>
                 <span class="price_sign">руб.</span>
             {% endif %}
@@ -135,3 +135,11 @@
 
   </article>
 {% endif %}
+
+{% macro price_format(price) %}
+  {% if price|trim|length < 5 %}
+    {{ price|trim }}
+  {% else %}
+    {{ (price|trim)|number_format(0, ',', ' ') }}
+  {% endif %}
+{% endmacro %}
