@@ -1,0 +1,6 @@
+name: Парсер отзывов с Google для каждой клиники
+description: 'Парсер отзывов с Google для каждой клиники'
+type: module
+core: 8.x
+version: 0.1
+package: KeepCalm

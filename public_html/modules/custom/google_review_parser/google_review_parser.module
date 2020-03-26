@@ -1,0 +1,168 @@
+<?php
+
+use \Drupal\node\Entity\Node;
+Use \Drupal\Core\File\FileSystemInterface;
+
+/**
+ * Implements hook_cron().
+ */
+function google_review_parser_cron() {
+  $module_handler = \Drupal::service('module_handler');
+  $module_path = $module_handler->getModule('google_review_parser')->getPath();
+  require_once DRUPAL_ROOT . '/' . $module_path . '/vendor/autoload.php';
+  require_once DRUPAL_ROOT . '/' . $module_path . '/MyBusiness.php';
+  $last_run = \Drupal::state()->get('google_review_parser.last_run', 0);
+  $config = \Drupal::configFactory()
+    ->getEditable('google_review_parser.adminsettings');
+  $credentials_f = DRUPAL_ROOT . '/' . $module_path . '/client_secret_353257672404-dqnk0rgi2hn2fvp026u5sciet69cei4h.apps.googleusercontent.com.json';
+
+  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 79200) {
+    // Проверяем есть ли информация о том по какой клинике собирать отзывы сейчас
+    $clinic_was_parse = \Drupal::state()
+      ->get('google_review_parser.clinic_was_parse', []);
+    $clinic_nids = \Drupal::entityQuery('node')
+      ->condition('type', 'clinic')
+      ->execute();
+    $clinic_nodes = \Drupal\node\Entity\Node::loadMultiple($clinic_nids);
+    $clinic_nodes = array_diff_key($clinic_nodes, $clinic_was_parse);
+
+    // Если не осталось клиник для которых нужно парсить
+    if (!$clinic_nodes) {
+      \Drupal::state()
+        ->set('google_review_parser.last_run', $_SERVER['REQUEST_TIME']);
+      \Drupal::state()->set('google_review_parser.clinic_was_parse', []);
+      \Drupal::state()->set('google_review_parser.page', 1);
+      return;
+    }
+
+    $clinic_node = reset($clinic_nodes);
+    $client = new Google_Client();
+    $client->setAuthConfig($credentials_f);
+    $client->addScope('https://www.googleapis.com/auth/plus.business.manage');
+    $client->setState('offline');
+    $client->setAccessToken($config->get('access_token'));
+    $client->setApiFormatV2(TRUE);
+    $new_token_info = $client->refreshToken($config->get('refresh_token'));
+    $config->set('access_token', $new_token_info['access_token']);
+    $config->set('refresh_token', $new_token_info['refresh_token']);
+    $client->authorize();
+    $gmb = new Google_Service_MyBusiness($client);
+    $accounts = $gmb->accounts->listAccounts()->getAccounts();
+    $location = $gmb->accounts_locations->listAccountsLocations($accounts[0]['name']);
+    $locations = $location->getLocations();
+    foreach ($locations as $location) {
+      if ($location->metadata->mapsUrl == $clinic_node->get('field_gmb_location_id')->value) {
+        break;
+      }
+    }
+    $optParams = ['pageSize' => 200];
+    $nextPageToken = \Drupal::state()->get('google_review_parser.page', 0);
+    if ($nextPageToken) {
+      $optParams['pageToken'] = (string) $nextPageToken;
+    }
+    $reviews = $gmb->accounts_locations_reviews->listAccountsLocationsReviews($location['name'], $optParams);
+    $nextPageToken = $reviews->getNextPageToken();
+    \Drupal::state()->set('google_review_parser.page', $nextPageToken);
+
+    // Если нет отзывов то помечаем клинику как уже распарсенную
+    if (!isset($reviews['reviews']) || !$reviews['reviews']) {
+      $clinic_was_parse[$clinic_node->id()] = 1;
+      \Drupal::state()
+        ->set('google_review_parser.clinic_was_parse', $clinic_was_parse);
+      \Drupal::state()->set('google_review_parser.page', 0);
+      return;
+    }
+
+    // Получаем все идентификаторы отзывов в Google Мой бизнес
+    $connection = \Drupal::database();
+    $query = $connection->query("SELECT field_google_review_id_value, entity_id FROM node__field_google_review_id WHERE bundle = 'review'");
+    $review_ids_tmp = $query->fetchAll();
+    $review_ids = [];
+    $review_ids_entities = [];
+    foreach ($review_ids_tmp as $review_ids_from_db) {
+      $review_ids[] = $review_ids_from_db->field_google_review_id_value;
+      $review_ids_entities[$review_ids_from_db->field_google_review_id_value] = $review_ids_from_db->entity_id;
+    }
+
+    foreach ($reviews['reviews'] as $review) {
+      // Не обрабатываем отзывы ниже четырёх звёзд
+      if ($review['starRating'] !== 'FIVE' && $review['starRating'] !== 'FOUR') {
+        continue;
+      }
+
+      // Если отзыв с таким идентификатором уже есть на сайте, то продолжаем
+      // работу со следующим отзывом
+      if (in_array($review['reviewId'], $review_ids)) {
+        continue;
+      }
+
+      // Получаем текст отзыва
+      // Зачем-то отзыв сразу содержат перевод от Гугла обрезаем всё это
+      $review_text = trim(explode('(Translated by Google)', (string) $review['comment'])[0]);
+
+      // Если нет текста отзыва, то не обрабатываем его
+      if (!$review_text) {
+        continue;
+      }
+
+      // Проверяем чтобы отсутствовали отзывы с точно таким же текстом
+      $result = $connection->select('node__field_review_text', 'nfrt')
+        ->fields('nfrt', ['entity_id'])
+        ->condition('field_review_text_value', "%" . $connection->escapeLike(strip_tags($review_text)) . "%", 'LIKE')
+        ->execute()
+        ->fetchAll();
+      if ($result) {
+        continue;
+      }
+
+      // Создаём отзыв
+      $create_date = DateTime::createFromFormat('Y-m-d\TH:i:s.v\Z', $review['updateTime']);
+      $europeMoscow = new DateTimeZone('Europe/Moscow');
+      $create_date->setTimeZone($europeMoscow);
+      $title = $review['reviewer']['displayName'] ?? 'Анонимный отзыв';
+      $nodeCreate = [
+        'type' => 'review',
+        'title' => $title,
+        'created' => $create_date->format('U'),
+        'field_clinic' => [$clinic_node->id()],
+        'field_review_text' => $review_text,
+        'field_google_review_id' => $review['reviewId'],
+      ];
+      if (isset($review['reviewer']['profilePhotoUrl']) && $review['reviewer']['profilePhotoUrl']) {
+        $file_data = file_get_contents($review['reviewer']['profilePhotoUrl']);
+        $extension = 'jpg';
+        if (strpos($http_response_header[3], 'png') !== FALSE) {
+          $extension = 'png';
+        }
+        $file = file_save_data($file_data, 'public://google_reviews_avatars/' . $review['reviewId'] . '.' . $extension, FileSystemInterface::EXISTS_REPLACE);
+        $nodeCreate['field_avatar'] = [
+          'target_id' => $file->id(),
+        ];
+      }
+      if (isset($review['reviewReply']['comment']) && $review['reviewReply']['comment']) {
+        $answer_text = trim(explode('(Translated by Google)', (string) $review['reviewReply']['comment'])[0]);
+        $nodeCreate['field_answer_text'] = $answer_text;
+        $nodeCreate['field_answer_name'] = 'Администрация';
+        $nodeCreate['field_answer_info'] = explode('T', $review['reviewReply']['updateTime'])[0];
+      }
+      $node = Node::create($nodeCreate);
+      $node->save();
+
+      $bot_message = "{$title} оставил(а) отзыв в Google Maps.\n\n";
+      $bot_message .= "Текст отзыва:\n";
+      $bot_message .= $review_text;
+      $telegram_bot = \Drupal::service('ck_form_handler.telegram_bot');
+      $telegram_bot->wrapperSendOrderMessage($bot_message);
+    }
+
+    if ($nextPageToken) {
+      return;
+    }
+
+    $clinic_was_parse[$clinic_node->id()] = 1;
+    \Drupal::state()
+      ->set('google_review_parser.clinic_was_parse', $clinic_was_parse);
+    \Drupal::state()->set('google_review_parser.page', 0);
+  }
+}
+

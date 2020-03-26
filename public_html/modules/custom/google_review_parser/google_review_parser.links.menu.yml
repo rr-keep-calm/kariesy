@@ -1,0 +1,6 @@
+google_review_parser.admin_settings_form:
+  title: 'Google Parser SettingsForm'
+  route_name: google_review_parser.admin_settings_form
+  description: 'Google Parser SettingsForm'
+  parent: system.admin_config_system
+  weight: 100

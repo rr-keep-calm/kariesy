@@ -34,6 +34,9 @@
           {% if clinik_yandex_map_id is defined and clinik_yandex_map_id != '' %}
             <a href="//yandex.ru/maps/org/kariyesu_net/{{ clinik_yandex_map_id }}/">Посмотреть оригинал на Яндекс.Картах</a>
           {% endif %}
+          {% if clinik_google_map_link is defined and clinik_google_map_link != '' %}
+            <a href="{{ clinik_google_map_link }}">Посмотреть оригинал в Google Maps</a>
+          {% endif %}
         </div>
 
         {{ content.field_photos_of_review }}

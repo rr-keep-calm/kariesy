@@ -37,21 +37,19 @@ function fromTilda_preprocess_breadcrumb(&$variables) {
     $vacabulary_id = $term->getVocabularyId();
     // Получаем тип услуги для вставик его в хлебные крошки
     if ($vacabulary_id == 'service') {
-      $serviceTypesUrl = [
-        3 => '/uslugi/lechenie-zubov',
-        4 => '/uslugi/implantatsiya-zubov',
-        8 => '/uslugi/protezirovanie-zubov',
-        9 => '/uslugi/hirurgiya',
-        10 => '/uslugi/orthodontia',
-        11 => '/uslugi/gigiena',
-        12 => '/uslugi/detskaya-stomatologiya',
-        157 => '/uslugi/parodontologiya',
-        158 => '/uslugi/diagnostika'
-      ];
       $serviceType = $term->get('field_service_type')->getValue();
       if ($serviceType) {
         $serviceTypeTerm = Term::load($serviceType[0]['target_id']);
-        $serviceTypeBread[] = ['text' => $serviceTypeTerm->getName(), 'url' => $serviceTypesUrl[$serviceTypeTerm->get('tid')->value]];
+        $parent_view = \Drupal\views\Views::getView('services_page');
+        $displays = $parent_view->storage->get('display');
+        foreach ($displays as $display) {
+          if (reset($display['display_options']['filters']['field_service_type_target_id']['value']) == $serviceTypeTerm->id()) {
+            $name = $display['display_title'];
+            $url = '/' . $display['display_options']['path'];
+          }
+        }
+
+        $serviceTypeBread[] = ['text' => $name, 'url' => $url];
       }
       $is_service_term = TRUE;
     }
@@ -486,6 +484,15 @@ function fromTilda_preprocess_node(&$variables){
       if ($clinik_nid) {
         $clinik_node = Node::load($clinik_nid[0]['target_id']);
         $variables['clinik_yandex_map_id'] = $clinik_node->get('field_yandex_map_business_id')
+          ->getValue()[0]['value'];
+      }
+    }
+    $google_review_id = $variables['node']->get('field_google_review_id')->getValue();
+    if ($google_review_id && $google_review_id[0]['value']) {
+      $clinik_nid = $variables['node']->get('field_clinic')->getValue();
+      if ($clinik_nid) {
+        $clinik_node = Node::load($clinik_nid[0]['target_id']);
+        $variables['clinik_google_map_link'] = $clinik_node->get('field_gmb_location_id')
           ->getValue()[0]['value'];
       }
     }
