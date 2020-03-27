@@ -3,7 +3,7 @@ $(document).ready(function () {
     /* Идентификаторы контейнеров с формами */
     formContainersId: '#form-order, #form-question, #form-order-doctor-page, #form-recall, #form-recall-price, ' +
       '#form-review, #recall-form-on-service-page, #form-order-doctor-page-popup, #question-form-wrapper, ' +
-      '#free-consult-form-on-service-page',
+      '#free-consult-form-on-service-page, #free-consult-form-on-article-page',
     /* Идентификаторы форм записи на приём */
     orderFormsId: '#form-order, #form-order-doctor-page, #form-order-doctor-page-popup-form',
     /* Идентификаторы форм отзывов */
@@ -20,7 +20,8 @@ $(document).ready(function () {
       "recall-form-on-price-page",
       "recall-form-on-service-page-form",
       "question-for-doctor-form",
-      "free-consult-form-on-service-page-form"
+      "free-consult-form-on-service-page-form",
+      "free-consult-form-on-article-page-form"
     ],
     allowedOrderForm: [
       "form-order",
@@ -131,6 +132,10 @@ $(document).ready(function () {
 
               if (formId === 'free-consult-form-on-service-page-form') {
                 self.formData.whatExactlyService = $('.top h1').text();
+              }
+
+              if (formId === 'free-consult-form-on-article-page-form') {
+                self.formData.whatExactlyArticle = $('.top h1').text();
               }
 
               // Если происходит отправка формы со страницы прайса, то дополняем данные из формы активным табом
@@ -542,6 +547,10 @@ $(document).ready(function () {
               if (formId == 'free-consult-form-on-service-page-form') {
                 coMagicMessage += 'Запись на бесплатную консультацию\n';
                 coMagicMessage += 'Услуга — ' + $('.top h1').text();
+              }
+              if (formId == 'free-consult-form-on-article-page-form') {
+                coMagicMessage += 'Запись на бесплатную консультацию\n';
+                coMagicMessage += 'Статья — ' + $('.top h1').text();
               }
               if (formId == 'question-for-doctor-form') {
                 coMagicMessage += 'Вопрос врачу\n';

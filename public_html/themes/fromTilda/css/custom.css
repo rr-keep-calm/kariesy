@@ -901,3 +901,21 @@ a.about-num_item {text-decoration:none}
   width: -moz-available;
   text-align: center;
 }
+
+#block-besplatnayakonsultaciya.article_free_consult {
+  background: none;
+}
+
+.article_free_consult .checker-mark-element{
+  font-family: OpenSansLight, monospace;
+}
+
+.article_free_consult a{
+  color: #fbfbfb;
+  font: 12px/1 'OpenSansSemiBold';
+}
+
+.article_free_consult a:hover{
+  text-decoration: none;
+  color: #fbfbfb;
+}
