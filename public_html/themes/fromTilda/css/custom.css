@@ -919,3 +919,17 @@ a.about-num_item {text-decoration:none}
   text-decoration: none;
   color: #fbfbfb;
 }
+
+.services_type-item a, .service-detail_type-item a {
+  text-decoration: none;
+  color: #535151;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.services_type-item a:hover,
+.services_type-item:hover,
+.service-detail_type-item a:hover,
+.service-detail_type-item:hover a {
+  color: #81c3ec;
+}
