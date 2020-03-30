@@ -1,0 +1,14 @@
+{% extends  "page.html.twig" %}
+
+{% block content %}
+  <div class="content_main __min">
+    <div class="wrapper">
+      <div class="page">
+        {{ page.content }}
+      </div>
+    </div>
+    <div class="wrapper">
+      {{ page.relevant_services_on_article_page }}
+    </div>
+  </div>
+{% endblock %}

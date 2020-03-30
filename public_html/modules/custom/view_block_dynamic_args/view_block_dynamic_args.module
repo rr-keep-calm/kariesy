@@ -19,13 +19,29 @@ function view_block_dynamic_args_views_pre_view($view, $display_id, &$args) {
 
   switch ($view->id()) {
     case 'recommended_services':
-      if (\Drupal::routeMatch()
-          ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
-          ->getRawParameter('taxonomy_term')) {
-        $term = Term::load($tid);
-        $vacabulary_id = $term->getVocabularyId();
-        if ($vacabulary_id == 'service') {
-          $args[0] = $tid;
+      if ($display_id === 'block_1') {
+        if (\Drupal::routeMatch()
+            ->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()
+            ->getRawParameter('taxonomy_term')) {
+          $term = Term::load($tid);
+          $vacabulary_id = $term->getVocabularyId();
+          if ($vacabulary_id == 'service') {
+            $args[0] = $tid;
+          }
+        }
+      }
+      if ($display_id === 'block_2') {
+        if (\Drupal::routeMatch()
+            ->getRouteName() == 'entity.node.canonical' && $nid = \Drupal::routeMatch()
+            ->getRawParameter('node')) {
+          $node = Node::load($nid);
+          $relevant_services = $node->get('field_relevant_services')->getValue();
+          array_walk($relevant_services, function (&$item) {
+            $item = $item['target_id'];
+          });
+          if ($relevant_services) {
+            $args[0] = implode(',', $relevant_services);
+          }
         }
       }
       break;

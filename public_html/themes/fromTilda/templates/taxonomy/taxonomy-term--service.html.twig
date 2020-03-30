@@ -122,6 +122,27 @@
       </div>
     </div>
   </div>
+{% elseif view_mode == 'relevant_services' %}
+  {# список случайных релевантных услуг, на странице услуги #}
+  <div class="recommend_item relevant_item">
+    <header class="recommend_header">
+      <div class="recommend_left">
+        <div class="recommend_image">
+          <img src="{{ file_url(content.field_piktogramma['#items'].entity.uri.value) }}" width="58" alt="">
+        </div>
+        <div class="recommend_base-text">
+          <a href="{{ url }}" class="recommend_link_header">{{ name|render|raw|striptags }}</a>
+          {% if content.field_price.0 > 0 %}
+            <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }}
+              <span>{{ _self.price_format(content.field_price.0['#markup']) }}</span> <span class="price_sign">руб.</span></p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="recommend_right">
+        <a href="{{ url }}" class="recommend_link">подробнее</a>
+      </div>
+    </header>
+  </div>
 {% else %}
   {% if content.field_oblozhka['#items'].entity.uri.value is not empty or content.description|render is not empty %}
     <div class="service-detail_top"

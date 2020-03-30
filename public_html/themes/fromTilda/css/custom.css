@@ -933,3 +933,15 @@ a.about-num_item {text-decoration:none}
 .service-detail_type-item:hover a {
   color: #81c3ec;
 }
+
+.recommend_items.relevant_items {
+  flex-wrap: wrap;
+}
+
+.recommend_item.relevant_item {
+  margin-bottom: 20px;
+}
+
+.recommend_item.relevant_item .recommend_header {
+  border-bottom: 0;
+}
