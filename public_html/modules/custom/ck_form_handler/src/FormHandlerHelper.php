@@ -145,6 +145,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста заполните все поля';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       // Формируем тело письма
@@ -171,6 +173,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       // Подготавливаем дату желаемой записи для сохранения заявки
@@ -303,6 +307,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       $this->subject = 'Заказ звонка';
@@ -327,6 +333,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       $this->subject = 'Запись на приём со страницы всех Цен';
@@ -360,6 +368,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста заполните все поля';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       // Формируем тело письма
@@ -390,6 +400,8 @@ class FormHandlerHelper {
       empty($this->formData['review-text'])
     ) {
       $this->response = 'Пожалуйста заполните все поля';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       // Проверяем нет ли отзыва полностью совпадащего с передаваемым текстом
@@ -530,6 +542,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       $this->subject = 'Запись на приём со страницы услуги';
@@ -555,6 +569,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       $this->subject = 'Запись на бесплатную консультацию';
@@ -582,6 +598,8 @@ class FormHandlerHelper {
       empty($this->formData['phone'])
     ) {
       $this->response = 'Пожалуйста укажите ваши имя и телефон';
+    } elseif (strlen(preg_replace('/\D/', '', $this->formData['phone'])) != 11) {
+      $this->response = 'Пожалуйста укажите полный номер телефона';
     }
     else {
       $this->subject = 'Запись на бесплатную консультацию';
