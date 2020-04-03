@@ -47,6 +47,7 @@ Disallow: /index.php/user/logout/
 # Custom
 Disallow: /uslugi/orthodontia/ustanovka-breketov-promo
 Disallow: /uslugi/gigiena/gigena-promo
+Disallow: */*?*
 Clean-param: sort&order&price_max&price_min&utm_source&utm_medium&utm_term&utm_content&utm_campaign&yclid&gclid&_openstat&from&cm_id /
 
 User-agent: Googlebot
@@ -98,6 +99,7 @@ Disallow: /index.php/user/logout/
 # Custom
 Disallow: /uslugi/orthodontia/ustanovka-breketov-promo
 Disallow: /uslugi/gigiena/gigena-promo
+Disallow: */*?*
 
 User-agent: *
 # CSS, JS, Images
@@ -148,6 +150,7 @@ Disallow: /index.php/user/logout/
 # Custom
 Disallow: /uslugi/orthodontia/ustanovka-breketov-promo
 Disallow: /uslugi/gigiena/gigena-promo
+Disallow: */*?*
 Disallow: *utm
 Disallow: *yclid=
 Disallow: *gclid=
