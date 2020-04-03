@@ -10,8 +10,7 @@ function yandex_map_review_parser_cron() {
   $last_run = \Drupal::state()->get('yandex_map_review_parser.last_run', 0);
 
   // If 22 hours passed since last time.
-//  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 79200) {
-  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 0) { // temp
+  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 79200) {
     // Проверяем есть ли информация о том по какой клинике собирать отзывы сейчас
     $clinic_was_parse = \Drupal::state()
       ->get('yandex_map_review_parser.clinic_was_parse', []);
