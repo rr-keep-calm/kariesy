@@ -1,0 +1,11 @@
+sitemap_additional_settings.tab_1:
+  route_name : sitemap_additional_settings.admin_settings_form
+  title: Settings
+  base_route: sitemap_additional_settings.admin_settings_form
+  weight: 10
+
+sitemap_additional_settings.tab_2:
+  route_name: sitemap_additional_settings.admin_settings_batch
+  title: Process
+  base_route: sitemap_additional_settings.admin_settings_form
+  weight: 20
