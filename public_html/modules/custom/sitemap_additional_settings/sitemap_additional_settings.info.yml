@@ -1,0 +1,6 @@
+name: 'Sitemap additional settings'
+description: 'Additional settings for sitemap module to generate relevant list'
+type: module
+core: '8.x'
+version: '8.x-0.1'
+package: KeepCalm

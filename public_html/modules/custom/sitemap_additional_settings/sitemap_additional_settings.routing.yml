@@ -1,0 +1,19 @@
+sitemap_additional_settings.admin_settings_form:
+  path: '/admin/config/search/sitemap_additional_settings'
+  defaults:
+    _form: '\Drupal\sitemap_additional_settings\Form\SettingsForm'
+    _title: 'Additional settings for module Sitemap'
+  requirements:
+    _permission: 'administer sitemap'
+  options:
+    _admin_route: TRUE
+
+sitemap_additional_settings.admin_settings_batch:
+  path: '/admin/config/search/sitemap_additional_settings_batch'
+  defaults:
+    _form: '\Drupal\sitemap_additional_settings\Form\BatchForm'
+    _title: 'Batch process Sitemap'
+  requirements:
+    _permission: 'administer sitemap'
+  options:
+    _admin_route: TRUE
