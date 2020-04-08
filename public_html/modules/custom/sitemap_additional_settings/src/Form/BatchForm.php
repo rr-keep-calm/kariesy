@@ -105,9 +105,11 @@ class BatchForm extends FormBase {
 
     $this->batchBuilder->setFile(drupal_get_path('module', 'sitemap_additional_settings') . '/src/Form/BatchForm.php');
     $this->batchBuilder->addOperation([$this, 'processItems'], [
-      [$nodes,
-      $terms,
-      $views]
+      [
+        $nodes,
+        $terms,
+        $views,
+      ],
     ]);
     $this->batchBuilder->setFinishCallback([$this, 'finished']);
 
@@ -125,7 +127,7 @@ class BatchForm extends FormBase {
     // Set default progress values.
     if (empty($context['sandbox']['progress'])) {
       $context['sandbox']['progress'] = 0;
-      $context['sandbox']['max'] = array_reduce($items, function($count,$item) {
+      $context['sandbox']['max'] = array_reduce($items, function ($count, $item) {
         $count += count($item);
         return $count;
       });
@@ -147,7 +149,8 @@ class BatchForm extends FormBase {
           if (count($all_item) <= $progress) {
             unset($context['sandbox']['all_items'][$key]);
             $progress -= count($all_item);
-          } else {
+          }
+          else {
             array_splice($context['sandbox']['all_items'][$key], 0, $progress);
             $progress = 0;
           }
@@ -167,7 +170,8 @@ class BatchForm extends FormBase {
               ':progress' => $context['sandbox']['progress'],
               ':count' => $context['sandbox']['max'],
             ]);
-          } else {
+          }
+          else {
             break 2;
           }
         }
@@ -195,7 +199,7 @@ class BatchForm extends FormBase {
       case (isset($item['route_name']) && $item['route_name'] == 'entity.taxonomy_term.canonical') :
         $this->processTerm($item);
         break;
-      case (isset($item['path']) && preg_match('/^view/', $item['id']) ? true : false) :
+      case (isset($item['path']) && preg_match('/^view/', $item['id']) ? TRUE : FALSE) :
         $this->processView($item);
         break;
     }
@@ -224,7 +228,11 @@ class BatchForm extends FormBase {
     }
 
     $map_levels = \Drupal::state()->get('map_levels', []);
-    $map_levels[count($links)][] = ['parent' => $links ? end($links) : '', 'path' => $alias, 'name' => $item['name']];
+    $map_levels[count($links)][] = [
+      'parent' => $links ? end($links) : '',
+      'path' => $alias,
+      'name' => $item['name'],
+    ];
     \Drupal::state()->set('map_levels', $map_levels);
   }
 
@@ -253,10 +261,15 @@ class BatchForm extends FormBase {
     }
 
     if (\Drupal::hasService('kc_services.modify_breadcrumb')) {
-      \Drupal::service('kc_services.modify_breadcrumb')->modifyForInternals($links, $item['id']);
+      \Drupal::service('kc_services.modify_breadcrumb')
+        ->modifyForInternals($links, $item['id']);
     }
     $map_levels = \Drupal::state()->get('map_levels', []);
-    $map_levels[count($links)][] = ['parent' => $links ? end($links) : '', 'path' => $alias, 'name' => $item['name']];
+    $map_levels[count($links)][] = [
+      'parent' => $links ? end($links) : '',
+      'path' => $alias,
+      'name' => $item['name'],
+    ];
     \Drupal::state()->set('map_levels', $map_levels);
   }
 
@@ -282,7 +295,11 @@ class BatchForm extends FormBase {
     }
 
     $map_levels = \Drupal::state()->get('map_levels', []);
-    $map_levels[count($links)][] = ['parent' => $links ? end($links) : '', 'path' => $alias, 'name' => $item['name']];
+    $map_levels[count($links)][] = [
+      'parent' => $links ? end($links) : '',
+      'path' => $alias,
+      'name' => $item['name'],
+    ];
     \Drupal::state()->set('map_levels', $map_levels);
   }
 
@@ -328,23 +345,25 @@ class BatchForm extends FormBase {
       }
     }
     $custom_map_links = $config->get('custom_map_links');
-    foreach (explode("\n", $custom_map_links) as $custom_map_link) {
-      $custom_map_link_parts = explode('|', $custom_map_link);
-      if ($custom_map_link_parts[1] == '/') {
-        continue;
+    if ($custom_map_links) {
+      foreach (explode("\n", $custom_map_links) as $custom_map_link) {
+        $custom_map_link_parts = explode('|', $custom_map_link);
+        if ($custom_map_link_parts[1] == '/') {
+          continue;
+        }
+        $menu_link = [
+          'title' => $custom_map_link_parts[0],
+          'link' => ['uri' => $host . $custom_map_link_parts[1]],
+          'menu_name' => $config->get('menu_for_auto_add'),
+          'expanded' => TRUE,
+        ];
+        if (isset($custom_map_link_parts[2]) && isset($parents[trim($custom_map_link_parts[2])])) {
+          $menu_link['parent'] = $parents[trim($custom_map_link_parts[2])];
+        }
+        $menu_link_content = MenuLinkContent::create($menu_link);
+        $menu_link_content->save();
+        $parents[trim($custom_map_link_parts[1])] = $menu_link_content->getPluginId();
       }
-      $menu_link = [
-        'title' => $custom_map_link_parts[0],
-        'link' => ['uri' => $host . $custom_map_link_parts[1]],
-        'menu_name' => $config->get('menu_for_auto_add'),
-        'expanded' => TRUE,
-      ];
-      if (isset($custom_map_link_parts[2]) && isset($parents[trim($custom_map_link_parts[2])])) {
-        $menu_link['parent'] = $parents[trim($custom_map_link_parts[2])];
-      }
-      $menu_link_content = MenuLinkContent::create($menu_link);
-      $menu_link_content->save();
-      $parents[trim($custom_map_link_parts[1])] = $menu_link_content->getPluginId();
     }
 
     $cache = \Drupal::cache('menu');
@@ -372,7 +391,11 @@ class BatchForm extends FormBase {
       ->execute();
     $nodes = Node::loadMultiple($nodes);
     return array_map(function ($node) {
-      return ['id' => $node->id(), 'route_name' => 'entity.node.canonical', 'name' => $node->label()];
+      return [
+        'id' => $node->id(),
+        'route_name' => 'entity.node.canonical',
+        'name' => $node->label(),
+      ];
     }, $nodes);
   }
 
@@ -393,7 +416,14 @@ class BatchForm extends FormBase {
         ->getStorage('taxonomy_term')
         ->loadTree($vid);
       foreach ($terms_temp as $term_temp) {
-        $terms[] = ['id' => $term_temp->tid, 'route_name' => 'entity.taxonomy_term.canonical', 'name' => $term_temp->name];
+        if (!$term_temp->status) {
+          continue;
+        }
+        $terms[] = [
+          'id' => $term_temp->tid,
+          'route_name' => 'entity.taxonomy_term.canonical',
+          'name' => $term_temp->name,
+        ];
       }
     }
     return $terms;
@@ -413,8 +443,15 @@ class BatchForm extends FormBase {
         if ($display['display_plugin'] !== 'page') {
           continue;
         }
+        if ($display['display_options']['enabled'] === FALSE) {
+          continue;
+        }
         $view->setDisplay($display['id']);
-        $views[] = ['id' => 'view.' . $view->id() . '.' . $display['id'], 'path' => $display['display_options']['path'], 'name' => $view->getTitle()];
+        $views[] = [
+          'id' => 'view.' . $view->id() . '.' . $display['id'],
+          'path' => $display['display_options']['path'],
+          'name' => $view->getTitle(),
+        ];
       }
     }
     return $views;
