@@ -1,0 +1,5 @@
+sitemap_additional_settings.settings:
+  title: 'Additional settings for module Sitemap'
+  parent: system.admin_config_search
+  description: 'Additional settings for sitemap module to generate relevant list'
+  route_name: sitemap_additional_settings.admin_settings_form

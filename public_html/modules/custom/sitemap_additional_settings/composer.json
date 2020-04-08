@@ -1,0 +1,17 @@
+{
+  "name": "drupal/sitemap_additional_settings",
+  "description": "Additional settings for module \"Sitemap\"",
+  "authors": [
+    {
+      "name": "Valentine Lomov",
+      "homepage": "https://github.com/mor-wal",
+      "role": "Maintainer"
+    }
+  ],
+  "support": { },
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "require": {
+      "drupal/sitemap": "^1.5"
+  }
+}

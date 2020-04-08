@@ -30,51 +30,8 @@ function fromTilda_preprocess_html(&$variables)
  * Preprocess function for breadcrumb.html.twig.
  */
 function fromTilda_preprocess_breadcrumb(&$variables) {
-  $is_service_term = FALSE;
-  $serviceTypeBread = [];
-  if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' && $tid = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
-    $term = Term::load($tid);
-    $vacabulary_id = $term->getVocabularyId();
-    // Получаем тип услуги для вставик его в хлебные крошки
-    if ($vacabulary_id == 'service') {
-      $serviceType = $term->get('field_service_type')->getValue();
-      if ($serviceType) {
-        $serviceTypeTerm = Term::load($serviceType[0]['target_id']);
-        $parent_view = \Drupal\views\Views::getView('services_page');
-        $displays = $parent_view->storage->get('display');
-        foreach ($displays as $display) {
-          if (reset($display['display_options']['filters']['field_service_type_target_id']['value']) == $serviceTypeTerm->id()) {
-            $name = $display['display_title'];
-            $url = '/' . $display['display_options']['path'];
-          }
-        }
-
-        $serviceTypeBread[] = ['text' => $name, 'url' => $url];
-      }
-      $is_service_term = TRUE;
-    }
-  }
-  if ($variables['breadcrumb']) {
-    if ($is_service_term) {
-      $variables['breadcrumb'] = array_merge(
-        array_slice($variables['breadcrumb'], 0, 1),
-        [['text' => 'Услуги', 'url' => '/uslugi']],
-        $serviceTypeBread,
-        array_slice($variables['breadcrumb'], 1)
-      );
-    }
-    $request = \Drupal::request();
-    $route_match = \Drupal::routeMatch();
-    $page_title = \Drupal::service('title_resolver')
-      ->getTitle($request, $route_match->getRouteObject());
-
-    if ($page_title && \Drupal::routeMatch()->getRouteName() != 'price_page.price_page') {
-      $variables['breadcrumb'][] = [
-        'text' => $page_title,
-      ];
-    }
-  }
-  $variables['#cache']['contexts'][] = 'url';
+  /** @var $breadcrumbs \Drupal\kc_services\KCModufyBreadcrumb */
+  \Drupal::service('kc_services.modify_breadcrumb')->modify($variables);
 }
 
 function fromTilda_theme_suggestions_page_alter(&$suggestions, &$vars) {

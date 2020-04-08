@@ -1,0 +1,11 @@
+services:
+  sitemap_additional_settings.path_based_breadcrumb_sitemap_additional_settings:
+    class: Drupal\sitemap_additional_settings\Breadcrumb\PathBasedSitemapAdditionalSettingsBreadcrumbBuilder
+    arguments: ['@router.request_context', '@access_manager', '@router', '@path_processor_manager', '@config.factory',  '@title_resolver', '@current_user', '@path.current', '@path.matcher']
+    tags:
+      - { name: breadcrumb_builder, priority: 1002 }
+  sitemap_additional_settings.term_breadcrumb_sitemap_additional_settings:
+    class: Drupal\sitemap_additional_settings\Breadcrumb\TermSitemapAdditionalSettingsBreadcrumbBuilder
+    arguments: ['@entity_type.manager', '@entity.repository']
+    tags:
+      - { name: breadcrumb_builder, priority: 1003 }

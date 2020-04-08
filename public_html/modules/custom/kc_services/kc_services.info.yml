@@ -1,0 +1,6 @@
+name: Custom services by Keep Calm
+description: 'Дополнительные сервисы'
+type: module
+core: 8.x
+version: 0.1
+package: KeepCalm

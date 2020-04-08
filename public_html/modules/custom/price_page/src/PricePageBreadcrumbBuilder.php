@@ -23,6 +23,9 @@ class PricePageBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * {@inheritdoc}
    */
   public function applies(RouteMatchInterface $route_match) {
+    if (!method_exists($route_match, 'getCurrentRouteMatch')) {
+      return FALSE;
+    }
     $route = $route_match->getCurrentRouteMatch();
     if ($route->getRouteObject()->getPath() == '/price/{service_type}') {
       return TRUE;
