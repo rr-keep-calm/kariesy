@@ -4,9 +4,8 @@ namespace Drupal\sitemap_additional_settings\Breadcrumb;
 use Drupal\system\PathBasedBreadcrumbBuilder;
 use Drupal\Core\Routing\RequestContext;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Url;
 
-class SitemapAdditionalSettingsBreadcrumbBuilder extends PathBasedBreadcrumbBuilder {
+class PathBasedSitemapAdditionalSettingsBreadcrumbBuilder extends PathBasedBreadcrumbBuilder {
 
   public function applies(RouteMatchInterface $route_match) {
     $parameters = $route_match->getParameters()->all();

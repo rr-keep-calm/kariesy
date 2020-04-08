@@ -100,6 +100,9 @@ class SettingsForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $custom_map_links = $form_state->getValue('custom_map_links');
+    if (!$custom_map_links) {
+      return;
+    }
     foreach (explode("\n", $custom_map_links) as $custom_map_link) {
       if (count(explode('|', $custom_map_link)) < 2) {
         $form_state->setErrorByName('custom_map_links', 'Кастомная ссылка "' . $custom_map_link . '" не соответствуюет формату. Обратите внимание на описание в поле.');
