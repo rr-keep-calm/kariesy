@@ -954,3 +954,9 @@ a.about-num_item {text-decoration:none}
   color: #5a5757;
   font-size: 16px;
 }
+.page strong {
+    font-family: 'OpenSansSemiBold';
+    font-size: inherit;
+    color: inherit;
+    display: inline;
+}
