@@ -3,6 +3,7 @@
 use Drupal\Core\Routing\RouteMatch;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\NodeInterface;
+use Drupal\taxonomy\TermInterface;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
@@ -55,7 +56,55 @@ function sitemap_additional_settings_node_predelete(NodeInterface $node) {
   menuModify($alias, FALSE);
 }
 
-function menuModify($alias, $add, $name = '') {
+function sitemap_additional_settings_taxonomy_term_insert(TermInterface $term) {
+  if (!validateTermVid($term)) {
+    return;
+  }
+  if ($term->get('status')->getValue()[0]['value']) {
+    $alias = \Drupal::service('path.alias_manager')
+      ->getAliasByPath('/taxonomy/term/' . $term->id());
+    menuModify($alias, TRUE, $term->label(), 'entity.taxonomy_term.canonical');
+  }
+}
+
+function sitemap_additional_settings_taxonomy_term_presave(TermInterface $term) {
+  if (!validateTermVid($term)) {
+    return;
+  }
+  $url_presave = \Drupal::service('path.alias_manager')
+    ->getAliasByPath('/taxonomy/term/' . $term->id());
+  \Drupal::state()
+    ->set('sitemap_additional_settings.url_presave', $url_presave);
+}
+
+function sitemap_additional_settings_taxonomy_term_update(TermInterface $term) {
+  if (!validateTermVid($term)) {
+    return;
+  }
+  $status = $term->get('status')->getValue()[0]['value'];
+  $alias = \Drupal::service('path.alias_manager')
+    ->getAliasByPath('/taxonomy/term/' . $term->id());
+  $url_presave = \Drupal::state()
+    ->get('sitemap_additional_settings.url_presave', '');
+  if ($alias != $url_presave) {
+    menuModify($url_presave, FALSE, 'entity.taxonomy_term.canonical');
+    menuModify($alias, (bool)$status, $term->label(), 'entity.taxonomy_term.canonical');
+  }
+  if (!$status) {
+    menuModify($alias, FALSE, 'entity.taxonomy_term.canonical');
+  }
+}
+
+function sitemap_additional_settings_taxonomy_term_predelete(TermInterface $term) {
+  if (!validateTermVid($term)) {
+    return;
+  }
+  $alias = \Drupal::service('path.alias_manager')
+    ->getAliasByPath('/taxonomy/term/' . $term->id());
+  menuModify($alias, FALSE, 'entity.taxonomy_term.canonical');
+}
+
+function menuModify($alias, $add, $name = '', $route_name = 'entity.node.canonical') {
   $config = \Drupal::config('sitemap_additional.adminsettings');
   $host = \Drupal::request()->getSchemeAndHttpHost();
   $mids = getLinkFromMenu($alias);
@@ -65,7 +114,7 @@ function menuModify($alias, $add, $name = '') {
     $route_object = new Route($alias);
     $route_object->setDefault('sitemap_additional_settings', TRUE);
     $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, $route_object);
-    $request->attributes->set(RouteObjectInterface::ROUTE_NAME, 'entity.node.canonical');
+    $request->attributes->set(RouteObjectInterface::ROUTE_NAME, $route_name);
     $request->attributes->set('sitemap_additional_settings', TRUE);
     $route = RouteMatch::createFromRequest($request);
     $breadcrumbHandler = \Drupal::service('breadcrumb');
@@ -117,4 +166,16 @@ function validateNodeType($node) {
   $exclude_node_types = array_filter($config->get('exclude_node_types'));
   $node_type = $node->bundle();
   return !isset($exclude_node_types[$node_type]);
+}
+
+/**
+ * @param $term TermInterface
+ *
+ * @return bool
+ */
+function validateTermVid($term) {
+  $config = \Drupal::config('sitemap_additional.adminsettings');
+  $exclude_term_vids = array_filter($config->get('exclude_vocabularies'));
+  $term_vid = $term->bundle();
+  return !isset($exclude_term_vids[$term_vid]);
 }
