@@ -44,7 +44,7 @@
       <div class="free-consultation-item"><a class="button popup" data-eventlabel="form-price" href="#free-consult-form-on-article-page">записаться на прием</a></div>
     </div>
   </div>' %}
-      {{ content|without('field_article_author', 'field_tags', 'field_relevant_services')|render|replace({'%free_consult%': free_consult_block})|raw }}
+      {{ content|without('field_article_author', 'field_tags', 'field_relevant_services', 'field_article_image')|render|replace({'%free_consult%': free_consult_block})|raw }}
     </div>
     {% if article_author_name is defined %}
       <div class="article_author">
