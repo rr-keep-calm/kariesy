@@ -945,3 +945,12 @@ a.about-num_item {text-decoration:none}
 .recommend_item.relevant_item .recommend_header {
   border-bottom: 0;
 }
+
+#block-fromtilda-content iframe {
+  width: 100%;
+}
+
+.recommend_base-text .price_sign{
+  color: #5a5757;
+  font-size: 16px;
+}
