@@ -282,6 +282,15 @@ function fromTilda_preprocess_page(&$variables) {
     $serviseTypeId = reset($viewsDisplay['display_options']['filters']['field_service_type_target_id']['value']);
     $term = Term::load($serviseTypeId);
     $variables['defaultServiceForForm'] = $term->name->value;
+
+    // получаем якоря для отображеия под заголовком
+    $anchors = $term->get('field_anchors')->getValue();
+    if ($anchors) {
+      $allowed_values = $term->getFieldDefinition('field_anchors')->getSettings()['allowed_values'];
+      foreach ($anchors as $anchor) {
+        $variables['anchors'][] = ['name' => $allowed_values[$anchor['value']], 'selector' => $anchor['value']];
+      }
+    }
   }
 
   // Получаем список всех докторов.

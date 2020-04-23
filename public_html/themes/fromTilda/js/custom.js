@@ -30,6 +30,15 @@ $(document).ready(function () {
     $('#views-exposed-form-reviews-page-1 select').change(function () {
         $('#views-exposed-form-reviews-page-1').submit();
     });
+
+    if ($('.anchor-button-wrapper').length > 0) {
+      $('.anchor-button-wrapper').on('click', 'span', function () {
+        let anchor_selector = $(this).data('anchor');
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $(anchor_selector).offset().top - 200
+        }, 900);
+      })
+    }
 });
 
 var jivo_onLoadCallback = function () {
