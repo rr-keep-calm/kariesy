@@ -1,0 +1,6 @@
+<div class="range-time-wrapper" name="{{ element['#name'] }}">
+  <label>{{ element['#title'] }}</label>
+  <input type="text" class="clock-picker" name="{{ element['#name']|split('_')|first }}-start" value="{{ element['decoded_value']['start'] ?? '' }}"> :
+  <input type="text" class="clock-picker" name="{{ element['#name']|split('_')|first }}-end" value="{{ element['decoded_value']['end'] ?? '' }}">
+</div>
+

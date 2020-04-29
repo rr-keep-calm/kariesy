@@ -1,18 +1,37 @@
 {% extends  "page.html.twig" %}
 
-{% block content %}
-    <div class="content_main">
+
+{% block globalContent %}
+  {% set current_url = url('<current>') %}
+  <div class="content{% block additionalContentClass %}{% endblock %}">
+    <div class="top __1{{ 'stati' in current_url|render|render ? ' fix_top__1' : '' }}">
+      <div class="wrapper">
+        {{ page.breadcrumbs }}
+        <h1>{{ page.header }}</h1>
+        {% if anchors is defined %}
+          <div class="anchor-button-wrapper">
+            {% for anchor in anchors %}
+              <span data-anchor="{{ anchor.selector }}">{{ anchor.name }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% block content %}
+      <div class="content_main">
         <div class="wrapper">
-            <div class="services">
-                {{ page.content }}
-            </div>
+          <div class="services">
+            {{ page.content }}
+          </div>
         </div>
         {% if not hideFreeConsultBlock %}
           {{ page.free_consultation_on_service_page }}
         {% endif %}
         {{ page.doctor_list_on_service_type_page }}
         {{ page.review_list_on_service_type_page }}
-    </div>
+      </div>
+    {% endblock %}
+  </div>
 {% endblock %}
 
 {% block afterFooterAdd %}

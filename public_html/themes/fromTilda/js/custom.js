@@ -30,6 +30,30 @@ $(document).ready(function () {
     $('#views-exposed-form-reviews-page-1 select').change(function () {
         $('#views-exposed-form-reviews-page-1').submit();
     });
+
+    if ($('.anchor-button-wrapper').length > 0) {
+      $('.anchor-button-wrapper').on('click', 'span', function () {
+        let anchor_selector = $(this).data('anchor');
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $(anchor_selector).offset().top - 200
+        }, 900);
+      })
+    }
+
+    if($('.header_time').length > 0) {
+      $.ajax({
+        url: '/get/work/hours',
+        dataType: 'json',
+        type: 'GET',
+        success: response => {
+          if (response !== '') {
+            $('.header_time').each(function(index) {
+              $(this).html("<p class='first'>" + response.first_string + "</p><p>" + response.second_string + "</p>");
+            });
+          }
+        }
+      });
+    }
 });
 
 var jivo_onLoadCallback = function () {

@@ -1,0 +1,14 @@
+<div class="period-range-time-wrapper">
+  {% if element.exceptions is defined and element.exceptions %}
+    {% for key, exception in element.exceptions %}
+      <div class="one-peiod-wrapper" data-index_number="{{ key }}">
+        <div class="remove-period">x</div>
+        <input type="text" class="period-date-picker" name="exception-period-{{ key }}-dates"
+               value="{{ exception.dates }}"> -
+        <input type="text" class="clock-picker" name="exception-period-{{ key }}-start" value="{{ exception.start }}"> :
+        <input type="text" class="clock-picker" name="exception-period-{{ key }}-end" value="{{ exception.end }}">
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+<button type="button" class="add-exception">Добавить исключение</button>

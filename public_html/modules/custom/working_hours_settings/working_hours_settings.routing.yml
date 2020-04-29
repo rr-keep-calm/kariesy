@@ -1,0 +1,15 @@
+working_hours_settings.admin_settings:
+  path: '/admin/config/working_hours_settings/admin_settings'
+  defaults:
+    _form: '\Drupal\working_hours_settings\Form\SettingsForm'
+    _title: 'Настройка графика работы'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+working_hours_settings.get_work_hours:
+  path: '/get/work/hours'
+  defaults:
+    _controller: '\Drupal\working_hours_settings\Controller\WorkingHoursSettingsController::execute'
+  requirements:
+    _permission: 'access content'

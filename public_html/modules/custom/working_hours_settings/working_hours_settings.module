@@ -1,0 +1,26 @@
+<?php
+
+use Drupal\Core\Block\BlockPluginInterface;
+
+function working_hours_settings_theme($existing, $type, $theme, $path) {
+  $variables = [
+    'range_time' => [
+      'render element' => 'element',
+      'template' => 'range-time',
+    ],
+    'period_range_time' => [
+      'render element' => 'element',
+      'template' => 'period-range-time',
+    ],
+  ];
+  return $variables;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function working_hours_settings_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'working_hours_settings') {
+    $form['#attached']['library'][] = 'working_hours_settings/working_hours_set';
+  }
+}

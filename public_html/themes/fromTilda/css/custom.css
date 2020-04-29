@@ -1008,5 +1008,64 @@ a.about-num_item {text-decoration:none}
     text-align: center;
     height: auto;
     padding-bottom: 10px;
+    font-size:18px;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  body {
+    padding-top: 176px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    padding-top: 159px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  body {
+    padding-top: 180px;
+  }
+}
+
+
+.anchor-button-wrapper {
+  display: flex;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  margin-top: 20px;
+}
+.anchor-button-wrapper span {
+  font: 14px 'OpenSansRegular';
+  color: #2299d2;
+  text-decoration: none;
+  padding: 12px 18px;
+  border: 1px solid #daddde;
+  border-radius: 5px;
+  -webkit-transition: .3s;
+  transition: .3s;
+  cursor: pointer;
+  margin: 0 20px 20px 0;
+}
+
+.anchor-button-wrapper span:hover {
+  border: 1px solid #2299d2;
+}
+
+.header_time p.first {
+  margin-bottom: 10px;
+  font: 16px/1 'GothamProMedium';
+  color: #2299d2;
+  text-align: center;
+}
+@media screen and (max-width: 1230px) {
+  .header_time p.first {
+    text-align: left;
   }
 }

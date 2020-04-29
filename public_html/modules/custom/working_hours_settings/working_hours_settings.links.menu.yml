@@ -1,0 +1,6 @@
+working_hours_settings.admin_settings:
+  title: 'График работы'
+  route_name: working_hours_settings.admin_settings
+  description: 'Настройка графика работы'
+  parent: system.admin_config_system
+  weight: 101

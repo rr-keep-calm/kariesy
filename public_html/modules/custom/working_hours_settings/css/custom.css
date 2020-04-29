@@ -1,0 +1,30 @@
+.first-schedule-block {
+    margin-top: 10px;
+}
+.second-schedule-block {
+    margin-top: 20px;
+}
+.clinic-select-wrapper{
+    padding-top: 10px;
+}
+.clinik-select-element{
+    margin-bottom: 10px;
+}
+.clinik-select-element label{
+    display: inline-block;
+    min-width: 150px;
+}
+.period-range-time-wrapper, .add-exception, .one-peiod-wrapper {
+  margin-top: 10px;
+}
+.remove-period {
+  display: inline-block;
+  color: #ff0c1b;
+  cursor: pointer;
+}
+.drp-calendar.right {
+  padding-left: 150px!important;
+}
+.daterangepicker {
+  width: 836px !important;
+}
