@@ -1,0 +1,3 @@
+services:
+  working_hours_settings.get_working_hours_strings:
+    class: Drupal\working_hours_settings\WorkingHoursStrings

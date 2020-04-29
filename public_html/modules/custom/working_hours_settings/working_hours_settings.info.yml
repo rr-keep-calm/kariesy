@@ -1,0 +1,10 @@
+name: 'График работы'
+description: 'Управление отображением графика работы на сайте'
+type: module
+core: 8.x
+version: 1.x
+package: KeepCalm
+configure: working_hours_settings.admin_settings
+dependencies:
+  - field
+  - drupal:block

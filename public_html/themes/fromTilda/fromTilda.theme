@@ -30,7 +30,6 @@ function fromTilda_preprocess_html(&$variables)
  * Preprocess function for breadcrumb.html.twig.
  */
 function fromTilda_preprocess_breadcrumb(&$variables) {
-  /** @var $breadcrumbs \Drupal\kc_services\KCModufyBreadcrumb */
   \Drupal::service('kc_services.modify_breadcrumb')->modify($variables);
 }
 

@@ -1,0 +1,12 @@
+working_hours_set:
+  js:
+    js/clockpicker.js: {attributes: { async: false, defer: true } }
+    js/moment.min.js: {attributes: { async: false, defer: true } }
+    js/daterangepicker.min.js: {attributes: { async: false, defer: true } }
+    js/custom.js: {attributes: { async: false, defer: true } }
+  css:
+    theme:
+      css/standalone.css: {}
+      css/clockpicker.css: {}
+      css/daterangepicker.css: {}
+      css/custom.css: {}

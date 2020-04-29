@@ -1057,3 +1057,15 @@ a.about-num_item {text-decoration:none}
 .anchor-button-wrapper span:hover {
   border: 1px solid #2299d2;
 }
+
+.header_time p.first {
+  margin-bottom: 10px;
+  font: 16px/1 'GothamProMedium';
+  color: #2299d2;
+  text-align: center;
+}
+@media screen and (max-width: 1230px) {
+  .header_time p.first {
+    text-align: left;
+  }
+}

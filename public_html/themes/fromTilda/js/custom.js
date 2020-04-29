@@ -39,6 +39,21 @@ $(document).ready(function () {
         }, 900);
       })
     }
+
+    if($('.header_time').length > 0) {
+      $.ajax({
+        url: '/get/work/hours',
+        dataType: 'json',
+        type: 'GET',
+        success: response => {
+          if (response !== '') {
+            $('.header_time').each(function(index) {
+              $(this).html("<p class='first'>" + response.first_string + "</p><p>" + response.second_string + "</p>");
+            });
+          }
+        }
+      });
+    }
 });
 
 var jivo_onLoadCallback = function () {
