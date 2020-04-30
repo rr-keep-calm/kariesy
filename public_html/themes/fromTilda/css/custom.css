@@ -1070,3 +1070,11 @@ a.about-num_item {text-decoration:none}
   color: #2299d2;
   text-align: left;
 }
+@media screen and (max-width:480px) {
+.header_time p {font: 13px/1 'OpenSansLight'}
+.header_time p.first {font: 18px/1 'GothamProMedium'}
+}
+@media screen and (max-width:320px) {
+.header_time p {font: 11px/1 'OpenSansLight'}
+.header_time p.first {font: 15px/1 'GothamProMedium'}
+}
