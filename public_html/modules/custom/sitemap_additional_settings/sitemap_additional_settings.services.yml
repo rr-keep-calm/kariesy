@@ -9,3 +9,9 @@ services:
     arguments: ['@entity_type.manager', '@entity.repository']
     tags:
       - { name: breadcrumb_builder, priority: 1003 }
+  sitemap_additional_settings.get_entities_items:
+    class: Drupal\sitemap_additional_settings\GetEntitiesItems
+  sitemap_additional_settings.process_items:
+    class: Drupal\sitemap_additional_settings\ProcessItems
+  sitemap_additional_settings.refill_site_map_menu:
+    class: Drupal\sitemap_additional_settings\RefillSiteMapMenu

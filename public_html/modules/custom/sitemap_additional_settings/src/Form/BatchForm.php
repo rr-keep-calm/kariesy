@@ -3,22 +3,8 @@
 namespace Drupal\sitemap_additional_settings\Form;
 
 use Drupal\Core\Batch\BatchBuilder;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Menu\MenuTreeStorage;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\views\Views;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Routing\RouteMatch;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Route;
-use Drupal\Core\Menu\MenuTreeParameters;
 
 class BatchForm extends FormBase {
 
@@ -83,19 +69,8 @@ class BatchForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     \Drupal::state()->set('map_levels', []);
-    // Очищаем все ранее сохранённые данные для построения карты сайта
-    $config = $this->config('sitemap_additional.adminsettings');
 
-    //TODO получить от каждой сущности заголовок для использования в построении меню
-
-    // Получаем все ноды
-    $nodes = $this->getNodes(array_filter($config->get('exclude_node_types')));
-
-    // Получаем все словари таксономии
-    $terms = $this->getTerms(array_filter($config->get('exclude_vocabularies')));
-
-    // Получаем все страницы представлений
-    $views = $this->getViews(array_filter($config->get('views_for_auto_add')));
+    $entities = \Drupal::service('sitemap_additional_settings.get_entities_items')->getEntitiesItems();
 
     $this->batchBuilder
       ->setTitle($this->t('Processing'))
@@ -105,11 +80,7 @@ class BatchForm extends FormBase {
 
     $this->batchBuilder->setFile(drupal_get_path('module', 'sitemap_additional_settings') . '/src/Form/BatchForm.php');
     $this->batchBuilder->addOperation([$this, 'processItems'], [
-      [
-        $nodes,
-        $terms,
-        $views,
-      ],
+      $entities,
     ]);
     $this->batchBuilder->setFinishCallback([$this, 'finished']);
 
@@ -192,183 +163,14 @@ class BatchForm extends FormBase {
    *   An id of Entity item.
    */
   public function processItem($item) {
-    switch ($item) {
-      case (isset($item['route_name']) && $item['route_name'] == 'entity.node.canonical') :
-        $this->processNode($item);
-        break;
-      case (isset($item['route_name']) && $item['route_name'] == 'entity.taxonomy_term.canonical') :
-        $this->processTerm($item);
-        break;
-      case (isset($item['path']) && preg_match('/^view/', $item['id']) ? TRUE : FALSE) :
-        $this->processView($item);
-        break;
-    }
-  }
-
-  public function processNode($item) {
-    $alias = \Drupal::service('path.alias_manager')
-      ->getAliasByPath('/node/' . $item['id']);
-
-    $request = Request::create($alias);
-    $route_object = new Route($alias);
-    $route_object->setDefault('sitemap_additional_settings', TRUE);
-    $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, $route_object);
-    $request->attributes->set(RouteObjectInterface::ROUTE_NAME, $item['route_name']);
-    $request->attributes->set('sitemap_additional_settings', TRUE);
-    $route = RouteMatch::createFromRequest($request);
-    $breadcrumbHandler = \Drupal::service('breadcrumb');
-    $breadcrumbs = $breadcrumbHandler->build($route);
-    $links = [];
-    foreach ($breadcrumbs->getLinks() as $link) {
-      $link_url = $link->getUrl()->toString();
-      if ($link_url === '/') {
-        continue;
-      }
-      $links[] = $link_url;
-    }
-
-    $map_levels = \Drupal::state()->get('map_levels', []);
-    $map_levels[count($links)][] = [
-      'parent' => $links ? end($links) : '',
-      'path' => $alias,
-      'name' => $item['name'],
-    ];
-    \Drupal::state()->set('map_levels', $map_levels);
-  }
-
-  public function processTerm($item) {
-    $alias = \Drupal::service('path.alias_manager')
-      ->getAliasByPath('/taxonomy/term/' . $item['id']);
-
-    $request = Request::create($alias);
-    $route_object = new Route($alias);
-    $route_object->setDefault('sitemap_additional_settings', TRUE);
-    $route_object->setDefault('taxonomy_term', Term::load($item['id']));
-    $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, $route_object);
-    $request->attributes->set(RouteObjectInterface::ROUTE_NAME, $item['route_name']);
-    $request->attributes->set('sitemap_additional_settings', TRUE);
-    $request->attributes->set('taxonomy_term', Term::load($item['id']));
-    $route = RouteMatch::createFromRequest($request);
-    $breadcrumbHandler = \Drupal::service('breadcrumb');
-    $breadcrumbs = $breadcrumbHandler->build($route);
-    $links = [];
-    foreach ($breadcrumbs->getLinks() as $link) {
-      $link_url = $link->getUrl()->toString();
-      if ($link_url === '/') {
-        continue;
-      }
-      $links[] = $link_url;
-    }
-
-    if (\Drupal::hasService('kc_services.modify_breadcrumb')) {
-      \Drupal::service('kc_services.modify_breadcrumb')
-        ->modifyForInternals($links, $item['id']);
-    }
-    $map_levels = \Drupal::state()->get('map_levels', []);
-    $map_levels[count($links)][] = [
-      'parent' => $links ? end($links) : '',
-      'path' => $alias,
-      'name' => $item['name'],
-    ];
-    \Drupal::state()->set('map_levels', $map_levels);
-  }
-
-  public function processView($item) {
-    $alias = '/' . $item['path'];
-
-    $request = Request::create($alias);
-    $route_object = new Route($alias);
-    $route_object->setDefault('sitemap_additional_settings', TRUE);
-    $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, $route_object);
-    $request->attributes->set(RouteObjectInterface::ROUTE_NAME, $item['id']);
-    $request->attributes->set('sitemap_additional_settings', TRUE);
-    $route = RouteMatch::createFromRequest($request);
-    $breadcrumbHandler = \Drupal::service('breadcrumb');
-    $breadcrumbs = $breadcrumbHandler->build($route);
-    $links = [];
-    foreach ($breadcrumbs->getLinks() as $link) {
-      $link_url = $link->getUrl()->toString();
-      if ($link_url === '/') {
-        continue;
-      }
-      $links[] = $link_url;
-    }
-
-    $map_levels = \Drupal::state()->get('map_levels', []);
-    $map_levels[count($links)][] = [
-      'parent' => $links ? end($links) : '',
-      'path' => $alias,
-      'name' => $item['name'],
-    ];
-    \Drupal::state()->set('map_levels', $map_levels);
+    \Drupal::service('sitemap_additional_settings.process_items')->processItem($item);
   }
 
   /**
    * Finished callback for batch.
    */
   public function finished($success, $results, $operations) {
-    $map_levels = \Drupal::state()->get('map_levels', []);
-    ksort($map_levels);
-    $config = $this->config('sitemap_additional.adminsettings');
-
-    // Для начала удаляем ссылки которые удаляются наверняка - это добавленные
-    // непосредственно в меню
-    $mids = \Drupal::entityQuery('menu_link_content')
-      ->condition('menu_name', $config->get('menu_for_auto_add'))
-      ->execute();
-    $controller = \Drupal::entityTypeManager()->getStorage('menu_link_content');
-    $entities = $controller->loadMultiple($mids);
-    $controller->delete($entities);
-
-    // Если остались ссылки с большой долей вероятности это ссылки созданные из
-    // views. Программно мы на них повлиять не можем, а знаичт потребуется
-    // ручное вмешательство
-    $parents = [];
-    $host = \Drupal::request()->getSchemeAndHttpHost();
-    foreach ($map_levels as $map_level) {
-      foreach ($map_level as $level_item) {
-        if ($level_item['path'] == '/') {
-          continue;
-        }
-        $menu_link = [
-          'title' => $level_item['name'],
-          'link' => ['uri' => $host . $level_item['path']],
-          'menu_name' => $config->get('menu_for_auto_add'),
-          'expanded' => TRUE,
-        ];
-        if ($level_item['parent'] && isset($parents[$level_item['parent']])) {
-          $menu_link['parent'] = $parents[$level_item['parent']];
-        }
-        $menu_link_content = MenuLinkContent::create($menu_link);
-        $menu_link_content->save();
-        $parents[$level_item['path']] = $menu_link_content->getPluginId();
-      }
-    }
-    $custom_map_links = $config->get('custom_map_links');
-    if ($custom_map_links) {
-      foreach (explode("\n", $custom_map_links) as $custom_map_link) {
-        $custom_map_link_parts = explode('|', $custom_map_link);
-        if ($custom_map_link_parts[1] == '/') {
-          continue;
-        }
-        $menu_link = [
-          'title' => $custom_map_link_parts[0],
-          'link' => ['uri' => $host . $custom_map_link_parts[1]],
-          'menu_name' => $config->get('menu_for_auto_add'),
-          'expanded' => TRUE,
-        ];
-        if (isset($custom_map_link_parts[2]) && isset($parents[trim($custom_map_link_parts[2])])) {
-          $menu_link['parent'] = $parents[trim($custom_map_link_parts[2])];
-        }
-        $menu_link_content = MenuLinkContent::create($menu_link);
-        $menu_link_content->save();
-        $parents[trim($custom_map_link_parts[1])] = $menu_link_content->getPluginId();
-      }
-    }
-
-    $cache = \Drupal::cache('menu');
-    $cache->deleteAll();
-    drupal_flush_all_caches();
+    \Drupal::service('sitemap_additional_settings.refill_site_map_menu')->refillSiteMapMenu();
 
     $message = $this->t('Number of items affected by batch: @count', [
       '@count' => $results['processed'],
@@ -376,84 +178,5 @@ class BatchForm extends FormBase {
 
     $this->messenger()
       ->addStatus($message);
-  }
-
-  /**
-   * Load all nids without specific type.
-   *
-   * @return array
-   *   An array with nids and route name.
-   */
-  public function getNodes($exclude_node_types) {
-    $nodes = \Drupal::entityQuery('node')
-      ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('type', $exclude_node_types, 'NOT IN')
-      ->execute();
-    $nodes = Node::loadMultiple($nodes);
-    return array_map(function ($node) {
-      return [
-        'id' => $node->id(),
-        'route_name' => 'entity.node.canonical',
-        'name' => $node->label(),
-      ];
-    }, $nodes);
-  }
-
-  /**
-   * Load all tids without specific type.
-   *
-   * @return array
-   *   An array with tids and route name.
-   */
-  public function getTerms($exclude_vocabularies) {
-    $vids = Vocabulary::loadMultiple();
-    $vids = array_filter(array_keys($vids), function ($item) use ($exclude_vocabularies) {
-      return !isset($exclude_vocabularies[$item]);
-    });
-    $terms = [];
-    foreach ($vids as $vid) {
-      $terms_temp = \Drupal::entityTypeManager()
-        ->getStorage('taxonomy_term')
-        ->loadTree($vid);
-      foreach ($terms_temp as $term_temp) {
-        if (!$term_temp->status) {
-          continue;
-        }
-        $terms[] = [
-          'id' => $term_temp->tid,
-          'route_name' => 'entity.taxonomy_term.canonical',
-          'name' => $term_temp->name,
-        ];
-      }
-    }
-    return $terms;
-  }
-
-  /**
-   * Load all views pages without specific type.
-   *
-   * @return array
-   *   An array with path views page and route name.
-   */
-  public function getViews($views_for_auto_add) {
-    $views = [];
-    foreach ($views_for_auto_add as $view_for_auto_add) {
-      $view = Views::getView($view_for_auto_add);
-      foreach ($view->storage->get('display') as $display) {
-        if ($display['display_plugin'] !== 'page') {
-          continue;
-        }
-        if ($display['display_options']['enabled'] === FALSE) {
-          continue;
-        }
-        $view->setDisplay($display['id']);
-        $views[] = [
-          'id' => 'view.' . $view->id() . '.' . $display['id'],
-          'path' => $display['display_options']['path'],
-          'name' => $view->getTitle(),
-        ];
-      }
-    }
-    return $views;
   }
 }
