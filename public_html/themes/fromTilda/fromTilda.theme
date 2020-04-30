@@ -107,25 +107,13 @@ function fromTilda_theme_suggestions_taxonomy_term_alter(&$suggestions, &$vars, 
       if ($render['#rows'] && count($render['#rows']) > 0) {
         $vars['sub_services'] = \Drupal::service('renderer')->render($render);
       }
+    }
 
-      // Получаем блок с ценами на услуги заболеваний
-      $view = Views::getView('blok_cen_na_stranice_uslugi');
-      $view->setDisplay('block_1');
-      $view->setArguments(array($term->id()));
-      $render = $view->render();
-      if (count($render['#rows']) > 0) {
-        $vars['service_price'] = \Drupal::service('renderer')->render($render);
-
-        // Формируем заключительную часть ссылки на нужную страницу прайса
-        $service_type = $term->get('field_service_type')->getValue();
-        if (isset($service_type[0]) && isset($service_type[0]['target_id'])) {
-          $service_type = Term::load($service_type[0]['target_id']);
-          $service_type_name = $service_type->name->value;
-          $translitiration = new PhpTransliteration();
-          $last_part_url = strtolower(str_replace(' ', '_', $translitiration->transliterate($service_type_name, 'en', '_')));
-          $vars['service_price_last_part_url'] = $last_part_url;
-        }
-      }
+    // Получаем блок с ценами на услуги заболеваний
+    $result = \Drupal::service('kc_services.get_prices_block')->get($term);
+    if ($result['content']) {
+      $vars['service_price'] = $result['content'];
+      $vars['service_price_last_part_url'] = $result['last_part_url'] ?? '';
     }
   }
 }
@@ -271,6 +259,14 @@ function fromTilda_preprocess_page(&$variables) {
     if ($term) {
       $variables['hideFreeConsultBlock'] = (bool) $term->get('field_hide_free_consult_block')
         ->getValue()[0]['value'];
+    }
+
+    // Добавляем блок с ценами на страницу категории услуги
+    $result = \Drupal::service('kc_services.get_prices_block')->get($term);
+    if ($result['content']) {
+      $variables['service_price'] = $result['content'];
+      $variables['service_price_last_part_url'] = $result['last_part_url'] ?? '';
+      $variables['service_price_block_header'] = $result['block_header'] ?? '';
     }
   }
   if ($viewIdReviews === 'services_page' && preg_match('/view.services_page.(page_\d)/', \Drupal::routeMatch()->getRouteName(), $matches)) {

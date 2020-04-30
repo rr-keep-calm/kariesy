@@ -1,3 +1,5 @@
 services:
   kc_services.modify_breadcrumb:
     class: Drupal\kc_services\KCModufyBreadcrumb
+  kc_services.get_prices_block:
+    class: Drupal\kc_services\KCGetPricesBlock
