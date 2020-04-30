@@ -1,181 +1,45 @@
 <?php
 
-use Drupal\Core\Routing\RouteMatch;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\node\NodeInterface;
-use Drupal\taxonomy\TermInterface;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Route;
+function sitemap_additional_settings_cron() {
+  $iteration_start_time = time();
+  $last_start = \Drupal::state()
+    ->get('sitemap_additional_settings.last_start', 0);
 
-function sitemap_additional_settings_node_insert(NodeInterface $node) {
-  if (!validateNodeType($node)) {
-    return;
-  }
-  if ($node->get('status')->getValue()[0]['value']) {
-    $alias = \Drupal::service('path.alias_manager')
-      ->getAliasByPath('/node/' . $node->id());
-    menuModify($alias, TRUE, $node->label());
-  }
-}
-
-function sitemap_additional_settings_node_presave(NodeInterface $node) {
-  if (!validateNodeType($node)) {
-    return;
-  }
-  $url_presave = \Drupal::service('path.alias_manager')
-    ->getAliasByPath('/node/' . $node->id());
-  \Drupal::state()
-    ->set('sitemap_additional_settings.url_presave', $url_presave);
-}
-
-function sitemap_additional_settings_node_update(NodeInterface $node) {
-  if (!validateNodeType($node)) {
-    return;
-  }
-  $status = $node->get('status')->getValue()[0]['value'];
-  $alias = \Drupal::service('path.alias_manager')
-    ->getAliasByPath('/node/' . $node->id());
-  $url_presave = \Drupal::state()
-    ->get('sitemap_additional_settings.url_presave', '');
-  if ($alias != $url_presave) {
-    menuModify($url_presave, FALSE);
-    menuModify($alias, (bool)$status, $node->label());
-  }
-  if (!$status) {
-    menuModify($alias, FALSE);
-  }
-}
-
-function sitemap_additional_settings_node_predelete(NodeInterface $node) {
-  if (!validateNodeType($node)) {
-    return;
-  }
-  $alias = \Drupal::service('path.alias_manager')
-    ->getAliasByPath('/node/' . $node->id());
-  menuModify($alias, FALSE);
-}
-
-function sitemap_additional_settings_taxonomy_term_insert(TermInterface $term) {
-  if (!validateTermVid($term)) {
-    return;
-  }
-  if ($term->get('status')->getValue()[0]['value']) {
-    $alias = \Drupal::service('path.alias_manager')
-      ->getAliasByPath('/taxonomy/term/' . $term->id());
-    menuModify($alias, TRUE, $term->label(), 'entity.taxonomy_term.canonical');
-  }
-}
-
-function sitemap_additional_settings_taxonomy_term_presave(TermInterface $term) {
-  if (!validateTermVid($term)) {
-    return;
-  }
-  $url_presave = \Drupal::service('path.alias_manager')
-    ->getAliasByPath('/taxonomy/term/' . $term->id());
-  \Drupal::state()
-    ->set('sitemap_additional_settings.url_presave', $url_presave);
-}
-
-function sitemap_additional_settings_taxonomy_term_update(TermInterface $term) {
-  if (!validateTermVid($term)) {
-    return;
-  }
-  $status = $term->get('status')->getValue()[0]['value'];
-  $alias = \Drupal::service('path.alias_manager')
-    ->getAliasByPath('/taxonomy/term/' . $term->id());
-  $url_presave = \Drupal::state()
-    ->get('sitemap_additional_settings.url_presave', '');
-  if ($alias != $url_presave) {
-    menuModify($url_presave, FALSE, 'entity.taxonomy_term.canonical');
-    menuModify($alias, (bool)$status, $term->label(), 'entity.taxonomy_term.canonical');
-  }
-  if (!$status) {
-    menuModify($alias, FALSE, 'entity.taxonomy_term.canonical');
-  }
-}
-
-function sitemap_additional_settings_taxonomy_term_predelete(TermInterface $term) {
-  if (!validateTermVid($term)) {
-    return;
-  }
-  $alias = \Drupal::service('path.alias_manager')
-    ->getAliasByPath('/taxonomy/term/' . $term->id());
-  menuModify($alias, FALSE, 'entity.taxonomy_term.canonical');
-}
-
-function menuModify($alias, $add, $name = '', $route_name = 'entity.node.canonical') {
-  $config = \Drupal::config('sitemap_additional.adminsettings');
-  $host = \Drupal::request()->getSchemeAndHttpHost();
-  $mids = getLinkFromMenu($alias);
-
-  if (!$mids && $add) {
-    $request = Request::create($alias);
-    $route_object = new Route($alias);
-    $route_object->setDefault('sitemap_additional_settings', TRUE);
-    $request->attributes->set(RouteObjectInterface::ROUTE_OBJECT, $route_object);
-    $request->attributes->set(RouteObjectInterface::ROUTE_NAME, $route_name);
-    $request->attributes->set('sitemap_additional_settings', TRUE);
-    $route = RouteMatch::createFromRequest($request);
-    $breadcrumbHandler = \Drupal::service('breadcrumb');
-    $breadcrumbs = $breadcrumbHandler->build($route);
-    $menu_link = [
-      'title' => $name,
-      'link' => ['uri' => $host . $alias],
-      'menu_name' => $config->get('menu_for_auto_add'),
-      'expanded' => TRUE,
-    ];
-
-    $parent_alias = '';
-    if ($breadcrumbs->getLinks()) {
-      $parent_alias = end($breadcrumbs->getLinks())->getUrl()->toString();
-    }
-    if ($parent_alias) {
-      $parent_mids = getLinkFromMenu($parent_alias);
-      if ($parent_mids) {
-        $parent_link = MenuLinkContent::load(reset($parent_mids));
-        if ($parent_link) {
-          $menu_link['parent'] = $parent_link->getPluginId();
-        }
+  if ($iteration_start_time - $last_start > 79200) { // 22 часа
+    $entities = \Drupal::state()
+      ->get('sitemap_additional_settings.entities', []);
+    if (!$entities) {
+      \Drupal::state()->set('map_levels', []);
+      $entities_temp = \Drupal::service('sitemap_additional_settings.get_entities_items')
+        ->getEntitiesItems();
+      foreach ($entities_temp as $entitie_item) {
+        $entities = array_merge($entities, $entitie_item);
       }
+      $entities[] = 'finish';
     }
-    $menu_link_content = MenuLinkContent::create($menu_link);
-    $menu_link_content->save();
+    $processed_entities_count = 0;
+    foreach ($entities as $entity) {
+      if (time() - $iteration_start_time >= 20) {
+        break;
+      }
+      if ($entity === 'finish') {
+        $processed_entities_count++;
+        break;
+      }
+      \Drupal::service('sitemap_additional_settings.process_items')
+        ->processItem($entity);
+      $processed_entities_count++;
+    }
+
+    $entities = array_slice($entities, $processed_entities_count);
+    \Drupal::state()
+      ->set('sitemap_additional_settings.entities', $entities);
+
+    if (!$entities) {
+      \Drupal::service('sitemap_additional_settings.refill_site_map_menu')
+        ->refillSiteMapMenu();
+      \Drupal::state()
+        ->set('sitemap_additional_settings.last_start', $iteration_start_time);
+    }
   }
-  if ($mids && !$add) {
-    $controller = \Drupal::entityTypeManager()->getStorage('menu_link_content');
-    $entities = $controller->loadMultiple($mids);
-    $controller->delete($entities);
-  }
-  $cache = \Drupal::cache('menu');
-  $cache->deleteAll();
-  drupal_flush_all_caches();
-}
-
-function getLinkFromMenu($alias) {
-  $config = \Drupal::config('sitemap_additional.adminsettings');
-  $host = \Drupal::request()->getSchemeAndHttpHost();
-  return \Drupal::entityQuery('menu_link_content')
-    ->condition('menu_name', $config->get('menu_for_auto_add'))
-    ->condition('link__uri', $host . $alias)
-    ->execute();
-}
-
-function validateNodeType($node) {
-  $config = \Drupal::config('sitemap_additional.adminsettings');
-  $exclude_node_types = array_filter($config->get('exclude_node_types'));
-  $node_type = $node->bundle();
-  return !isset($exclude_node_types[$node_type]);
-}
-
-/**
- * @param $term TermInterface
- *
- * @return bool
- */
-function validateTermVid($term) {
-  $config = \Drupal::config('sitemap_additional.adminsettings');
-  $exclude_term_vids = array_filter($config->get('exclude_vocabularies'));
-  $term_vid = $term->bundle();
-  return !isset($exclude_term_vids[$term_vid]);
 }
