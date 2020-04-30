@@ -8,7 +8,7 @@ class WorkingHoursStrings {
   protected $result = ['first_string' => '', 'second_string' => ''];
 
   public function getWorkingHoursStrings() {
-    $this->result['first_string'] = 'сейчас работаем';
+    $this->result['first_string'] = 'Сейчас работаем';
     // Получаем все настройки по времени работы
     $config = \Drupal::config('working_hours_settings.admin_settings');
 
@@ -47,7 +47,7 @@ class WorkingHoursStrings {
     $in_interval = $this->checkIntervalInExceptions($in_interval, $date, json_decode($config->get('exceptions_work_hours'), TRUE));
 
     if (!$in_interval) {
-      $this->result['first_string'] = 'сейчас закрыты';
+      $this->result['first_string'] = 'Сейчас закрыты';
     }
 
     return $this->result;

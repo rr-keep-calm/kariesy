@@ -1058,14 +1058,15 @@ a.about-num_item {text-decoration:none}
   border: 1px solid #2299d2;
 }
 
-.header_time p.first {
-  margin-bottom: 10px;
-  font: 16px/1 'GothamProMedium';
-  color: #2299d2;
-  text-align: center;
+.header_time p {
+	font: 14px/1 'OpenSansLight';
+    color: #abadae;
+    letter-spacing: -.1px;
 }
-@media screen and (max-width: 1230px) {
-  .header_time p.first {
-    text-align: left;
-  }
+
+.header_time p.first {
+  margin-bottom: 8px;
+  font: 20px/1 'GothamProMedium';
+  color: #2299d2;
+  text-align: left;
 }
