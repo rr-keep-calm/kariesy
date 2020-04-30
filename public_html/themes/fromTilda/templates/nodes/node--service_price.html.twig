@@ -108,6 +108,37 @@
             <a href="#recall-form-on-service-page" data-eventLabel="form-price" class="button popup">записаться на прием</a>
         </div>
     </div>
+{% elseif (view_mode == 'very_short_list') %}
+  <div class="price_item __align-center{{ content.field_old_price|render ? ' with_old' : '' }}">
+    <div class="price_text">
+      <div class="price_what">{{ node.label }}</div>
+      {% if content.field_service_code|render %}
+        <div class="price_code">Код услуги: {{ content.field_service_code.0['#context']['value'] }}</div>
+      {% endif %}
+    </div>
+
+    <div class="price_cnt __min flex-custom">
+      {% if content.field_old_price|render %}
+        <span class="price_old">
+                  {{ _self.price_format(content.field_old_price.0['#markup']) }}
+                </span>
+      {% endif %}
+      <span class="price_num">
+                {% if content.field_price_from.0['#markup'] == 'Вкл' or (content.field_price_to.0['#markup'] != '' and content.field_price_to.0['#markup'] != 0) %}
+                  <span class="price-from">от</span>
+                {% endif %}
+        {{ _self.price_format(content.field_cena.0['#markup']) }}
+            </span>
+      <span class="price_sign">руб.</span>
+      {% if content.field_price_to.0['#markup']|trim != '' and content.field_price_to.0['#markup']|trim != 0 %}
+        <div class="flex-line-break"></div>
+        <span class="price_num">
+                    <span class="price-to">до</span> {{ _self.price_format(content.field_price_to.0['#markup']) }}
+                </span>
+        <span class="price_sign">руб.</span>
+      {% endif %}
+    </div>
+  </div>
 {% else %}
   <article{{ attributes }}>
 

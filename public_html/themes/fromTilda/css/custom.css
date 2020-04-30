@@ -1074,10 +1074,31 @@ a.about-num_item {text-decoration:none}
   text-align: left;
 }
 @media screen and (max-width:480px) {
-.header_time p {font: 13px/1 'OpenSansLight'}
-.header_time p.first {font: 18px/1 'GothamProMedium'}
+  .header_time p {font: 13px/1 'OpenSansLight'}
+  .header_time p.first {font: 18px/1 'GothamProMedium'}
 }
 @media screen and (max-width:320px) {
-.header_time p {font: 11px/1 'OpenSansLight'}
-.header_time p.first {font: 15px/1 'GothamProMedium'}
+  .header_time p {font: 11px/1 'OpenSansLight'}
+  .header_time p.first {font: 15px/1 'GothamProMedium'}
+}
+
+.service-detail_price.service_page .wrapper {
+  max-width:1220px
+}
+
+.service-detail_price.service_page .wrapper div:nth-child(2) {
+  max-width:880px
+}
+
+.service_page .wrapper .price_what {
+  margin-bottom: 0;
+}
+
+.service_page .wrapper .price_item.__align-center {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.service_page .wrapper .price_num {
+  font-size: 20px;
 }
