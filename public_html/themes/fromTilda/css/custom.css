@@ -125,6 +125,11 @@
 
 .service-detail_block ol li {font:14px/25px 'OpenSansLight'}
 
+.top {padding:40px 0 20px}
+@media screen and (max-width: 767px) {
+.top {padding: 20px 0 0}
+}
+
 /* Статьи */
 .page .flex-wrapper {
 	display: flex;
@@ -363,7 +368,7 @@ a.about-num_item {text-decoration:none}
     margin-bottom: 50px;
 }
 
-/* Длаем для форм position:relative чтобы корректно отображалась заглушка */
+/* Делаем для форм position:relative чтобы корректно отображалась заглушка */
 #form-recall-form,
 #form-order-form,
 #question-form-wrapper,
@@ -1048,17 +1053,17 @@ a.about-num_item {text-decoration:none}
   font: 14px 'OpenSansRegular';
   color: #2299d2;
   text-decoration: none;
-  padding: 12px 18px;
-  border: 1px solid #daddde;
-  border-radius: 5px;
+  padding: 5px 2px;
+  border-bottom: 1px dashed #2299d2;
   -webkit-transition: .3s;
   transition: .3s;
   cursor: pointer;
-  margin: 0 20px 20px 0;
+  margin: 0 30px 20px 0;
 }
 
 .anchor-button-wrapper span:hover {
-  border: 1px solid #2299d2;
+	border-bottom: 1px dashed #003865;
+	color: #003865;
 }
 
 .header_time p {
@@ -1072,6 +1077,11 @@ a.about-num_item {text-decoration:none}
   font: 20px/1 'GothamProMedium';
   color: #2299d2;
   text-align: left;
+}
+@media screen and (max-width: 767px) {
+	.anchor-button-wrapper {margin-top:10px}
+	.service_page .wrapper .price_item.__align-center {margin-top:12px;margin-bottom:12px}
+	.price_items.__mobile-center .price_cnt {margin:15px auto 0}
 }
 @media screen and (max-width:480px) {
   .header_time p {font: 13px/1 'OpenSansLight'}
