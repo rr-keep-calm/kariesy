@@ -352,6 +352,11 @@ a.about-num_item {text-decoration:none}
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}
 }
+@media screen and (max-width: 1230px) {
+  body {
+    padding-top: 135px;
+  }
+}
 
 .price_cnt .flex-line-break {
     width: 100%;
@@ -1019,7 +1024,12 @@ a.about-num_item {text-decoration:none}
 
 @media screen and (max-width: 660px) {
   body {
-    padding-top: 176px;
+    padding-top: 145px;
+  }
+}
+@media screen and (max-width: 597px) {
+  body {
+    padding-top: 175px;
   }
 }
 
@@ -1082,6 +1092,9 @@ a.about-num_item {text-decoration:none}
 	.anchor-button-wrapper {margin-top:10px}
 	.service_page .wrapper .price_item.__align-center {margin-top:12px;margin-bottom:12px}
 	.price_items.__mobile-center .price_cnt {margin:15px auto 0}
+  .bread {
+    display: flex;
+  }
 }
 @media screen and (max-width:480px) {
   .header_time p {font: 13px/1 'OpenSansLight'}
