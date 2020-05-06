@@ -1125,3 +1125,8 @@ a.about-num_item {text-decoration:none}
 .service_page .wrapper .price_num {
   font-size: 20px;
 }
+
+.services-top {
+  margin-top: 60px;
+  padding: 0 15px;
+}

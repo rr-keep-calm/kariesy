@@ -17,6 +17,13 @@
         {% endif %}
       </div>
     </div>
+    {% if intro_text is defined %}
+      <div class="services-top page">
+        <div class="wrapper">
+          {{ intro_text|raw }}
+        </div>
+      </div>
+    {% endif %}
     {% block content %}
       <div class="content_main">
         <div class="wrapper">
