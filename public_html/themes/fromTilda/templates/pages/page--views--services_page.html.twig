@@ -17,6 +17,13 @@
         {% endif %}
       </div>
     </div>
+    {% if intro_text is defined %}
+      <div class="services-top page">
+        <div class="wrapper">
+          {{ intro_text|raw }}
+        </div>
+      </div>
+    {% endif %}
     {% block content %}
       <div class="content_main">
         <div class="wrapper">
@@ -40,6 +47,11 @@
                    class="service-detail_more">Прайс-лист на все услуги</a>
               </div>
             </div>
+          </div>
+        {% endif %}
+        {% if page.stock_list_on_service_type_page %}
+          <div class="wrapper stock">
+            {{ page.stock_list_on_service_type_page }}
           </div>
         {% endif %}
         {% if not hideFreeConsultBlock %}

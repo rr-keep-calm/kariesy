@@ -286,6 +286,12 @@ function fromTilda_preprocess_page(&$variables) {
         $variables['anchors'][] = ['name' => $allowed_values[$anchor['value']], 'selector' => $anchor['value']];
       }
     }
+
+    // получаем вступительный текст для отображеия над карточками услуг
+    $intro_text = $term->get('field_intro')->getValue();
+    if ($intro_text) {
+      $variables['intro_text'] = $intro_text[0]['value'];
+    }
   }
 
   // Получаем список всех докторов.

@@ -39,7 +39,7 @@
               <div class="services_base-text">
                 <div class="h4"><a href="{{ url }}">{{ name|render|striptags }}</a></div>
                 <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}
-                    <span>{{ _self.price_format(content.field_price.0['#markup'])|trim }}</span> <span class="price_sign">руб.</span>{% endif %}</p>
+                    <span>{{ _self.price_format(content.field_price.0['#markup'])|trim }}</span><span class="price_sign">руб.</span>{% endif %}</p>
               </div>
             </div>
 
@@ -82,7 +82,7 @@
           <div class="services_base-text">
             <div class="h4"><a href="{{ url }}">{{ name|render|striptags }}</a></div>
             <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }} {% if content.field_price.0['#markup'] > 0 %}
-                <span>{{_self.price_format(content.field_price.0['#markup'])|trim}}</span> <span class="price_sign">руб.</span>{% endif %}</p>
+                <span>{{_self.price_format(content.field_price.0['#markup'])|trim}}</span><span class="price_sign">руб.</span>{% endif %}</p>
           </div>
         </div>
         <div class="services_right"><a class="services_link" href="{{ url }}">подробнее</a></div>
@@ -107,7 +107,7 @@
           <a href="{{ url }}" class="recommend_link_header">{{ name|render|raw|striptags }}</a>
           {% if content.field_price.0 > 0 %}
             <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }}
-              <span>{{_self.price_format(content.field_price.0['#markup'])|trim}}</span> <span class="price_sign">руб.</span></p>
+              <span>{{_self.price_format(content.field_price.0['#markup'])|trim}}</span><span class="price_sign">руб.</span></p>
           {% endif %}
         </div>
       </div>
@@ -134,7 +134,7 @@
           <a href="{{ url }}" class="recommend_link_header">{{ name|render|raw|striptags }}</a>
           {% if content.field_price.0 > 0 %}
             <p>{{ content.field_text_before_price.0['#context']['value'] != '' ? content.field_text_before_price.0['#context']['value'] : 'Лечение от' }}
-              <span>{{_self.price_format(content.field_price.0['#markup'])|trim}}</span> <span class="price_sign">руб.</span></p>
+              <span>{{_self.price_format(content.field_price.0['#markup'])|trim}}</span><span class="price_sign">руб.</span></p>
           {% endif %}
         </div>
       </div>

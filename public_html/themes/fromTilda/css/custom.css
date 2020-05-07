@@ -1125,3 +1125,16 @@ a.about-num_item {text-decoration:none}
 .service_page .wrapper .price_num {
   font-size: 20px;
 }
+
+.services-top {
+  margin-top: 60px;
+  padding: 0 15px;
+}
+@media screen and (max-width: 767px) {
+.services-top {margin-top:15px}
+.services-top p {font:14px/24px 'OpenSansLight'}
+.services-top .wrapper {padding:0}
+}
+.wrapper.stock {
+  margin-bottom: 65px;
+}
