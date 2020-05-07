@@ -1,0 +1,32 @@
+<header>
+  <h1>{{ data.title }}</h1>
+  <menu>
+    <a href="/">Главная</a>
+    <a href="/stati">Полезные статьи</a>
+  </menu>
+  {#{% if data.article_image %}
+    <figure>
+      <img src="{{ data.article_image }}"/>
+    </figure>
+  {% endif %}#}
+</header>
+<div class="content_main __min">
+  <div class="wrapper">
+    <div class="page">
+      <div>
+        <div data-drupal-messages-fallback="" class="hidden"></div>
+        <div id="block-fromtilda-content">
+          {{ data.article_content }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div>
+      <div class="views-element-container" id="block-views-block-recommended-services-block-2">
+        <h2>Вас может заинтересовать</h2>
+        {{ data.relevant_services_on_article_page_for_feed|raw }}
+      </div>
+    </div>
+  </div>
+</div>
