@@ -1,0 +1,6 @@
+name: Фид статей (для турбо-страниц Яндекса)
+description: 'Фид статей (для турбо-страниц Яндекса)'
+type: module
+core: 8.x
+version: 0.1
+package: KeepCalm

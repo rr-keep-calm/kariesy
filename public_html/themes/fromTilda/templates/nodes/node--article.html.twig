@@ -24,16 +24,11 @@
   </div>
 {% else %}
   <article>
-    {{ title_prefix }}
-    {% if not page %}
-      <h2{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h2>
-    {% endif %}
-    {{ title_suffix }}
-
     <div{{ content_attributes }}>
-      {% set free_consult_block = '<div id="block-besplatnayakonsultaciya" class="article_free_consult">
+      {% if not page %}
+        {% set free_consult_block = '' %}
+      {% else %}
+        {% set free_consult_block = '<div id="block-besplatnayakonsultaciya" class="article_free_consult">
     <div class="free-consultation">
       <div class="free-consultation-item custom-block-header">Бесплатная консультация</div>
       <div class="free-consultation-item check-marker-list">
@@ -44,6 +39,7 @@
       <div class="free-consultation-item"><a class="button popup" data-eventlabel="form-price" href="#free-consult-form-on-article-page">записаться на прием</a></div>
     </div>
   </div>' %}
+      {% endif %}
       {{ content|without('field_article_author', 'field_tags', 'field_relevant_services', 'field_article_image')|render|replace({'%free_consult%': free_consult_block})|raw }}
     </div>
     {% if article_author_name is defined %}
@@ -58,40 +54,41 @@
       {% endfor %}
     </div>
   </article>
+  {% if page %}
+    <div class="forms mfp-hide" id="free-consult-form-on-article-page">
+      <form id="free-consult-form-on-article-page-form" action="/keep-calm-custom-form-handler" class="form" method="post" data-success_form="#form-normal">
+        <div class="wait-form free-consult-wait-form"></div>
+        <input type="hidden" name="token" class="token">
+        <input type="hidden" name="action" class="captcha-action">
+        <input type="hidden" name="formName" value="freeConsultArticle">
+        <div class="h4 form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами</div>
+
+        <div class="form_item">
+          <label class="form_label">Ваше имя</label>
+
+          <div class="form_data">
+            <input type="text" name="name" class="form_input">
+          </div>
+        </div>
+
+        <div class="form_item">
+          <label class="form_label">Номер телефона</label>
+
+          <div class="form_data">
+            <input type="tel" name="phone" class="form_input">
+          </div>
+        </div>
+
+        <div class="form_button">
+          <button type="submit" class="button g-recaptcha"
+                  data-sitekey="6LdLQo0UAAAAAAEBcbkJeVNeB3x6wRhY_c8_KE1x"
+                  data-callback="YourOnSubmitFn">
+            заказать звонок
+          </button>
+        </div>
+      </form>
+
+      <button type="button" class="forms_close popup-close"></button>
+    </div>
+  {% endif %}
 {% endif %}
-
-<div class="forms mfp-hide" id="free-consult-form-on-article-page">
-  <form id="free-consult-form-on-article-page-form" action="/keep-calm-custom-form-handler" class="form" method="post" data-success_form="#form-normal">
-    <div class="wait-form free-consult-wait-form"></div>
-    <input type="hidden" name="token" class="token">
-    <input type="hidden" name="action" class="captcha-action">
-    <input type="hidden" name="formName" value="freeConsultArticle">
-    <div class="h4 form_title __margin forms_title">Оставьте ваш телефон <br>и мы свяжемся с вами</div>
-
-    <div class="form_item">
-      <label class="form_label">Ваше имя</label>
-
-      <div class="form_data">
-        <input type="text" name="name" class="form_input">
-      </div>
-    </div>
-
-    <div class="form_item">
-      <label class="form_label">Номер телефона</label>
-
-      <div class="form_data">
-        <input type="tel" name="phone" class="form_input">
-      </div>
-    </div>
-
-    <div class="form_button">
-      <button type="submit" class="button g-recaptcha"
-              data-sitekey="6LdLQo0UAAAAAAEBcbkJeVNeB3x6wRhY_c8_KE1x"
-              data-callback="YourOnSubmitFn">
-        заказать звонок
-      </button>
-    </div>
-  </form>
-
-  <button type="button" class="forms_close popup-close"></button>
-</div>

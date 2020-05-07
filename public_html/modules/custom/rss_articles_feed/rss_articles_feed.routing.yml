@@ -1,0 +1,7 @@
+rss_articles_feed.services_feed:
+  path: '/articles_feed'
+  defaults:
+    _controller: '\Drupal\rss_articles_feed\Controller\RssArticlesFeedController::articlesFeed'
+    _title: 'Фид статей'
+  requirements:
+    _permission: 'access content'

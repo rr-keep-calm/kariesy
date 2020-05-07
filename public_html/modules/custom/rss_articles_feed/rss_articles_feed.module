@@ -1,0 +1,38 @@
+<?php
+function rss_articles_feed_theme($existing, $type, $theme, $path) {
+  return [
+    'articles_feed_page' => [
+      'variables' => ['data' => NULL],
+    ],
+    'article_page_for_feed' => [
+      'variables' => ['data' => NULL],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_cron().
+ */
+function rss_articles_feed_cron() {
+  $last_run = \Drupal::state()->get('rss_articles_feed.last_run', 0);
+
+  // If 23 hours passed since last time.
+  if (($_SERVER['REQUEST_TIME'] - $last_run) >= 82800) {
+    $file_creator = \Drupal::service('rss_articles_feed.feed_file_creator');
+    $result = $file_creator->create();
+
+    $build = [
+      'page' => [
+        '#theme' => 'articles_feed_page',
+        '#data' => $result,
+      ],
+    ];
+
+    $xml = (string) \Drupal::service('renderer')->renderRoot($build);
+    file_put_contents(__DIR__ . '/feed/feed.xml', $xml);
+
+    // Update last run.
+    \Drupal::state()
+      ->set('rss_articles_feed.last_run', $_SERVER['REQUEST_TIME']);
+  }
+}
