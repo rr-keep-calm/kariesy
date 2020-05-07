@@ -49,6 +49,11 @@
             </div>
           </div>
         {% endif %}
+        {% if page.stock_list_on_service_type_page %}
+          <div class="wrapper stock">
+            {{ page.stock_list_on_service_type_page }}
+          </div>
+        {% endif %}
         {% if not hideFreeConsultBlock %}
           {{ page.free_consultation_on_service_page }}
         {% endif %}
