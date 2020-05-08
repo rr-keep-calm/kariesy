@@ -240,9 +240,20 @@ function fromTilda_preprocess_page(&$variables) {
     $term = Term::load($tid);
     $vacabulary_id = $term->getVocabularyId();
     if ($vacabulary_id == 'service') {
-      $defaultServiceForForm = $term->get('field_service_type')->getValue();
-      if ($defaultServiceForForm) {
-        $variables['defaultServiceForForm'] = Term::load($defaultServiceForForm[0]['target_id'])->name->value;
+      $service_type = $term->get('field_service_type')->getValue();
+      if ($service_type) {
+        $service_type_term = Term::load($service_type[0]['target_id']);
+        $variables['defaultServiceForForm'] = $service_type_term->name->value;
+
+        // получаем признак инверсии бесплатности для блока бесплатнйо консультации
+        $not_free = false;
+        $free_or_not = $service_type_term->get('field_paid_consultation')->getValue();
+        if ($free_or_not) {
+          $not_free = (bool)$free_or_not[0]['value'];
+        }
+        if ($not_free) {
+          $variables['not_free'] = $not_free;
+        }
       }
       $variables['hideFreeConsultBlock'] = (bool)$term->get('field_hide_free_consult_block')->getValue()[0]['value'];
     }
@@ -291,6 +302,16 @@ function fromTilda_preprocess_page(&$variables) {
     $intro_text = $term->get('field_intro')->getValue();
     if ($intro_text) {
       $variables['intro_text'] = $intro_text[0]['value'];
+    }
+
+    // получаем признак инверсии бесплатности для блока бесплатнйо консультации
+    $not_free = false;
+    $free_or_not = $term->get('field_paid_consultation')->getValue();
+    if ($free_or_not) {
+      $not_free = (bool)$free_or_not[0]['value'];
+    }
+    if ($not_free) {
+      $variables['not_free'] = $not_free;
     }
   }
 
