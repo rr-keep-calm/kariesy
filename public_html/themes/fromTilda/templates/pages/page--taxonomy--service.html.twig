@@ -4,7 +4,11 @@
   <div class="service-detail">
     {{ page.content }}
     {% if not hideFreeConsultBlock %}
-      {{ page.free_consultation_on_service_page }}
+      {% set free_consult_block = page.free_consultation_on_service_page|render %}
+      {% if not_free is defined %}
+        {% set free_consult_block = free_consult_block|replace({'Бесплатная консультация': 'Запишитесь на консультацию'}) %}
+      {% endif %}
+      {{ free_consult_block|raw }}
     {% endif %}
     {{ page.recommended_services_on_service_page }}
     {{ page.doctor_list_on_service_page }}

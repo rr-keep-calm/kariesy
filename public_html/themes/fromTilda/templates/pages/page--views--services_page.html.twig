@@ -55,7 +55,11 @@
           </div>
         {% endif %}
         {% if not hideFreeConsultBlock %}
-          {{ page.free_consultation_on_service_page }}
+          {% set free_consult_block = page.free_consultation_on_service_page|render %}
+          {% if not_free is defined %}
+            {% set free_consult_block = free_consult_block|replace({'Бесплатная консультация': 'Запишитесь на консультацию'}) %}
+          {% endif %}
+          {{ free_consult_block|raw }}
         {% endif %}
         {{ page.doctor_list_on_service_type_page }}
         {{ page.review_list_on_service_type_page }}
