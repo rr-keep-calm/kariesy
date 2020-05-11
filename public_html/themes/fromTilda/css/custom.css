@@ -123,7 +123,7 @@
 .akcii .services_item .services_header .services_base-text .ended {color:red}
 .page .sale-ended {font:16px/20px 'OpenSansSemiBold';color:red}
 
-.service-detail_block ol li {font:14px/25px 'OpenSansLight'}
+.service-detail_about p, .service-detail_block p, .service-detail_block ul li, .service-detail_block ol li {font:18px/30px 'OpenSansLight'}
 
 .top {padding:40px 0 20px}
 @media screen and (max-width: 767px) {
@@ -321,6 +321,11 @@ a.about-num_item {text-decoration:none}
 }
 
 .white-slide .main_title, .white-slide .main_text {color:#ffffff}
+.main_slider .main_text.blutext {color:#2299d2}
+.main_slider .main_title {font:48px/1.1 'GothamProBold'}
+.main_slider .main_text.darkblutext {color:#003865}
+.main_slider .main_text p {font:18px/1.1 'GothamProLight'}
+.main_slider .main_text.bigtext p {font:24px/1.1 'GothamProLight'}
 
 .doctors-feedback_btn {
     text-align: center;
