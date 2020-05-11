@@ -322,10 +322,7 @@ a.about-num_item {text-decoration:none}
 
 .white-slide .main_title, .white-slide .main_text {color:#ffffff}
 .main_slider .main_text.blutext {color:#2299d2}
-.main_slider .main_title {font:48px/1.1 'GothamProBold'}
 .main_slider .main_text.darkblutext {color:#003865}
-.main_slider .main_text p {font:18px/1.1 'GothamProLight'}
-.main_slider .main_text.bigtext p {font:24px/1.1 'GothamProLight'}
 
 .doctors-feedback_btn {
     text-align: center;
@@ -351,8 +348,10 @@ a.about-num_item {text-decoration:none}
 	.price_cnt.flex-custom {max-width: 265px;}
 	.service-detail_about{width:680px;padding:40px 50px}
 	.service-detail_top{padding:70px 0 24px}
-	.small-slide .main_title {font-size:40px}
+	.main_slider .main_title {font:48px/1.1 'GothamProBold'}
 	.small-slide .main_title span {font-size:32px}
+	.main_slider .main_text p {font:18px/1.1 'GothamProLight'}
+	.main_slider .main_text.bigtext p {font:24px/1.1 'GothamProLight'}
 }
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}
@@ -820,7 +819,8 @@ a.about-num_item {text-decoration:none}
 }
 
 .stock-detail_about {
-  width: 480px;
+  width:auto;
+  max-width: 480px;
   padding: 50px;
   background: #fff;
   -webkit-box-shadow: 0 11px 30px rgba(165,165,165,.7);
