@@ -123,7 +123,7 @@
 .akcii .services_item .services_header .services_base-text .ended {color:red}
 .page .sale-ended {font:16px/20px 'OpenSansSemiBold';color:red}
 
-.service-detail_block ol li {font:14px/25px 'OpenSansLight'}
+.service-detail_about p, .service-detail_block p, .service-detail_block ul li, .service-detail_block ol li {font:18px/30px 'OpenSansLight'}
 
 .top {padding:40px 0 20px}
 @media screen and (max-width: 767px) {
@@ -321,6 +321,8 @@ a.about-num_item {text-decoration:none}
 }
 
 .white-slide .main_title, .white-slide .main_text {color:#ffffff}
+.main_slider .main_text.blutext {color:#2299d2}
+.main_slider .main_text.darkblutext {color:#003865}
 
 .doctors-feedback_btn {
     text-align: center;
@@ -346,8 +348,10 @@ a.about-num_item {text-decoration:none}
 	.price_cnt.flex-custom {max-width: 265px;}
 	.service-detail_about{width:680px;padding:40px 50px}
 	.service-detail_top{padding:70px 0 24px}
-	.small-slide .main_title {font-size:40px}
+	.main_slider .main_title {font:48px/1.1 'GothamProBold'}
 	.small-slide .main_title span {font-size:32px}
+	.main_slider .main_text p {font:18px/1.1 'GothamProLight'}
+	.main_slider .main_text.bigtext p {font:24px/1.1 'GothamProLight'}
 }
 @media screen and (min-width: 1230px) {
 	.price_cnt.flex-custom {max-width: 460px;}
@@ -815,18 +819,19 @@ a.about-num_item {text-decoration:none}
 }
 
 .stock-detail_about {
-  width: 480px;
+  width:auto;
+  max-width: 480px;
   padding: 50px;
   background: #fff;
   -webkit-box-shadow: 0 11px 30px rgba(165,165,165,.7);
   box-shadow: 0 11px 30px rgba(165,165,165,.7);
-  margin-bottom: 70px;
 }
 
 @media screen and (min-width: 768px) {
   .stock-detail_about {
     width: 680px;
     padding: 40px 50px;
+    margin-bottom:70px;
   }
 }
 
@@ -1105,24 +1110,24 @@ a.about-num_item {text-decoration:none}
   .header_time p.first {font: 15px/1 'GothamProMedium'}
 }
 
-.service-detail_price.service_page .wrapper {
+.service-detail_price.service_page .wrapper, .article-detail_price.article_page .wrapper {
   max-width:1220px
 }
 
-.service-detail_price.service_page .wrapper div:nth-child(2) {
+.service-detail_price.service_page .wrapper div:nth-child(2), .article-detail_price.article_page .wrapper .price_items {
   max-width:880px
 }
 
-.service_page .wrapper .price_what {
+.service_page .wrapper .price_what, .article_page .wrapper .price_what {
   margin-bottom: 0;
 }
 
-.service_page .wrapper .price_item.__align-center {
+.service_page .wrapper .price_item.__align-center, .article_page .wrapper .price_item.__align-center {
   margin-top: 12px;
   margin-bottom: 12px;
 }
 
-.service_page .wrapper .price_num {
+.service_page .wrapper .price_num, .article_page .wrapper .price_num {
   font-size: 20px;
 }
 
