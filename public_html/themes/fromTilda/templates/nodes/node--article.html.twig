@@ -27,6 +27,7 @@
     <div{{ content_attributes }}>
       {% if not page %}
         {% set free_consult_block = '' %}
+        {% set prices_placeholder = '' %}
       {% else %}
         {% set free_consult_block = '<div id="block-besplatnayakonsultaciya" class="article_free_consult">
     <div class="free-consultation">
@@ -39,8 +40,19 @@
       <div class="free-consultation-item"><a class="button popup" data-eventlabel="form-price" href="#free-consult-form-on-article-page">записаться на прием</a></div>
     </div>
   </div>' %}
+        {% if article_prices is defined %}
+          {% set prices_placeholder = "<div class=\"article-detail_price article_page\">
+          <div class=\"wrapper\">
+          <div class=\"article-detail_heading\">
+            <h2>Стоимость услуг</h2>
+          </div>
+          " ~ article_prices ~ "
+          </div>
+        </div>" %}
+        {% endif %}
       {% endif %}
-      {{ content|without('field_article_author', 'field_tags', 'field_relevant_services', 'field_article_image')|render|replace({'%free_consult%': free_consult_block})|raw }}
+
+      {{ content|without('field_article_author', 'field_tags', 'field_relevant_services', 'field_article_image', 'field_article_prices')|render|replace({'%free_consult%': free_consult_block})|replace({'%prices%': prices_placeholder})|raw }}
     </div>
     {% if article_author_name is defined %}
       <div class="article_author">

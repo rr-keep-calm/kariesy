@@ -1105,24 +1105,24 @@ a.about-num_item {text-decoration:none}
   .header_time p.first {font: 15px/1 'GothamProMedium'}
 }
 
-.service-detail_price.service_page .wrapper {
+.service-detail_price.service_page .wrapper, .article-detail_price.article_page .wrapper {
   max-width:1220px
 }
 
-.service-detail_price.service_page .wrapper div:nth-child(2) {
+.service-detail_price.service_page .wrapper div:nth-child(2), .article-detail_price.article_page .wrapper div:nth-child(2) {
   max-width:880px
 }
 
-.service_page .wrapper .price_what {
+.service_page .wrapper .price_what, .article_page .wrapper .price_what {
   margin-bottom: 0;
 }
 
-.service_page .wrapper .price_item.__align-center {
+.service_page .wrapper .price_item.__align-center, .article_page .wrapper .price_item.__align-center {
   margin-top: 12px;
   margin-bottom: 12px;
 }
 
-.service_page .wrapper .price_num {
+.service_page .wrapper .price_num, .article_page .wrapper .price_num {
   font-size: 20px;
 }
 
