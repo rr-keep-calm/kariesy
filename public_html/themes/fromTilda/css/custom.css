@@ -1136,6 +1136,7 @@ a.about-num_item {text-decoration:none}
   margin-top: 60px;
   padding: 0 15px;
 }
+.article-detail_price {margin-bottom:35px}
 @media screen and (max-width: 767px) {
 .services-top {margin-top:15px}
 .services-top p {font:14px/24px 'OpenSansLight'}
