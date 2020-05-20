@@ -827,12 +827,13 @@ a.about-num_item {text-decoration:none}
   box-shadow: 0 11px 30px rgba(165,165,165,.7);
 }
 
-@media screen and (min-width: 768px) {
-  .stock-detail_about {
+/* .stock-detail_about {
     width: 680px;
     padding: 40px 50px;
     margin-bottom:70px;
   }
+*/
+.reviews_about {max-width:350px}
 }
 
 .stock-detail_about p {
