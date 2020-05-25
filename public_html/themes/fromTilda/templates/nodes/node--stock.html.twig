@@ -7,7 +7,7 @@
             <a href="{{ url }}">{{ label }}</a>
           </div>
           {% set stock_date_end_parts = node.field_date_stock_end.value|raw|split('-') %}
-          {% if (stock_date_end_parts[0] < "now"|date("Y") and stock_date_end_parts[1] < "now"|date("m") and stock_date_end_parts[2] < "now"|date("d")) %}
+          {% if (stock_date_end_parts[0] < "now"|date("Y") or (stock_date_end_parts[0] <= "now"|date("Y") and stock_date_end_parts[1] < "now"|date("m")) or (stock_date_end_parts[0] <= "now"|date("Y") and stock_date_end_parts[1] <= "now"|date("m") and stock_date_end_parts[2] < "now"|date("d"))) %}
             <p class="ended">акция закончилась</p>
           {% else %}
             <p>срок действия акции до {{ stock_date_end_parts[2] }}.{{ stock_date_end_parts[1] }}.{{ stock_date_end_parts[0] }}</p>
