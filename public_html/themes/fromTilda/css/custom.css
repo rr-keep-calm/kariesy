@@ -827,12 +827,13 @@ a.about-num_item {text-decoration:none}
   box-shadow: 0 11px 30px rgba(165,165,165,.7);
 }
 
-@media screen and (min-width: 768px) {
-  .stock-detail_about {
+/* .stock-detail_about {
     width: 680px;
     padding: 40px 50px;
     margin-bottom:70px;
   }
+*/
+.reviews_about {max-width:350px}
 }
 
 .stock-detail_about p {
@@ -1135,6 +1136,7 @@ a.about-num_item {text-decoration:none}
   margin-top: 60px;
   padding: 0 15px;
 }
+.article-detail_price {margin-bottom:35px}
 @media screen and (max-width: 767px) {
 .services-top {margin-top:15px}
 .services-top p {font:14px/24px 'OpenSansLight'}
