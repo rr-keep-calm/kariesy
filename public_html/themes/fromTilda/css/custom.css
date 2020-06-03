@@ -151,6 +151,8 @@
     -ms-flex-line-pack: stretch;
     align-content: stretch;
 }
+.page .afterclear {padding-bottom:10px}
+.page .afterclear:after {content:'';display:block;clear:both}
 @media screen and (min-width: 768px) {
 .page .flex-wrapper {flex-wrap:nowrap;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap}
 .page .flex-wrapper > *:first-child {margin-right:20px}
