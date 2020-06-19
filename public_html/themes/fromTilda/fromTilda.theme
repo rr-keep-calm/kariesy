@@ -326,6 +326,10 @@ function fromTilda_preprocess_page(&$variables) {
   $variables['serviceTypesAll']['i_do_not_know']['name'] = 'Не знаю';
   foreach ($doctorsNodes as $node) {
     $doctorNid = $node->id();
+    // Убираем из списка докторов Сапельникова Александра Александровича
+    if ($doctorNid == 220) {
+      continue;
+    }
     $serviceTypes = $node->get('field_service_type')->getValue();
     foreach ($serviceTypes as $serviceType) {
       $serviceTypeTerm = Term::load($serviceType['target_id']);
@@ -505,6 +509,21 @@ function fromTilda_preprocess_node(&$variables){
       $variables['article_author_nid'] = $author_node->id();
       $variables['article_author_specializations'] = $author_node->get('field_specialization')->getValue();
     }
+
+    $prices = $variables['node']->get('field_article_prices')->getValue();
+    if ($prices) {
+      // Получаем блок с ценами на услуги заболеваний
+      $view = Views::getView('blok_cen_na_stranice_stati');
+      $view->setDisplay('block_1');
+      $arguments = [implode(',', array_map(function ($item) {
+        return $item['target_id'];
+      }, $prices))];
+      $view->setArguments($arguments);
+      $article_prices = \Drupal::service('renderer')->render($view->render());
+      if ($article_prices) {
+        $variables['article_prices'] = $article_prices;
+      }
+    }
   }
 }
 
@@ -614,6 +633,10 @@ function fromTilda_preprocess_block(&$variables) {
     $variables['doctors'] = [];
     foreach ($doctorsNodes as $node) {
       $doctorNid = $node->id();
+      // Убираем из списка докторов Сапельникова Александра Александровича
+      if ($doctorNid == 220) {
+        continue;
+      }
       $variables['doctors'][$doctorNid] = $node->getTitle();
 
       // Сохраняем клиники в которых работает доктор (используется на форме отзывов для актуализации клиник)

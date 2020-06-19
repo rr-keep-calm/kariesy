@@ -17,9 +17,12 @@
             </div>
 
             <ul class="reviews_about">
-                {% set doctorNid = content.field_doctor['#cache'].tags.0|split(':').1 %}
+                {% set field_doctor_values = node.field_doctor.getvalue %}
+                {% set doctorNid = field_doctor_values[0]['target_id'] %}
                 {% if content.field_doctor|render|striptags != '' %}
-                    <li>{{ node.field_doctor.getvalue|length > 1 ? 'О врачах:' : 'О враче:' }}{{ content.field_doctor }}</li>
+                    <li>{{ node.field_doctor.getvalue|length > 1 ? 'О врачах:' : 'О враче:' }}
+                      {{ doctorNid == "220" ? content.field_doctor[0]['#title'] : content.field_doctor }}
+                    </li>
                 {% elseif unpublishedDoctors is defined and unpublishedDoctors[doctorNid] is defined %}
                     <li>О враче: {{ unpublishedDoctors[doctorNid] }}</li>
                 {% endif %}
