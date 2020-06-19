@@ -61,6 +61,7 @@ class KCCSearchProcess {
 
     $this->collectFieldTables('node', $items, 'nid', $field_tables);
     $condition_and = new Condition('AND');
+    $condition_and->condition('node_field_data.nid', '220', '!='); // Убираем из результатов поиска Сапельникова Александра Александровича
     $condition_and->condition('node_field_data.type', 'review', '!=');
     $condition_and->condition('node_field_data.type', 'vopros_otvet', '!=');
     $condition_and->condition('node_field_data.type', 'service_price', '!=');

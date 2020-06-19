@@ -17,9 +17,11 @@
                         <div class="doctor_btn">
                             <a href="#form-order-doctor-page-popup" class="button popup">записаться на прием</a>
                         </div>
-                        <div class="doctor_btn">
-                            <a href="#form-question" class="button-light popup">задать вопрос</a>
-                        </div>
+                        {% if current_nid != 220 %}
+                          <div class="doctor_btn">
+                              <a href="#form-question" class="button-light popup">задать вопрос</a>
+                          </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -39,7 +41,7 @@
                             Никто ещё не оставлял отзыва об этом враче.
                           {% else %}
                             {{ reviews }}
-                            {% if reviews_count > 3 %}
+                            {% if reviews_count > 3 and current_nid != 220 %}
                               <div class="all_reviews_for_doctor link_wrapper">
                                 <a href="/feedback?clinic=&doc={{ current_nid }}" class="doctors-feedback_btn">Все отзывы о докторе</a>
                               </div>
@@ -73,6 +75,8 @@
                                             <option value="{{ nid }}" data-clinic_list="{{ clinicsList }}"
                                               {% if defaultDoctorForFeedback is defined and defaultDoctorForFeedback == nid %}
                                                 selected
+                                              {% else %}
+                                                {% set defaultDoctorForFeedback = nid %}
                                               {% endif %}
                                             >{{ doctor }}</option>
                                         {% endfor %}

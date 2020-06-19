@@ -38,6 +38,7 @@ class GetEntitiesItems {
     $nodes = \Drupal::entityQuery('node')
       ->condition('status', NodeInterface::PUBLISHED)
       ->condition('type', $exclude_node_types, 'NOT IN')
+      ->condition('nid', 220, '!=')  // Убираем из результатов поиска Сапельникова Александра Александровича
       ->execute();
     $nodes = Node::loadMultiple($nodes);
     return array_map(function ($node) {
