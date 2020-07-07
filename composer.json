@@ -25,6 +25,7 @@
         "drupal/core": "^8.8.5",
         "drupal/devel": "^2.0",
         "drupal/draggableviews": "^1.2",
+        "drupal/editor_file": "^1.4",
         "drupal/entity_reference_revisions": "^1.6",
         "drupal/memcache": "^2.0",
         "drupal/metatag": "^1.7",
@@ -32,6 +33,7 @@
         "drupal/pathauto": "^1.4",
         "drupal/redirect": "^1.4",
         "drupal/restui": "^1.17",
+        "drupal/robotstxt": "^1.4",
         "drupal/sitemap": "^1.5",
         "drupal/taxonomy_menu_ui": "^1.0",
         "drupal/unset_html_head_link": "1.x-dev",
@@ -40,8 +42,7 @@
         "phpmailer/phpmailer": "^6.0",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
-        "webmozart/path-util": "^2.3",
-        "drupal/editor_file": "^1.4"
+        "webmozart/path-util": "^2.3"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
