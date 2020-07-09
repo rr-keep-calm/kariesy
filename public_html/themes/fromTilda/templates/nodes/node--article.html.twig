@@ -3,7 +3,12 @@
     {% if not content.field_image.isEmpty() %}
       <div class="article_image">
         <a class="services_link" href="{{ url }}">
-          <img src="{{ file_url(node.field_article_image.entity.fileuri) }}" alt="">
+          {% set imagestyle = {
+            '#theme':      'image_style',
+            '#style_name': 'article_list_img',
+            '#uri':        node.field_article_image.entity.uri.value
+          } %}
+          {{ imagestyle }}
         </a>
       </div>
     {% endif %}
@@ -29,9 +34,13 @@
         {% set free_consult_block = '' %}
         {% set prices_placeholder = '' %}
       {% else %}
+        {% set consult_name = 'Бесплатная консультация' %}
+        {% if 'On' in content.field_paid_consultation.0 %}
+          {% set consult_name = 'Запишитесь на консультацию' %}
+        {% endif %}
         {% set free_consult_block = '<div id="block-besplatnayakonsultaciya" class="article_free_consult">
     <div class="free-consultation">
-      <div class="free-consultation-item custom-block-header">Бесплатная консультация</div>
+      <div class="free-consultation-item custom-block-header">' ~ consult_name ~ '</div>
       <div class="free-consultation-item check-marker-list">
         <div class="checker-mark-element">30-40 минут</div>
         <div class="checker-mark-element">осмотр и диагностика</div>
@@ -48,8 +57,7 @@
         </div>" %}
         {% endif %}
       {% endif %}
-
-      {{ content|without('field_article_author', 'field_tags', 'field_relevant_services', 'field_article_image', 'field_article_prices')|render|replace({'%free_consult%': free_consult_block})|replace({'%prices%': prices_placeholder})|raw }}
+      {{ content|without('field_article_author', 'field_tags', 'field_relevant_services', 'field_article_image', 'field_article_prices', 'field_paid_consultation')|render|replace({'%free_consult%': free_consult_block})|replace({'%prices%': prices_placeholder})|raw }}
     </div>
     {% if article_author_name is defined %}
       <div class="article_author">
