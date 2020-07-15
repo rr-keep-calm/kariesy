@@ -153,6 +153,44 @@ function fromTilda_theme_suggestions_node_alter(&$suggestions, &$vars, $hook) {
  * Preprocess function for page*.html.twig.
  */
 function fromTilda_preprocess_page(&$variables) {
+  if ($variables['is_front']) {
+    $variables['slides'] = [];
+    $settingsNids = \Drupal::entityQuery('node')
+      ->condition('type', 'settings')
+      ->execute();
+    $sliderOnMainSettings = Node::load(current($settingsNids));
+    $sliderOnMainSettings = $sliderOnMainSettings->get('field_slides_on_main')->getValue();
+    foreach ($sliderOnMainSettings as $key => $sliderOnMainSetting) {
+      $slideSetting = \Drupal\paragraphs\Entity\Paragraph::load($sliderOnMainSetting['target_id']);
+      $variables['slides'][$key]['title'] = $slideSetting->get('field_slide_title')->getValue();
+
+      $uri = $slideSetting->field_slide_image->entity->getFileUri();
+      $variables['slides'][$key]['image'] = file_create_url($uri);
+
+      $variables['slides'][$key]['description'] = $slideSetting->get('field_slide_description')->getValue();
+      $variables['slides'][$key]['more_button_link'] = $slideSetting->get('field_more_button_link')->getValue();
+
+      $slideAdditionalSettings = $slideSetting->get('field_styles_settings')->getValue();
+      if (!$slideAdditionalSettings) {
+        continue;
+      }
+      foreach ($slideAdditionalSettings as $slideAdditionalSettingKey => $slideAdditionalSetting) {
+        $slideAdditionalSettingDetail = \Drupal\paragraphs\Entity\Paragraph::load($slideAdditionalSetting['target_id']);
+        $variables['slides'][$key]['additional_settings'][$slideAdditionalSettingKey]['max_width'] = $slideAdditionalSettingDetail->get('field_max_width')->getValue();
+        $variables['slides'][$key]['additional_settings'][$slideAdditionalSettingKey]['min_width'] = $slideAdditionalSettingDetail->get('field_min_width')->getValue();
+
+        $title_color = $slideAdditionalSettingDetail->get('field_title_color')->getValue();
+        $variables['slides'][$key]['additional_settings'][$slideAdditionalSettingKey]['title_color'] = $title_color ? $title_color[0]['color'] : '';
+        $variables['slides'][$key]['additional_settings'][$slideAdditionalSettingKey]['title_size'] = $slideAdditionalSettingDetail->get('field_title_size')->getValue();
+
+        $description_color = $slideAdditionalSettingDetail->get('field_description_color')->getValue();
+        $variables['slides'][$key]['additional_settings'][$slideAdditionalSettingKey]['description_color'] = $description_color ? $description_color[0]['color'] : '';
+        $variables['slides'][$key]['additional_settings'][$slideAdditionalSettingKey]['description_size'] = $slideAdditionalSettingDetail->get('field_description_size')->getValue();
+      }
+    }
+    $a = 1;
+  }
+
   if ($node = \Drupal::routeMatch()->getParameter('node')) {
     if ($node->getType() == 'doktor') {
       $doctorNidForReviews = $node->id();

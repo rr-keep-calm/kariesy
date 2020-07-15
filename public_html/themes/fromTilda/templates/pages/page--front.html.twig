@@ -1,48 +1,67 @@
 {% extends  "page.html.twig" %}
 
 {% block globalContent %}
+  {% if (slides is defined and slides|length > 0) %}
+    {% set additionalStyles = '' %}
     <div class="main">
-        <div class="main_slider">
-        	<div>
-                <div class="main_item" style="background-image: url({{ directory }}/img/slider/gigiena-2020.png);">
-                    <div class="wrapper main_wrapper">
-                        <div class="main_title">
-                            <span>Скидка на гигиену 20&nbsp;%</span>
-                        </div>
-
-                        <div class="main_text bluetext bigtext">
-                            <p>С 15 мая по 15 июня</p>
-                        </div>
-
-                        <div class="main_buttons">
-                            <a href="/akcii/skidka-na-gigienu" class="button main_button">подробнее</a>
-                        </div>
-                    </div>
+      <div class="main_slider">
+        {% for key,slide in slides %}
+          <div>
+            <div class="main_item slide-number-{{ key }}"
+                 style="background-image: url({{ slide.image }});">
+              <div class="wrapper main_wrapper">
+                <div class="main_title">
+                  {{ slide.title.0.value|raw }}
                 </div>
-            </div>
-            <div>
-                <div class="main_item" style="background-image: url({{ directory }}/img/slider/parodontologiya-2.jpg);">
-                    <div class="wrapper main_wrapper">
-                        <div class="main_title">
-                            Бесплатная консультация <br>пародонтолога
-                            <span>и скидка 20%</span>
-                        </div>
 
-                        <div class="main_text">
-                            <p>Скидка на все пародонтологические процедуры</p>
-                            <p>Акция действует до 30 сентября 2020 г.</p>
-                        </div>
-
-                        <div class="main_buttons">
-                            <a href="/akcii/paradontologiya-2020" class="button main_button">подробнее</a>
-                        </div>
-                    </div>
+                <div class="main_text">
+                  {{ slide.description.0.value|raw }}
                 </div>
-            </div>
-        </div>
 
-        <div class="wrapper main_arrows"></div>
+                {% if (slide.more_button_link.0.value is defined) %}
+                  <div class="main_buttons">
+                    <a href="{{ slide.more_button_link.0.value }}" class="button main_button">подробнее</a>
+                  </div>
+                {% endif %}
+
+                {% if (slide.additional_settings is defined and slide.additional_settings|length > 0) %}
+                  {% for additional_setting in slide.additional_settings %}
+                    {% if (additional_setting.max_width|length > 0) %}
+                      {% set additionalStyles = additionalStyles ~ '@media screen and (max-width: ' ~ additional_setting.max_width.0.value ~ 'px) {' %}
+                    {% endif %}
+                    {% if (additional_setting.min_width|length > 0) %}
+                      {% set additionalStyles = additionalStyles ~ '@media screen and (min-width: ' ~ additional_setting.min_width.0.value ~ 'px) {' %}
+                    {% endif %}
+                    {% if (additional_setting.title_color != '') %}
+                      {% set additionalStyles = additionalStyles ~ '.slide-number-' ~ key ~ ' .main_title {color: ' ~ additional_setting.title_color ~ ';}' %}
+                    {% endif %}
+                    {% if (additional_setting.title_size|length > 0) %}
+                      {% set additionalStyles = additionalStyles ~ '.slide-number-' ~ key ~ ' .main_title {font-size: ' ~ additional_setting.title_size.0.value ~ 'px;}' %}
+                    {% endif %}
+                    {% if (additional_setting.description_color != '') %}
+                      {% set additionalStyles = additionalStyles ~ '.slide-number-' ~ key ~ ' .main_text {color: ' ~ additional_setting.description_color ~ ';}' %}
+                    {% endif %}
+                    {% if (additional_setting.description_size|length > 0) %}
+                      {% set additionalStyles = additionalStyles ~ '.slide-number-' ~ key ~ ' .main_text {font-size: ' ~ additional_setting.description_size.0.value ~ 'px;}' %}
+                    {% endif %}
+                    {% if (additional_setting.max_width|length > 0 or additional_setting.min_width|length > 0) %}
+                      {% set additionalStyles = additionalStyles ~ '}' %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="wrapper main_arrows"></div>
     </div>
+    {% if additionalStyles != '' %}
+      <style>
+        {{ additionalStyles }}
+      </style>
+    {% endif %}
+  {% endif %}
 
     <div class="about-num">
         <div class="wrapper">
