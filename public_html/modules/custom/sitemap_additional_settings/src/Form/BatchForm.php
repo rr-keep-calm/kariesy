@@ -52,7 +52,7 @@ class BatchForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->config('sitemap_additional.adminsettings');
+    $config = $this->config('sitemap_additional_settings.adminsettings');
     if (!$config->get('menu_for_auto_add')) {
       $form_state->setErrorByName('actions', 'Не выбрано меню в которое автоматически будут добавляться новые ссылки');
       return;

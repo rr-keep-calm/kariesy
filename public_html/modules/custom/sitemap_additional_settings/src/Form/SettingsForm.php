@@ -18,7 +18,7 @@ class SettingsForm extends ConfigFormBase {
 
   public function buildForm(array $form, FormStateInterface $form_state) {
     $sitemapModuleConfig = $this->configFactory->get('sitemap.settings');
-    $config = $this->config('sitemap_additional.adminsettings');
+    $config = $this->config('sitemap_additional_settings.adminsettings');
 
     $available_menus = $sitemapModuleConfig->get('show_menus');
     if ($available_menus) {
@@ -115,7 +115,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    $this->config('sitemap_additional.adminsettings')
+    $this->config('sitemap_additional_settings.adminsettings')
       ->set('menu_for_auto_add', $form_state->getValue('menu_for_auto_add'))
       ->set('exclude_vocabularies', $form_state->getValue('exclude_vocabularies'))
       ->set('exclude_node_types', $form_state->getValue('exclude_node_types'))
@@ -126,7 +126,7 @@ class SettingsForm extends ConfigFormBase {
 
   protected function getEditableConfigNames(): array {
     return [
-      'sitemap_additional.adminsettings'
+      'sitemap_additional_settings.adminsettings'
     ];
   }
 }
