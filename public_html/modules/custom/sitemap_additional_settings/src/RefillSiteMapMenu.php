@@ -10,7 +10,7 @@ class RefillSiteMapMenu {
   public function refillSiteMapMenu() {
     $map_levels = \Drupal::state()->get('map_levels', []);
     ksort($map_levels);
-    $config = \Drupal::config('sitemap_additional.adminsettings');
+    $config = \Drupal::config('sitemap_additional_settings.adminsettings');
 
     // Для начала удаляем ссылки которые удаляются наверняка - это добавленные
     // непосредственно в меню

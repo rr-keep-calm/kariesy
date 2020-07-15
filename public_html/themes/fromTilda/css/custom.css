@@ -126,6 +126,8 @@
 .service-detail_about p, .service-detail_block p, .service-detail_block ul li, .service-detail_block ol li {font:18px/30px 'OpenSansLight'}
 
 .top {padding:40px 0 20px}
+
+h2 {margin-bottom:10px;margin-top:35px}
 @media screen and (max-width: 767px) {
 .top {padding: 20px 0 0}
 }
@@ -682,6 +684,8 @@ a.about-num_item {text-decoration:none}
 }
 
 @media screen and (max-width: 767px) {
+h2 {text-align:left}
+	
   .service-detail_block .h2 {
     display: none;
   }
@@ -1043,7 +1047,7 @@ a.about-num_item {text-decoration:none}
 
 @media screen and (max-width: 480px) {
   body {
-    padding-top: 159px;
+    padding-top: 50px;
   }
 }
 
