@@ -1,0 +1,6 @@
+name: Keep Calm helper for entity based settings
+description: Хэлпер для организации настроек основанных на сущностях
+type: module
+core: 8.x
+version: 1.x
+package: KeepCalm

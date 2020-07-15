@@ -12,7 +12,7 @@ class GetEntitiesItems {
     $entities = [];
 
     // Очищаем все ранее сохранённые данные для построения карты сайта
-    $config = \Drupal::config('sitemap_additional.adminsettings');
+    $config = \Drupal::config('sitemap_additional_settings.adminsettings');
 
     // Получаем все ноды
     $entities['nodes'] = $this->getNodes(array_filter($config->get('exclude_node_types')));

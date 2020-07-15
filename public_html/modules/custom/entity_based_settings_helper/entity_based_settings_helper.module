@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function entity_based_settings_helper_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  $entity_types['node']->setListBuilderClass('Drupal\entity_based_settings_helper\EntityBasedSettingsHelperNodeListBuilder');
+}
+
+function entity_based_settings_helper_preprocess_node_add_list(&$variables) {
+  // скрывам тип "Настройки" из списка на возможности добавления
+  unset($variables["content"]["settings"]);
+  unset($variables["types"]["settings"]);
+}
