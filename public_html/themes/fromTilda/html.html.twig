@@ -38,6 +38,19 @@
     <head-placeholder token="{{ placeholder_token }}">
     <title>{{ head_title|safe_join(' | ') }}</title>
     <meta meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    {% block metaTags %}
+      <meta property="og:url" content="{{url('<current>')|render|render}}"/>
+      <meta property="og:title" content="{{ head_title|safe_join(' | ') }}"/>
+      {% if og_description is defined %}
+        <meta property="og:description" content="{{ og_description }}"/>
+      {% endif %}
+      <meta property="og:type" content="{{ og_type }}"/>
+      {% if og_image is defined %}
+        <meta property="og:image" content="{{og_image}}"/>
+      {% endif %}
+    {% endblock %}
+
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
   </head>
