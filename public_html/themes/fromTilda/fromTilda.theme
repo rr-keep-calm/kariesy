@@ -8,6 +8,21 @@ use Drupal\views\Views;
 
 function fromTilda_preprocess_html(&$variables)
 {
+  $variables['og_type'] = 'website';
+  if (\Drupal::routeMatch()->getRouteName() == 'entity.node.canonical' && $nid = \Drupal::routeMatch()->getRawParameter('node')) {
+    $node = Node::load($nid);
+    if ($node->getType() == 'article') {
+      $variables['og_type'] = 'article';
+    }
+  }
+  foreach ($variables['page']['#attached']['html_head'] as $attached_item) {
+    if ($attached_item[1] == 'description') {
+      $variables['og_description'] = $attached_item[0]['#attributes']['content'];
+    }
+    if ($attached_item[1] == 'image_src') {
+      $variables['og_image'] = $attached_item[0]['#attributes']['href'];
+    }
+  }
   $variables['#attached']['drupalSettings']['path']['themeUrl'] = \Drupal::theme()->getActiveTheme()->getPath();
   $title_parts = explode('|||', $variables['head_title']['title']);
   if (strpos($variables['head_title']['title'], 'Цены на услуги в стоматологии Кариесу.нет') === 0) {
