@@ -1,0 +1,9 @@
+js-custom:
+  js:
+    js/custom.js: {attributes: { async: false, defer: true } }
+  css:
+    theme:
+      css/custom.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings

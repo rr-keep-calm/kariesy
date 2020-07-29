@@ -578,6 +578,22 @@ function fromTilda_preprocess_node(&$variables){
       }
     }
   }
+
+  if ($variables['node']->getType() == 'before_after') {
+    $variables['specialization'] = '';
+    $variables['doctorName'] = '';
+    $doctor = $variables['node']->get('field_doktor')->getValue();
+    if (isset($doctor[0]['target_id'])) {
+      $doctorNode = Node::load($doctor[0]['target_id']);
+      $specializations = $doctorNode->get('field_specialization')->getValue();
+      $variables['specialization'] = current($specializations)['value'];
+      $variables['doctorName'] = $doctorNode->getTitle();
+      $variables['doctorId'] = $doctor[0]['target_id'];
+    }
+    $variables['moduleUrl'] = Drupal::moduleHandler()
+      ->getModule('dental_formula_field')
+      ->getPath();
+  }
 }
 
 function fromTilda_preprocess_views_view(&$variables){

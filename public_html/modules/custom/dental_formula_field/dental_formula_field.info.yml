@@ -1,0 +1,8 @@
+name: 'Dental formula field'
+description: 'Поле для указания зубной офрмулы'
+type: module
+core: 8.x
+version: 1.x
+package: Field types
+dependencies:
+  - field
