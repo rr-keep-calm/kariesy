@@ -1163,9 +1163,13 @@ h2 {text-align:left}
 /* Оформление страницы кейсов*/
 .b-a-photos {
   display: flex;
+  padding-bottom:10px;
 }
 .b-photo, .a-photo {
   width: 50%;
+}
+.b-photo {
+  margin: 0 10px;
 }
 .b-a-photos img {
   max-width: 100%;
@@ -1176,9 +1180,12 @@ h2 {text-align:left}
 }
 .content-wrapper .body {
   width: 70%;
+  padding-right: 20px;
 }
 .content-wrapper .dental-formula-wrapper {
   width: 30%;
+  margin-top: 35px;
+  padding: 15px;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula-label {
   font-size: 20px;
@@ -1187,6 +1194,7 @@ h2 {text-align:left}
   width: 100%;
   position: relative;
   padding-top: 120%;
+  background: #eeeeee;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula-label {
   font-weight: bold;
@@ -1202,137 +1210,137 @@ h2 {text-align:left}
 }
 /* left top row*/
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-11 {
-  top: 0;
-  left: 45.7%;
+  top: 3%;
+  left: 40.7%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-12 {
-  top: 1.7%;
-  left: 37.3%;
+  top: 4.7%;
+  left: 32.3%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-13 {
-  top: 5.7%;
-  left: 30.2%;
-}
-.content-wrapper .dental-formula-wrapper .dental-formula img.tooth-14 {
-  top: 11.1%;
+  top: 8.7%;
   left: 25.2%;
 }
+.content-wrapper .dental-formula-wrapper .dental-formula img.tooth-14 {
+  top: 14.1%;
+  left: 20.2%;
+}
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-15 {
-  top: 16.1%;
-  left: 22.2%;
+  top: 19.1%;
+  left: 17.2%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-16 {
-  top: 22.3%;
-  left: 20%;
+  top: 25.3%;
+  left: 15%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-17 {
-  top: 28.7%;
-  left: 17%;
+  top: 31.7%;
+  left: 12%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-18 {
-  top: 35.2%;
-  left: 15%;
+  top: 38.2%;
+  left: 10%;
 }
 
 /*right top row*/
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-21 {
-  top: 0;
-  left: 54.2%;
+  top: 3%;
+  left: 49.2%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-22 {
-  top: 1.7%;
-  left: 62.6%;
+  top: 4.7%;
+  left: 57.6%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-23 {
-  top: 5.7%;
-  left: 69.7%;
+  top: 8.7%;
+  left: 64.7%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-24 {
-  top: 11.1%;
-  left: 74.7%;
+  top: 14.1%;
+  left: 69.7%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-25 {
-  top: 16.1%;
-  left: 77.7%;
+  top: 19.1%;
+  left: 72.7%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-26 {
-  top: 22.3%;
-  left: 79.9%;
+  top: 25.3%;
+  left: 74.9%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-27 {
-  top: 28.7%;
-  left: 82.4%;
+  top: 31.7%;
+  left: 77.4%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-28 {
-  top: 35.1%;
-  left: 84.2%;
+  top: 38.1%;
+  left: 79.2%;
 }
 /* right bottom row*/
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-31 {
   bottom: 3.5%;
-  left: 52.8%;
+  left: 47.8%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-32 {
   bottom: 4.1%;
-  left: 59%;
+  left: 54%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-33 {
   bottom: 6.9%;
-  left: 66%;
+  left: 61%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-34 {
   bottom: 11.1%;
-  left: 72.6%;
+  left: 67.6%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-35 {
   bottom: 16.4%;
-  left: 76.5%;
+  left: 71.5%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-36 {
   bottom: 21.9%;
-  left: 80%;
+  left: 75%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-37 {
   bottom: 27.8%;
-  left: 83.2%;
+  left: 78.2%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-38 {
   bottom: 34.2%;
-  left: 85.3%;
+  left: 80.3%;
 }
 
 /*left bottom row*/
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-41 {
   bottom: 3.5%;
-  left: 47.5%;
+  left: 42.5%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-42 {
   bottom: 4.1%;
-  left: 41.3%;
+  left: 36.3%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-43 {
   bottom: 6.9%;
-  left: 34.3%;
+  left: 29.3%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-44 {
   bottom: 11.1%;
-  left: 27.7%;
+  left: 22.7%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-45 {
   bottom: 16.4%;
-  left: 23.8%;
+  left: 18.8%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-46 {
   bottom: 21.9%;
-  left: 20.3%;
+  left: 15.3%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-47 {
   bottom: 27.8%;
-  left: 17.1%;
+  left: 12.1%;
 }
 .content-wrapper .dental-formula-wrapper .dental-formula img.tooth-48 {
   bottom: 34.2%;
-  left: 15%;
+  left: 10%;
 }
 @media screen and (max-width: 768px) {
   .b-a-photos {
@@ -1341,14 +1349,19 @@ h2 {text-align:left}
   .b-photo, .a-photo {
     width: 100%;
   }
+  .b-photo {
+    margin: 0;
+  }
   .content-wrapper {
     display: block;
   }
   .content-wrapper .body {
     width: 100%;
+    padding: 0;
   }
   .content-wrapper .dental-formula-wrapper {
     width: 100%;
+    margin: 0;
   }
 }
 
