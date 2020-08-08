@@ -358,7 +358,7 @@ a.about-num_item {text-decoration:none}
 	.main_slider .main_text.bigtext p {font:24px/1.1 'GothamProLight'}
 }
 @media screen and (min-width: 1230px) {
-	.price_cnt.flex-custom {max-width: 460px;}
+	.price_cnt.flex-custom {max-width: 480px;}
 }
 @media screen and (max-width: 1230px) {
   body {
