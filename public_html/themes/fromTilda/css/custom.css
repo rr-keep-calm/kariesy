@@ -1364,4 +1364,10 @@ h2 {text-align:left}
     margin: 0;
   }
 }
+.service-detail_block ul li {
+  display: -webkit-box;
+}
+.service-detail_block ul li:before {
+  top: -2px;
+}
 
