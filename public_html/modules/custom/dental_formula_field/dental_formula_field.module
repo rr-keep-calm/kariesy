@@ -1,0 +1,11 @@
+<?php
+
+function dental_formula_field_theme($existing, $type, $theme, $path) {
+  $variables = array(
+    'dental_formula' => array (
+      'render element' => 'element',
+      'template' => 'dental_formula-input',
+    ),
+  );
+  return $variables;
+}

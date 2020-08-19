@@ -1,0 +1,46 @@
+{{ attach_library('dental_formula_field/js-custom') }}
+{% set tooth_checked = ""|split('') %}
+{% if element['#default_value'] is defined and element['#default_value'] != '' %}
+  {% set tooth_checked = element['#default_value']|split('') %}
+{% endif %}
+<label for="edit-field-dental-formula-0-value">Зубная формула</label>
+<div class="dental_formula">
+  <div class="checkbox-group">
+    <span><input type="checkbox" name="tooth-11"{{ tooth_checked.0 is defined and tooth_checked.0 != 0 ? ' checked' : '' }}>11</span>
+    <span><input type="checkbox" name="tooth-12"{{ tooth_checked.0 is defined and tooth_checked.1 != 0 ? ' checked' : '' }}>12</span>
+    <span><input type="checkbox" name="tooth-13"{{ tooth_checked.0 is defined and tooth_checked.2 != 0 ? ' checked' : '' }}>13</span>
+    <span><input type="checkbox" name="tooth-14"{{ tooth_checked.0 is defined and tooth_checked.3 != 0 ? ' checked' : '' }}>14</span>
+    <span><input type="checkbox" name="tooth-15"{{ tooth_checked.0 is defined and tooth_checked.4 != 0 ? ' checked' : '' }}>15</span>
+    <span><input type="checkbox" name="tooth-16"{{ tooth_checked.0 is defined and tooth_checked.5 != 0 ? ' checked' : '' }}>16</span>
+    <span><input type="checkbox" name="tooth-17"{{ tooth_checked.0 is defined and tooth_checked.6 != 0 ? ' checked' : '' }}>17</span>
+    <span><input type="checkbox" name="tooth-18"{{ tooth_checked.0 is defined and tooth_checked.7 != 0 ? ' checked' : '' }}>18</span>
+    <span><input type="checkbox" name="tooth-21"{{ tooth_checked.0 is defined and tooth_checked.8 != 0 ? ' checked' : '' }}>21</span>
+    <span><input type="checkbox" name="tooth-22"{{ tooth_checked.0 is defined and tooth_checked.9 != 0 ? ' checked' : '' }}>22</span>
+    <span><input type="checkbox" name="tooth-23"{{ tooth_checked.0 is defined and tooth_checked.10 != 0 ? ' checked' : '' }}>23</span>
+    <span><input type="checkbox" name="tooth-24"{{ tooth_checked.0 is defined and tooth_checked.11 != 0 ? ' checked' : '' }}>24</span>
+    <span><input type="checkbox" name="tooth-25"{{ tooth_checked.0 is defined and tooth_checked.12 != 0 ? ' checked' : '' }}>25</span>
+    <span><input type="checkbox" name="tooth-26"{{ tooth_checked.0 is defined and tooth_checked.13 != 0 ? ' checked' : '' }}>26</span>
+    <span><input type="checkbox" name="tooth-27"{{ tooth_checked.0 is defined and tooth_checked.14 != 0 ? ' checked' : '' }}>27</span>
+    <span><input type="checkbox" name="tooth-28"{{ tooth_checked.0 is defined and tooth_checked.15 != 0 ? ' checked' : '' }}>28</span>
+    <span><input type="checkbox" name="tooth-31"{{ tooth_checked.0 is defined and tooth_checked.16 != 0 ? ' checked' : '' }}>31</span>
+    <span><input type="checkbox" name="tooth-32"{{ tooth_checked.0 is defined and tooth_checked.17 != 0 ? ' checked' : '' }}>32</span>
+    <span><input type="checkbox" name="tooth-33"{{ tooth_checked.0 is defined and tooth_checked.18 != 0 ? ' checked' : '' }}>33</span>
+    <span><input type="checkbox" name="tooth-34"{{ tooth_checked.0 is defined and tooth_checked.19 != 0 ? ' checked' : '' }}>34</span>
+    <span><input type="checkbox" name="tooth-35"{{ tooth_checked.0 is defined and tooth_checked.20 != 0 ? ' checked' : '' }}>35</span>
+    <span><input type="checkbox" name="tooth-36"{{ tooth_checked.0 is defined and tooth_checked.21 != 0 ? ' checked' : '' }}>36</span>
+    <span><input type="checkbox" name="tooth-37"{{ tooth_checked.0 is defined and tooth_checked.22 != 0 ? ' checked' : '' }}>37</span>
+    <span><input type="checkbox" name="tooth-38"{{ tooth_checked.0 is defined and tooth_checked.23 != 0 ? ' checked' : '' }}>38</span>
+    <span><input type="checkbox" name="tooth-41"{{ tooth_checked.0 is defined and tooth_checked.24 != 0 ? ' checked' : '' }}>41</span>
+    <span><input type="checkbox" name="tooth-42"{{ tooth_checked.0 is defined and tooth_checked.25 != 0 ? ' checked' : '' }}>42</span>
+    <span><input type="checkbox" name="tooth-43"{{ tooth_checked.0 is defined and tooth_checked.26 != 0 ? ' checked' : '' }}>43</span>
+    <span><input type="checkbox" name="tooth-44"{{ tooth_checked.0 is defined and tooth_checked.27 != 0 ? ' checked' : '' }}>44</span>
+    <span><input type="checkbox" name="tooth-45"{{ tooth_checked.0 is defined and tooth_checked.28 != 0 ? ' checked' : '' }}>45</span>
+    <span><input type="checkbox" name="tooth-46"{{ tooth_checked.0 is defined and tooth_checked.29 != 0 ? ' checked' : '' }}>46</span>
+    <span><input type="checkbox" name="tooth-47"{{ tooth_checked.0 is defined and tooth_checked.30 != 0 ? ' checked' : '' }}>47</span>
+    <span><input type="checkbox" name="tooth-48"{{ tooth_checked.0 is defined and tooth_checked.31 != 0 ? ' checked' : '' }}>48</span>
+  </div>
+  <div class="formula-view">
+    <img src="/{{ element.moduleUrl }}/img/teeth_formula.jpg">
+  </div>
+</div>
+<input{{ attributes }} />
